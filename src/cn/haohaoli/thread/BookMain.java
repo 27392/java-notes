@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter4;
+package cn.haohaoli.thread;
 
 import cn.haohaoli.thread.MyThread;
 
