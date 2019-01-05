@@ -14,7 +14,5 @@ public class EmployeeSortTest {
         staff[2] = (new Employee("t", 40000, 1990, 3, 15));
         Arrays.sort(staff);
         System.out.println(Arrays.toString(staff));
-
-        Paths.get("jdk1.8.0", "jre", "bin");
     }
 }
