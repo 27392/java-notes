@@ -1,7 +1,10 @@
 package cn.haohaoli.book.core.chapter5.lambda;
 
+import java.util.Comparator;
 import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * @author liWenHao
@@ -27,9 +30,27 @@ public class FunctionTest {
          *  compose 函数先执行参数，然后执行调用者，而 andThen 先执行调用者，然后再执行参数。
          *  参考：https://blog.csdn.net/huo065000/article/details/78964382
          */
+
+
+        //TODO 不太清楚具体应用场景 好像没啥用
         //返回一个执行了apply()方法之后只会返回输入参数的函数对象
         Object string = Function.identity().apply("string");
         BiFunction<String, Integer, Person> biFunction = (s, a) -> new Person(s, a);
+
+        //一元运算
+        UnaryOperator<String> identity = (s) -> "xxxx" + s;
+        String str = identity.apply("sss");
+        System.out.println(str);
+
+        //二元运算
+        BinaryOperator<String> binaryOperator = BinaryOperator.maxBy((Comparator.comparingInt(String::length)));
+        String apply = binaryOperator.apply("xx", "xxxx");
+        System.out.println(apply);
+
+        BinaryOperator<Integer> operator = BinaryOperator.minBy(Comparator.comparingInt(o -> o));
+        Integer apply1 = operator.apply(1, 2);
+        System.out.println(apply1);
+
     }
 
 
