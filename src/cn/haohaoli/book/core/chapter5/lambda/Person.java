@@ -3,7 +3,7 @@ package cn.haohaoli.book.core.chapter5.lambda;
 /**
  * @author liWenHao
  * @date 2019/1/5 17:08
- **/
+ */
 public class Person {
 
     private String name;
@@ -12,6 +12,15 @@ public class Person {
     }
 
     public Person(String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 

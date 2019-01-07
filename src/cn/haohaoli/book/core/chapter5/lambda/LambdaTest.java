@@ -12,9 +12,16 @@ import java.util.stream.Stream;
 /**
  * @author liWenHao
  * @date 2019/1/5 16:43
- **/
+ */
 public class LambdaTest {
 
+    /**
+     * 接口            返回值   备注
+     * Supplier<T>     void     提供一个T类型的值
+     * Consumer<T>     T        处理一个T类型的值
+     * Function<T,R>   R        有一个T类型
+     * Predicate<T>    boolean  布尔值函数
+     */
     public static void main(String[] args) {
 
         Comparator<String> stringComparator = ((o1, o2) -> o1.length() - o2.length());
@@ -44,6 +51,9 @@ public class LambdaTest {
         Person[] people = personStream.toArray(Person[]::new);
         Arrays.stream(people).forEach(System.out::println);
         repeat(10, () -> System.out.println("Hello World"));
+        /**
+         * 尽量使用IntConsumer等来减少自动装箱
+         */
         repeat(10, (i) -> System.out.println(i + " Hello World"));
     }
 
