@@ -1,8 +1,8 @@
-package cn.haohaoli.book.core.chapter5.lambda;
+package cn.haohaoli.book.core.chapter6.lambda;
 
-import cn.haohaoli.book.core.chapter5.lambda.factory.Animal;
-import cn.haohaoli.book.core.chapter5.lambda.factory.AnimalEnum;
-import cn.haohaoli.book.core.chapter5.lambda.factory.AnimalFactory;
+import cn.haohaoli.book.core.chapter6.lambda.factory.Animal;
+import cn.haohaoli.book.core.chapter6.lambda.factory.AnimalEnum;
+import cn.haohaoli.book.core.chapter6.lambda.factory.AnimalFactory;
 
 /**
  * @author liWenHao

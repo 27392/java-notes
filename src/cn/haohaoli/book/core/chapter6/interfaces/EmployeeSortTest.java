@@ -1,8 +1,7 @@
-package cn.haohaoli.book.core.chapter5.interfaces;
+package cn.haohaoli.book.core.chapter6.interfaces;
 
 import cn.haohaoli.book.core.chapter5.extend.Employee;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class EmployeeSortTest {

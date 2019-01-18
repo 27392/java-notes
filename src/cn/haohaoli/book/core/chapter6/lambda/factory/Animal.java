@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.lambda.factory;
+package cn.haohaoli.book.core.chapter6.lambda.factory;
 
 /**
  * @author liWenHao

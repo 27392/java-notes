@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.interfaces;
+package cn.haohaoli.book.core.chapter6.interfaces;
 
 import java.util.Date;
 import java.util.GregorianCalendar;

@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.lambda;
+package cn.haohaoli.book.core.chapter6.lambda;
 
 import java.util.Comparator;
 import java.util.function.BiFunction;

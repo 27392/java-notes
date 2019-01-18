@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.lambda;
+package cn.haohaoli.book.core.chapter6.lambda;
 
 import cn.haohaoli.book.core.chapter5.extend.Employee;
 
