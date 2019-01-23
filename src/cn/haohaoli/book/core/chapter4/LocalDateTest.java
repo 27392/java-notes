@@ -9,18 +9,38 @@ import java.time.LocalDate;
  * @author liWenHao
  * @date 2019/1/12 09:53
  */
-public class localDateTest {
+public class LocalDateTest {
 
     public static void main(String[] args) {
 
         /**
-         * 不要使用构造器来构造 LocalDate 类的对象。实际上，应当使用静态工厂方法 (factory method) 代表你调用构造器。
+         * TODO LocalDate 概要
+         *  构造对象：
+         *      不要使用构造器来构造 LocalDate 类的对象。实际上
+         *      应当使用静态工厂方法 (factory method) 代表你调用构造器。
+         *        now()                                     从默认时区的系统时钟获取当前日期。
+         *        of(int year, int month, int dayOfMonth)   从一年，一个月和一天获得一个 LocalDate的实例。
+         *  方法：
+         *      getYear()                       获取年份字段。
+         *      getMonthValue()                 将月份字段从1到12。
+         *      getDayOfMonth()                 获得日期字段。
+         *      plusYears(long yearsToAdd)      返回这个 LocalDate的副本，其中指定的时间段以添加的年数表示。
+         *      plusDays(long daysToAdd)        返回指定天数的 LocalDate的副本。
+         *      minusDays(long daysToSubtract)  返回此 LocalDate的副本，并减去指定的天数。
          */
         LocalDate now = LocalDate.now();
         print(now);
         LocalDate newYear = LocalDate.of(2020, 11, 11);
         print(newYear);
         print(newYear.plusYears(100));
+        calendar();
+    }
+
+    /**
+     * 日历方法
+     */
+    private static void calendar() {
+
         LocalDate date = LocalDate.now();
         int month = date.getMonthValue();
         int today = date.getDayOfMonth();
@@ -45,18 +65,21 @@ public class localDateTest {
             date = date.plusDays(1);
             if (date.getDayOfWeek().getValue() == 1) System.out.println();
         }
-
     }
 
     private static void print(LocalDate date) {
-        //获取年
         int year = date.getYear();
-        //获取月份
-        int monthValue = date.getMonthValue();
-        //获取日
-        int dayOfMonth = date.getDayOfMonth();
         /**
-         * https://www.cnblogs.com/seakt/p/4478045.html
+         * 获取月份内容
+         * getMonthValue()
+         * getMonth().getValue();
+         */
+        int monthValue = date.getMonthValue();
+        int dayOfMonth = date.getDayOfMonth();
+
+        /**
+         * TODO printf 输出操作
+         *  https://www.cnblogs.com/seakt/p/4478045.html
          *      %c        单个字符
          *      %d        十进制整数
          *      %f        十进制浮点数
