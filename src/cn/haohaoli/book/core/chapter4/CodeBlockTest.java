@@ -48,6 +48,10 @@ public class CodeBlockTest {
         id = i;
     }
 
+    public CodeBlockTest() {
+        System.out.println("构造器执行");
+    }
+
     public static Integer getId() {
         return id;
     }

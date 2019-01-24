@@ -1,4 +1,6 @@
-package cn.haohaoli.book.core.chapter5.extend;
+package cn.haohaoli.book.core.chapter5.object;
+
+import cn.haohaoli.book.core.chapter5.inheritance.Employee;
 
 /**
  * TODO Object 类
@@ -21,7 +23,5 @@ public class ObjectTest {
         Employee[] staff = new Employee[10];
         obj = staff;        // OK
         obj = new int[10];  // OK
-
-
     }
 }

@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.extend.abstraction;
+package cn.haohaoli.book.core.chapter5.abstractClasses;
 
 /**
  * TODO 抽象类（关键字 abstract）
@@ -17,7 +17,7 @@ public abstract class Person {
 
     private String name;
 
-    public Person(String name) {
+    Person(String name) {
         this.name = name;
     }
 

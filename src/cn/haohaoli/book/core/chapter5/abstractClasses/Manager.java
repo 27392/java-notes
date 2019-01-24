@@ -1,6 +1,4 @@
-package cn.haohaoli.book.core.chapter5.extend.abstraction;
-
-import cn.haohaoli.book.core.chapter5.extend.abstraction.Employee;
+package cn.haohaoli.book.core.chapter5.abstractClasses;
 
 import java.time.LocalDate;
 

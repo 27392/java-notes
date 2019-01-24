@@ -1,6 +1,6 @@
 package cn.haohaoli.book.core.chapter6.interfaces;
 
-import cn.haohaoli.book.core.chapter5.extend.Employee;
+import cn.haohaoli.book.core.chapter5.inheritance.Employee;
 
 import java.util.Arrays;
 

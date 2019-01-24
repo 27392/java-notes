@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.extend;
+package cn.haohaoli.book.core.chapter5.inheritance;
 
 /**
  * 经理测试类

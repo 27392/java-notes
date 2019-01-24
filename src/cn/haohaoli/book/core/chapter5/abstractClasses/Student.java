@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.extend.abstraction;
+package cn.haohaoli.book.core.chapter5.abstractClasses;
 
 /**
  * @author LiWenHao

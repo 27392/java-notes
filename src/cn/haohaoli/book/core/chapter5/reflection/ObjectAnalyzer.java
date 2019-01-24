@@ -6,6 +6,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
+/**
+ * @author LiWenHao
+ * @date 2019-01-24 11:42
+ */
 public class ObjectAnalyzer {
 
     private ArrayList<Object> list = new ArrayList<>();
@@ -18,7 +22,7 @@ public class ObjectAnalyzer {
             return "...";
         }
         list.add(o);
-        Class<?> cl = o.getClass();
+        Class cl = o.getClass();
         if (cl == String.class) {
             return (String) o;
         }

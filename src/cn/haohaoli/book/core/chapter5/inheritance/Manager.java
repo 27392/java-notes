@@ -1,6 +1,4 @@
-package cn.haohaoli.book.core.chapter5.extend;
-
-import java.util.Objects;
+package cn.haohaoli.book.core.chapter5.inheritance;
 
 /**
  * TODO 定义子类（关键字 extends）
@@ -24,7 +22,7 @@ public class Manager extends Employee {
      * TODO super
      *  关键字 this 有两个用途 一是引用隐式参数 二是调用该类其他的构造器，同样。
      *  super 关键字也有两个用途: 一是调用超类的方法， 二是调用超类的构造器。 在调用构造器的时候，
-     *  这两个关键字的使用方式很相似。调用构造器的语句只能作为另 一个构造器的第一条语句出现。构造参数既可以传递给本类(this) 的其他构造器，也可以传递给超类(super) 的构造器
+     *  这两个关键字的使用方式很相似。调用构造器的语句只能作为另一个构造器的第一条语句出现。构造参数既可以传递给本类(this) 的其他构造器，也可以传递给超类(super) 的构造器
      */
     public Manager(String name, double salary, int year, int month, int day) {
         super(name, salary, year, month, day);
@@ -52,25 +50,5 @@ public class Manager extends Employee {
         //调用超类方法
         double baseSalary = super.getSalary();
         return baseSalary + bonus;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Manager manager = (Manager) o;
-        return Double.compare(manager.bonus, bonus) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), bonus);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() +
-                "[bonus=" + bonus + "]";
     }
 }

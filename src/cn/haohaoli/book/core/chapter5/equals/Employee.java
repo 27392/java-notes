@@ -1,4 +1,4 @@
-package cn.haohaoli.book.core.chapter5.extend;
+package cn.haohaoli.book.core.chapter5.equals;
 
 import java.time.LocalDate;
 import java.util.Objects;

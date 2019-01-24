@@ -1,6 +1,6 @@
 package cn.haohaoli.book.core.chapter6.lambda;
 
-import cn.haohaoli.book.core.chapter5.extend.Employee;
+import cn.haohaoli.book.core.chapter5.inheritance.Employee;
 
 import java.util.ArrayList;
 import java.util.Arrays;
