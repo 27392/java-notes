@@ -1,60 +1,40 @@
 package cn.haohaoli.book.core.chapter6.lambda;
 
-import cn.haohaoli.book.core.chapter5.inheritance.Employee;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.function.*;
 import java.util.stream.Stream;
 
 /**
+ * TODO Lambda
  * @author liWenHao
  * @date 2019/1/5 16:43
  */
 public class LambdaTest {
 
-    /**
-     * 接口            返回值   备注
-     * Supplier<T>     void     提供一个T类型的值
-     * Consumer<T>     T        处理一个T类型的值
-     * Function<T,R>   R        有一个T类型
-     * Predicate<T>    boolean  布尔值函数
-     */
     public static void main(String[] args) {
+        /**
+         * TODO 方法引用(method reference)
+         *  将已经有现成的方法可以完成你想要传递到其他代码的某个动作
+         *   表达式 System.out::println 是一个方法引用, 它等价于 lambda 表达式 x 一> System.out.println(x)
+         *   要用:: 操作符分隔方法名与对象或类名。主要有 3 种情况:
+         *      • object::instanceMethod
+         *      • Class ::static Method
+         *      • Class ::instanceMethod
+         *      在前2种情况中， 方法引用等价于提供方法参数的 lambda 表达式。
+         *          前面已经提到， System.out::println 等价于 x -> System.out.println(x) 类似地，Math::pow 等价于(x，y) -> Math.pow(x, y)
+         *      对于第3种情况， 第1个参数会成为方法的目标。
+         *          例如， String::compareToIgnoreCase 等 同于 (x, y) -> x.compareToIgnoreCase(y)
+         */
 
-        Comparator<String> stringComparator = ((o1, o2) -> o1.length() - o2.length());
-
-        List<Employee> staff = new ArrayList<>(100);
-        staff.add(new Employee("yxx", 75000, 1987, 12, 15));
-        staff.add(new Employee("lxx", 50000, 1989, 10, 1));
-        staff.add(new Employee("xxs", 40000, 1990, 3, 15));
-        System.out.println(staff);
-        List<Employee> filter = filter(staff, (o) -> o.getSalary() > 45000);
-        Supplier<Person> supplier = Person::new;
-        supplier.get();
-        System.out.println("filter:  " + filter);
-        BiFunction<String, String, Integer> biFunction = (s, s1) -> s.length() - s1.length();
-        Integer apply = biFunction.apply("111", "22");
-        System.out.println(apply);
-        staff.removeIf(employee -> employee.getName().equals("c"));
-        System.out.println(staff);
-
-        //方法引用
         String[] s = {"xxx", "sss", "ff", "ggggg"};
         Arrays.sort(s, String::compareToIgnoreCase);
-
         System.out.println(Arrays.toString(s));
+
         List<String> strings = Arrays.asList(s);
         Stream<Person> personStream = strings.stream().map(Person::new);
         Person[] people = personStream.toArray(Person[]::new);
         Arrays.stream(people).forEach(System.out::println);
         repeat(10, () -> System.out.println("Hello World"));
-        /**
-         * 尽量使用IntConsumer等来减少自动装箱
-         */
-        repeat(10, (i) -> System.out.println(i + " Hello World"));
     }
 
     public static void repeat(int i, Runnable runnable) {
@@ -63,19 +43,4 @@ public class LambdaTest {
         }
     }
 
-    public static void repeat(int i, IntConsumer intConsumer) {
-        for (int j = 0; j < i; j++) {
-            intConsumer.accept(j);
-        }
-    }
-
-    public static List<Employee> filter(List<Employee> employees, Predicate<Employee> predicate) {
-        List<Employee> list = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (predicate.test(employee)) {
-                list.add(employee);
-            }
-        }
-        return list;
-    }
 }

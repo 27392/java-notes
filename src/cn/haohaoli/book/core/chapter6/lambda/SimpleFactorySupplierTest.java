@@ -12,11 +12,13 @@ public class SimpleFactorySupplierTest {
 
     /**
      *  简单工厂模式
-     *  参考-> https://www.cnblogs.com/invoker-/p/7684913.html
+     *  参考： https://www.cnblogs.com/invoker-/p/7684913.html
      */
     public static void main(String[] args) {
 
-        Animal animal = AnimalFactory.create(AnimalEnum.TIGER);
-        Animal animal1 = AnimalFactory.create(AnimalEnum.LION);
+        Animal tiger = AnimalFactory.create(AnimalEnum.TIGER);
+        System.out.println(tiger.getClass().getName());
+        Animal lion = AnimalFactory.create(AnimalEnum.LION);
+        System.out.println(lion.getClass().getName());
     }
 }

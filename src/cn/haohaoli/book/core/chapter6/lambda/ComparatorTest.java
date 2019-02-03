@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.function.Function;
 
 /**
+ * TODO Comparator 接口 （java8）
  * @author liWenHao
  * @date 2019/1/7 21:05
  */
