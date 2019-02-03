@@ -69,6 +69,7 @@ public class CodeBlockTest {
          *  static 代码块2
          *  代码块1
          *  代码块2
+         *  构造器执行
          */
     }
 }
