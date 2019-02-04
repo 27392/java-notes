@@ -1,6 +1,15 @@
 package cn.haohaoli.book.core.chapter6.interfaces.feature;
 
 /**
+ * TODO 接口特性
+ *  接口不是类 尤其不能使用new运算符实例化一个接口
+ *      x = new Powered();  //error
+ *  尽管不能构造接口的对象，却能声明接口的变量
+ *      Powered x;           //ok
+ *  接口变量必须引用实现了接口的类对象
+ *  也可以建立类的继承关系一样， 接口也可以被扩展。
+ *  接口可以多继承,但是类只能单继承
+ *  资料 https://www.cnblogs.com/zhangzhangY/p/7407325.html
  * 动力接口
  * @author LiWenHao
  * @date 2019-01-31 16:24
@@ -13,17 +22,6 @@ public interface Powered extends Moveable {
      */
     double SPEED_LIMIT = 95;
 
-    /**
-     * TODO 接口特性
-     *  接口不是类 尤其不能使用new运算符实例化一个接口
-     *      x = new Powered();  //error
-     *  尽管不能构造接口的对象，却能声明接口的变量
-     *      Powered x;           //ok
-     *  接口变量必须引用实现了接口的类对象
-     *  也可以建立类的继承关系一样， 接口也可以被扩展。
-     *  接口可以多继承,但是类只能单继承
-     *  资料 https://www.cnblogs.com/zhangzhangY/p/7407325.html
-     */
     double milesPerGallon();
 
     /**
@@ -46,5 +44,11 @@ public interface Powered extends Moveable {
      *    但是如果使用接口就不会有问题，一个类可以实现多个接口
      *     class Employee extends Person implements Comparable<Employee> //ok
      *
+     */
+
+    /**
+     * TODO 接口回调
+     *  书上例子看的不是很懂可以看下下面的博客帮助更好的理解
+     *  资料：https://blog.csdn.net/jiayi_yao/article/details/51046526
      */
 }
