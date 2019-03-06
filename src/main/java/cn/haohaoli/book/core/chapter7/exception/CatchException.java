@@ -1,6 +1,7 @@
 package cn.haohaoli.book.core.chapter7.exception;
 
 import java.io.*;
+import java.net.URL;
 
 /**
  * TODO 捕获异常
@@ -18,7 +19,8 @@ public class CatchException {
     public static void main(String[] args) {
         //捕获多个异常
         try {
-            printFile(new File("/Users/liwenhao/Desktop/java-notes/README.md"));
+            URL url = ClassLoader.getSystemResource("ExampleFile.txt");
+            printFile(new File(url.getPath()));
         } catch (NullPointerException | IOException e){     //jdk 7 合并catch子句
             throw new RuntimeException("文件读取错误！", e.getCause());    //异常链
         }

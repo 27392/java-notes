@@ -1,6 +1,7 @@
 package cn.haohaoli.book.core.chapter7.exception;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -12,13 +13,14 @@ import java.util.Objects;
 public class FinallyTest {
 
     public static void main(String[] args) {
+        URL url = ClassLoader.getSystemResource("ExampleFile.txt");
         System.out.println(finallyReturnExample());
         try {
-            readFileThrow(new File("/Users/liwenhao/Desktop/java-notes/README.md"));
+            readFileThrow(new File(url.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        readFile(new File("/Users/liwenhao/Desktop/java-notes/README.md"));
+        readFile(new File(url.getPath()));
     }
 
     /**

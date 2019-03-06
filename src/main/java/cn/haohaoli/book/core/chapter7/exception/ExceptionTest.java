@@ -1,6 +1,7 @@
 package cn.haohaoli.book.core.chapter7.exception;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -48,8 +49,8 @@ public class ExceptionTest {
      */
 
     public static void main(String[] args) throws FileFormatException {
-        File file = new File("/Users/liwenhao/Desktop/java-notes/README.md");
-        readTxt(file);
+        URL url = ClassLoader.getSystemResource("ExampleFile.txt");
+        readTxt(new File(url.getPath()));
     }
 
     /**
