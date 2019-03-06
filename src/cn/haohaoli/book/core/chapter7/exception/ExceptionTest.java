@@ -1,7 +1,7 @@
 package cn.haohaoli.book.core.chapter7.exception;
 
-import java.io.EOFException;
-import java.util.Scanner;
+import java.io.*;
+import java.util.Objects;
 
 /**
  * TODO 异常
@@ -15,7 +15,8 @@ import java.util.Scanner;
  *      这个层次结构又分解为两个分支: 一个分支派生于RuntimeException;
  *      另一个分支包含其他异常。划分两个分支的规则是:由 程序错误导致的异常属于RuntimeException; 而程序本身没有问题，
  *      但由于像I/O错误这类 问题导致的异常属于其他异常:
- *        派生于 RuntimeException 的异常包含下面几种情况: •错误的类型转换。
+ *        派生于 RuntimeException 的异常包含下面几种情况:
+ *           •错误的类型转换。
  *           • 数组访问越界
  *           • 访问 null 指针
  *        不是派生于 RuntimeException 的异常包括:
@@ -46,10 +47,9 @@ public class ExceptionTest {
      *  如果方法没有声明所有可能发生的受查异常， 编译器就会发出一个错误消息。
      */
 
-    public static void main(String[] args) throws EOFException, FileFormatException {
-
-        //模拟文件读取
-        readDate();
+    public static void main(String[] args) throws FileFormatException {
+        File file = new File("/Users/liwenhao/Desktop/java-notes/README.md");
+        readTxt(file);
     }
 
     /**
@@ -61,16 +61,28 @@ public class ExceptionTest {
      *  在这种情况下:
      *  一旦方法抛出了异常， 这个方法就不可能返回到调用者。也就是说， 不必为返回的默认 值或错误代码担忧。
      */
-    public static void readDate () throws EOFException, FileFormatException {
-        final int FILE_LENGTH = 1024;
-        System.out.println("请输入文件长度");
-        Scanner s = new Scanner(System.in);
-        int next = s.nextInt();
-        if (next != FILE_LENGTH) {
-//            throw new EOFException("期望长度" + FILE_LENGTH + "实际长度" + next);
-            //抛出自定义的异常
-            throw new FileFormatException("期望长度" + FILE_LENGTH + "实际长度" + next);
+    public static void readTxt(File file) throws FileFormatException {
+        boolean b = file.getName().endsWith(".txt");
+        if(!b) {
+            throw new FileFormatException("文件错误，不是文本");
         }
-        System.out.println("文件读取成功！");
+        InputStream is = null;
+        try {
+            is = new FileInputStream(file);
+            int read;
+            while ((read = is.read()) != -1){
+                System.out.print((char) read);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Objects.nonNull(is)) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
