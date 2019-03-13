@@ -1,7 +1,7 @@
-package cn.haohaoli.book.headfirst.chapter1.strategy.version6;
+package cn.haohaoli.book.headfirst.strategy.version6;
 
-import cn.haohaoli.book.headfirst.chapter1.strategy.version6.duck.ModelDuck;
-import cn.haohaoli.book.headfirst.chapter1.strategy.version6.impl.fiy.FlyRocketPowered;
+import cn.haohaoli.book.headfirst.strategy.version6.duck.ModelDuck;
+import cn.haohaoli.book.headfirst.strategy.version6.impl.fiy.FlyRocketPowered;
 
 /**
  * @author liWenHao

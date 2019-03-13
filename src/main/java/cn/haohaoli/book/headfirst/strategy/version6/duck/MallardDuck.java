@@ -1,8 +1,8 @@
-package cn.haohaoli.book.headfirst.chapter1.strategy.version6.duck;
+package cn.haohaoli.book.headfirst.strategy.version6.duck;
 
-import cn.haohaoli.book.headfirst.chapter1.strategy.version6.Duck;
-import cn.haohaoli.book.headfirst.chapter1.strategy.version6.impl.fiy.FlyWithWings;
-import cn.haohaoli.book.headfirst.chapter1.strategy.version6.impl.quack.Quack;
+import cn.haohaoli.book.headfirst.strategy.version6.Duck;
+import cn.haohaoli.book.headfirst.strategy.version6.impl.fiy.FlyWithWings;
+import cn.haohaoli.book.headfirst.strategy.version6.impl.quack.Quack;
 
 /**
  * @author liWenHao

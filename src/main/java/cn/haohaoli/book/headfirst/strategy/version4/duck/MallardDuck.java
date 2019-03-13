@@ -1,8 +1,8 @@
-package cn.haohaoli.book.headfirst.chapter1.strategy.version4.duck;
+package cn.haohaoli.book.headfirst.strategy.version4.duck;
 
-import cn.haohaoli.book.headfirst.chapter1.strategy.version4.Duck;
-import cn.haohaoli.book.headfirst.chapter1.strategy.version4.Flyable;
-import cn.haohaoli.book.headfirst.chapter1.strategy.version4.Quackable;
+import cn.haohaoli.book.headfirst.strategy.version4.Duck;
+import cn.haohaoli.book.headfirst.strategy.version4.Flyable;
+import cn.haohaoli.book.headfirst.strategy.version4.Quackable;
 
 /**
  * @author liWenHao

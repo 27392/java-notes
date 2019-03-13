@@ -1,4 +1,4 @@
-package cn.haohaoli.book.headfirst.chapter1.strategy.version6;
+package cn.haohaoli.book.headfirst.strategy.version6;
 
 /**
  * @author liWenHao

@@ -1,6 +1,6 @@
-package cn.haohaoli.book.headfirst.chapter1.strategy.version5.impl.fly;
+package cn.haohaoli.book.headfirst.strategy.version5.impl.fly;
 
-import cn.haohaoli.book.headfirst.chapter1.strategy.version5.FlyBehavior;
+import cn.haohaoli.book.headfirst.strategy.version5.FlyBehavior;
 
 /**
  * @author liWenHao

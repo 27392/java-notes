@@ -1,7 +1,7 @@
-package cn.haohaoli.book.headfirst.chapter1.strategy.version5;
+package cn.haohaoli.book.headfirst.strategy.version5;
 
-import cn.haohaoli.book.headfirst.chapter1.strategy.version5.FlyBehavior;
-import cn.haohaoli.book.headfirst.chapter1.strategy.version5.QuackBehavior;
+import cn.haohaoli.book.headfirst.strategy.version5.FlyBehavior;
+import cn.haohaoli.book.headfirst.strategy.version5.QuackBehavior;
 
 /**
  * @author liWenHao

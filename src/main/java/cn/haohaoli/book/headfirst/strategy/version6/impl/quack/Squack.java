@@ -1,6 +1,6 @@
-package cn.haohaoli.book.headfirst.chapter1.strategy.version6.impl.quack;
+package cn.haohaoli.book.headfirst.strategy.version6.impl.quack;
 
-import cn.haohaoli.book.headfirst.chapter1.strategy.version6.QuackBehavior;
+import cn.haohaoli.book.headfirst.strategy.version6.QuackBehavior;
 
 /**
  * @author liWenHao
