@@ -11,11 +11,7 @@ import java.util.Observer;
  * @author LiWenHao
  * @date 2019-03-10 18:10
  */
-public class ForecastDisplay implements Observer, DisplayElement {
-
-    private float temperature;
-    private float humidity;
-    private float pressure;
+public class ForecastDisplay extends DisplayElement implements Observer {
 
     private Observable observable;
 

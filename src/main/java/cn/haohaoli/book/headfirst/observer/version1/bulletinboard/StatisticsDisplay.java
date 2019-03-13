@@ -15,10 +15,11 @@ public class StatisticsDisplay {
         this.temperature = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
+        display();
     }
 
     private void display() {
         System.out.println("气象统计：");
-        System.out.println("温度" + temperature + "湿度" + humidity + "气压" + pressure);
+        System.out.println("温度: " + temperature + ",湿度: " + humidity + ",气压: " + pressure);
     }
 }

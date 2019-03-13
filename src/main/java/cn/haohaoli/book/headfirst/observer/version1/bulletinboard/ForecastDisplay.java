@@ -15,10 +15,11 @@ public class ForecastDisplay {
         this.temperature = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
+        display();
     }
 
     private void display() {
         System.out.println("天气预报：");
-        System.out.println("温度" + temperature + "湿度" + humidity + "气压" + pressure);
+        System.out.println("温度: " + temperature + ",湿度: " + humidity + ",气压: " + pressure);
     }
 }

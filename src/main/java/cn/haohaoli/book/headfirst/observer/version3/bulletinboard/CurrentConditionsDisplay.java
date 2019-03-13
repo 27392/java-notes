@@ -12,17 +12,14 @@ import java.util.Observer;
  * @author LiWenHao
  * @date 2019-03-10 18:09
  */
-public class CurrentConditionsDisplay implements Observer, DisplayElement {
+public class CurrentConditionsDisplay extends DisplayElement implements Observer {
 
-    private float temperature;
-    private float humidity;
-    private float pressure;
-
+    //被观察者对象
     private Observable observable;
 
     public CurrentConditionsDisplay(Observable observable) {
         this.observable = observable;
-        this.observable.addObserver(this);
+        this.observable.addObserver(this);  //自动注册
     }
 
     public void display() {
@@ -32,7 +29,6 @@ public class CurrentConditionsDisplay implements Observer, DisplayElement {
 
     @Override
     public void update(Observable o, Object arg) {
-
         if (o instanceof WeatherData) {
             WeatherData weatherData = (WeatherData) o;
             this.humidity = weatherData.getHumidity();

@@ -3,12 +3,14 @@ package cn.haohaoli.book.headfirst.observer.version1;
 import cn.haohaoli.book.headfirst.observer.version1.bulletinboard.CurrentConditionsDisplay;
 import cn.haohaoli.book.headfirst.observer.version1.bulletinboard.ForecastDisplay;
 import cn.haohaoli.book.headfirst.observer.version1.bulletinboard.StatisticsDisplay;
+import lombok.Getter;
 
 /**
  * 天气数据
  * @author LiWenHao
  * @date 2019-03-10 17:51
  */
+@Getter
 public class WeatherData {
 
     //温度
@@ -18,43 +20,30 @@ public class WeatherData {
     //气压
     private float pressure;
 
-    public float getTemperature() {
-        return temperature;
-    }
+    private final CurrentConditionsDisplay currentConditionsDisplay;
+    private final StatisticsDisplay statisticsDisplay;
+    private final ForecastDisplay forecastDisplay;
 
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
-    }
-
-    public float getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(float humidity) {
-        this.humidity = humidity;
-    }
-
-    public float getPressure() {
-        return pressure;
-    }
-
-    public void setPressure(float pressure) {
-        this.pressure = pressure;
+    public WeatherData(CurrentConditionsDisplay currentConditionsDisplay, StatisticsDisplay statisticsDisplay, ForecastDisplay forecastDisplay) {
+        this.currentConditionsDisplay = currentConditionsDisplay;
+        this.statisticsDisplay = statisticsDisplay;
+        this.forecastDisplay = forecastDisplay;
     }
 
     /**
      * 数据改变立即更新
      */
     public void measurementsChanged(){
-        float temperature = getTemperature();
-        float humidity = getHumidity();
-        float pressure = getPressure();
 
-        CurrentConditionsDisplay currentConditionsDisplay = new CurrentConditionsDisplay();
-        StatisticsDisplay statisticsDisplay = new StatisticsDisplay();
-        ForecastDisplay forecastDisplay = new ForecastDisplay();
         currentConditionsDisplay.update(temperature, humidity, pressure);
         statisticsDisplay.update(temperature, humidity, pressure);
         forecastDisplay.update(temperature, humidity, pressure);
+    }
+
+    public void setMeasurements(float temperature, float humidity, float pressure){
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        this.measurementsChanged();
     }
 }

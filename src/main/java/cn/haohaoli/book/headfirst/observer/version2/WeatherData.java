@@ -1,13 +1,17 @@
 package cn.haohaoli.book.headfirst.observer.version2;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * 天气数据
  * @author LiWenHao
  * @date 2019-03-10 17:51
  */
+@Getter
 public class WeatherData implements Subject {
 
     //温度
@@ -18,18 +22,6 @@ public class WeatherData implements Subject {
     private float pressure;
 
     private List<Observer> observerList = new ArrayList<>();
-
-    public float getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
-    }
-
-    public float getHumidity() {
-        return humidity;
-    }
 
     @Override
     public void registerObserver(Observer observer) {

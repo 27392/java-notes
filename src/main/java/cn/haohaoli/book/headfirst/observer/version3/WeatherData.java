@@ -1,5 +1,7 @@
 package cn.haohaoli.book.headfirst.observer.version3;
 
+import lombok.Getter;
+
 import java.util.Observable;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Observable;
  * @author LiWenHao
  * @date 2019-03-10 17:51
  */
+@Getter
 public class WeatherData extends Observable {
 
     //温度
@@ -16,33 +19,9 @@ public class WeatherData extends Observable {
     //气压
     private float pressure;
 
-    public float getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
-    }
-
-    public float getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(float humidity) {
-        this.humidity = humidity;
-    }
-
-    public float getPressure() {
-        return pressure;
-    }
-
-    public void setPressure(float pressure) {
-        this.pressure = pressure;
-    }
-
     public void measurementsChanged(){
-        setChanged();
-        notifyObservers();
+        super.setChanged();
+        super.notifyObservers();
     }
 
     public void setMeasurements(float temperature, float humidity, float pressure){
