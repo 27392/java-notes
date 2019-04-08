@@ -1,5 +1,6 @@
 package cn.haohaoli.book.headfirst.decorator.version3.condiment;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
 import cn.haohaoli.book.headfirst.decorator.version3.Beverage;
 
 /**
@@ -14,11 +15,11 @@ public class Milk extends CondimentDecorator {
 
     @Override
     public String getDescription() {
-        return super.getDescription() + "牛奶";
+        return super.getDescription() + "-加牛奶:" + PropertiesHelper.getPropertyForDouble("Milk");
     }
 
     @Override
     public double cost() {
-        return super.cost() + 2d;
+        return super.cost() + PropertiesHelper.getPropertyForDouble("Milk");
     }
 }

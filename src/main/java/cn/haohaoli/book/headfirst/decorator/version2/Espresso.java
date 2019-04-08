@@ -1,5 +1,7 @@
 package cn.haohaoli.book.headfirst.decorator.version2;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
+
 /**
  * 浓咖啡
  * @author LiWenHao
@@ -8,11 +10,11 @@ package cn.haohaoli.book.headfirst.decorator.version2;
 public class Espresso extends Beverage {
 
     public Espresso() {
-        description = "浓咖啡";
+        super("浓咖啡");
     }
 
     @Override
     public double cost() {
-        return super.cost() + 4.5;
+        return super.cost() + PropertiesHelper.getPropertyForDouble("Espresso");
     }
 }

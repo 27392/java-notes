@@ -1,21 +1,22 @@
 package cn.haohaoli.book.headfirst.decorator.version3;
 
+import lombok.Getter;
+
 /**
  * @author LiWenHao
  * @date 2019-03-12 21:18
  */
+@Getter
 public abstract class Beverage {
 
     /**
      * 描述
      */
-    protected String description;
+    private final String description;
 
-    /**
-     * 获取描述
-     * @return  描述信息
-     */
-    public abstract String getDescription();
+    public Beverage(String description) {
+        this.description = description;
+    }
 
     /**
      * 计算费用

@@ -1,5 +1,6 @@
 package cn.haohaoli.book.headfirst.decorator.version3.condiment;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
 import cn.haohaoli.book.headfirst.decorator.version3.Beverage;
 
 /**
@@ -14,11 +15,11 @@ public class Mocha extends CondimentDecorator {
 
     @Override
     public String getDescription() {
-        return super.getDescription() + "摩卡";
+        return super.getDescription() + "-加摩卡:" + PropertiesHelper.getPropertyForDouble("Mocha");
     }
 
     @Override
     public double cost() {
-        return super.cost() + 2.5d;
+        return super.cost() + PropertiesHelper.getPropertyForDouble("Mocha");
     }
 }

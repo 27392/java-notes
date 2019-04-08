@@ -1,5 +1,7 @@
 package cn.haohaoli.book.headfirst.decorator.version1;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
+
 /**
  * 低咖啡因
  * @author LiWenHao
@@ -7,8 +9,12 @@ package cn.haohaoli.book.headfirst.decorator.version1;
  */
 public class Decaf extends Beverage {
 
+    public Decaf() {
+        super("低咖啡因");
+    }
+
     @Override
-    double cost() {
-        return 6;
+    public double cost() {
+        return PropertiesHelper.getPropertyForDouble("Decaf");
     }
 }

@@ -1,5 +1,7 @@
 package cn.haohaoli.book.headfirst.decorator.version1;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
+
 /**
  * 深焙
  * @author LiWenHao
@@ -7,8 +9,12 @@ package cn.haohaoli.book.headfirst.decorator.version1;
  */
 public class DarkRoast extends Beverage {
 
+    public DarkRoast() {
+        super("深焙");
+    }
+
     @Override
-    double cost() {
-        return 5;
+    public double cost() {
+        return PropertiesHelper.getPropertyForDouble("DarkRoast");
     }
 }

@@ -1,5 +1,6 @@
 package cn.haohaoli.book.headfirst.decorator.version3.condiment;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
 import cn.haohaoli.book.headfirst.decorator.version3.Beverage;
 
 /**
@@ -14,11 +15,11 @@ public class Soy extends CondimentDecorator {
 
     @Override
     public String getDescription() {
-        return super.getDescription() + "豆浆";
+        return super.getDescription() + "-加豆浆" + PropertiesHelper.getPropertyForDouble("Soy");
     }
 
     @Override
     public double cost() {
-        return super.cost() + 1d;
+        return super.cost() + PropertiesHelper.getPropertyForDouble("Soy");
     }
 }

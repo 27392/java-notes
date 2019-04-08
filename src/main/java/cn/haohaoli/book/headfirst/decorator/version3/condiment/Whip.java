@@ -1,5 +1,6 @@
 package cn.haohaoli.book.headfirst.decorator.version3.condiment;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
 import cn.haohaoli.book.headfirst.decorator.version3.Beverage;
 
 /**
@@ -14,11 +15,11 @@ public class Whip extends CondimentDecorator {
 
     @Override
     public String getDescription() {
-        return super.getDescription() + "奶泡";
+        return super.getDescription() + "-加奶泡:" + PropertiesHelper.getPropertyForDouble("Whip");
     }
 
     @Override
     public double cost() {
-        return super.cost() + 1.5d;
+        return super.cost() + PropertiesHelper.getPropertyForDouble("Whip");
     }
 }

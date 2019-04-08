@@ -1,5 +1,6 @@
 package cn.haohaoli.book.headfirst.decorator.version2;
 
+import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,35 +14,37 @@ import lombok.Setter;
 public abstract class Beverage {
 
     //描述
-    protected String description = "未知的饮料";
+    private final String description;
+
+    public Beverage(String description) {
+        this.description = description;
+    }
 
     //调料
-    protected boolean milk;
-    protected boolean soy;
-    protected boolean mocha;
-    protected boolean whip;
-
-
-    private final double milkAmount = 2d;
-    private final double soyAmount = 1d;
-    private final double mochaAmount = 2.5d;
-    private final double whipAmount = 1.5d;
+    private boolean milk;
+    private boolean soy;
+    private boolean mocha;
+    private boolean whip;
 
     //计算调料的钱
-    protected double cost(){
+    public double cost(){
         double totalAmount = 0;
         if (milk) {
-            totalAmount += milkAmount;
+            totalAmount += PropertiesHelper.getPropertyForDouble("Milk");
+            System.out.println("加牛奶");
         }
         if (soy) {
-            totalAmount += soyAmount;
+            totalAmount += PropertiesHelper.getPropertyForDouble("Soy");
+            System.out.println("加牛豆浆");
         }
         if (mocha) {
-            totalAmount += mochaAmount;
+            totalAmount += PropertiesHelper.getPropertyForDouble("Mocha");
+            System.out.println("加摩卡");
         }
         if (whip) {
-            totalAmount += whipAmount;
+            totalAmount += PropertiesHelper.getPropertyForDouble("Whip");
+            System.out.println("加奶泡");
         }
         return totalAmount;
-    };
+    }
 }

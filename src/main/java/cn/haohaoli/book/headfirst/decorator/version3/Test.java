@@ -15,8 +15,8 @@ public class Test {
 
         Beverage beverage = new Decaf();
         Milk milk = new Milk(new Milk(new Mocha(new Whip(new Soy(beverage)))));
-        double cost = milk.cost();
-        System.out.println(milk.getDescription());
-        System.out.println(cost);
+        final double cost = milk.cost();
+        System.out.println("描述： " + milk.getDescription());
+        System.out.println("金额： " + cost);
     }
 }

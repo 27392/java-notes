@@ -9,15 +9,11 @@ import cn.haohaoli.book.headfirst.decorator.version3.Beverage;
  */
 public abstract class CondimentDecorator extends Beverage {
 
-    protected Beverage beverage;
+    private Beverage beverage;
 
     CondimentDecorator(Beverage beverage) {
+        super(beverage.getDescription());
         this.beverage = beverage;
-    }
-
-    @Override
-    public String getDescription() {
-        return this.beverage.getDescription();
     }
 
     @Override
