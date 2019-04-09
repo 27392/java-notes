@@ -1,7 +1,5 @@
 package cn.haohaoli.book.headfirst.decorator.version1;
 
-import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
-
 /**
  * 黑咖啡
  * @author LiWenHao
@@ -9,12 +7,8 @@ import cn.haohaoli.book.headfirst.decorator.PropertiesHelper;
  */
 public class HouseBlend extends Beverage {
 
-    public HouseBlend() {
-        super("黑咖啡");
-    }
-
     @Override
     public double cost() {
-        return PropertiesHelper.getPropertyForDouble("HouseBlend");
+        return 5.5;
     }
 }
