@@ -7,7 +7,7 @@ package cn.haohaoli.book.headfirst.factory.version1;
  */
 public class CheesePizza extends Pizza {
 
-    protected CheesePizza() {
+    public CheesePizza() {
         super("芝士披萨");
     }
 

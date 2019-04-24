@@ -1,4 +1,4 @@
-package cn.haohaoli.book.headfirst.factory.version2;
+package cn.haohaoli.book.headfirst.factory.version4;
 
 /**
  * @author LiWenHao

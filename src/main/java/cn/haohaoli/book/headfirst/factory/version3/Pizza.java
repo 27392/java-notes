@@ -1,4 +1,4 @@
-package cn.haohaoli.book.headfirst.factory.version2;
+package cn.haohaoli.book.headfirst.factory.version3;
 
 /**
  * @author LiWenHao
@@ -8,7 +8,7 @@ public abstract class Pizza {
 
     private final String name;
 
-    protected Pizza(String name) {
+    public Pizza(String name) {
         this.name = name;
     }
 
@@ -31,5 +31,4 @@ public abstract class Pizza {
     protected void box(){
         System.out.println(name + "装盒");
     }
-
 }
