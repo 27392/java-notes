@@ -10,7 +10,10 @@ import cn.haohaoli.book.headfirst.factory.version3.Pizza;
 public class CaliforniaStyleCheesePizza extends Pizza {
 
     public CaliforniaStyleCheesePizza() {
-        super("加州风格-芝士披萨");
+        name = "加州风格-芝士披萨";
+        sauce = "沙拉酱";
+        dough = "面团";
+        toppings.add("芝士");
     }
 
 }

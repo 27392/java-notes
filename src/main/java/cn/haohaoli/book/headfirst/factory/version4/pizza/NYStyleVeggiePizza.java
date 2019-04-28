@@ -10,7 +10,13 @@ import cn.haohaoli.book.headfirst.factory.version4.Pizza;
 public class NYStyleVeggiePizza extends Pizza {
 
     public NYStyleVeggiePizza() {
-        super("纽约风格-素食披萨");
+        name = "纽约风格-素食披萨";
+        dough = "面团";
+        sauce = "番茄汁";
+        toppings.add("青椒");
+        toppings.add("红椒");
+        toppings.add("黄椒");
+        toppings.add("蘑菇");
     }
 
 }

@@ -10,7 +10,10 @@ import cn.haohaoli.book.headfirst.factory.version3.Pizza;
 public class CaliforniaStyleGreekPizza extends Pizza {
 
     public CaliforniaStyleGreekPizza() {
-        super("加州风格-希腊披萨");
+        name = "加州风格-希腊披萨";
+        sauce = "番茄酱";
+        dough = "发酵的圆面饼";
+        toppings.add("马铃薯");
     }
 
 }

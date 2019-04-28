@@ -10,7 +10,14 @@ import cn.haohaoli.book.headfirst.factory.version3.Pizza;
 public class ChicagoStyleCheesePizza extends Pizza {
 
     public ChicagoStyleCheesePizza() {
-        super("芝加哥风格-芝士披萨");
+        name = "芝加哥风格-芝士披萨";
+        dough = "厚饼";
+        sauce = "小番茄";
+        toppings.add("意大利白干酪");
     }
 
+    @Override
+    protected void cut() {
+        System.out.println("切成正方形");
+    }
 }

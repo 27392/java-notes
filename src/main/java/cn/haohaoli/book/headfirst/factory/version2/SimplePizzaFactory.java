@@ -1,7 +1,7 @@
 package cn.haohaoli.book.headfirst.factory.version2;
 
 /**
- * 披萨简单工厂
+ * 披萨简单工厂 (将变化部分抽离出来)
  * @author LiWenHao
  * @date 2019-03-27 20:27
  */
