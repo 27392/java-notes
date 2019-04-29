@@ -10,7 +10,11 @@ import cn.haohaoli.book.headfirst.factory.version3.Pizza;
 public class CaliforniaStyleVeggiePizza extends Pizza {
 
     public CaliforniaStyleVeggiePizza() {
-        super("加州风格-素食披萨");
+        name = "加州风格-素食披萨";
+        dough = "面团";
+        sauce = "番茄汁";
+        toppings.add("青椒");
+        toppings.add("蘑菇");
     }
 
 }

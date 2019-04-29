@@ -12,7 +12,6 @@ public class ChicagoPizzaFactory {
 
     public Pizza createPizza(String type) {
         Pizza pizza;
-
         switch (type) {
             case "cheese":
                 pizza = new ChicagoStyleCheesePizza();
