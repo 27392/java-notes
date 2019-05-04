@@ -1,6 +1,5 @@
 package cn.haohaoli.book.headfirst.factory.version5;
 
-
 import cn.haohaoli.book.headfirst.factory.version5.pizza.Pizza;
 
 /**

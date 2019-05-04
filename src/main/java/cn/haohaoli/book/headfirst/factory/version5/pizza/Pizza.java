@@ -1,37 +1,34 @@
 package cn.haohaoli.book.headfirst.factory.version5.pizza;
 
-import cn.haohaoli.book.headfirst.factory.version5.ingredent.*;
-
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LiWenHao
- * @date 2019-04-28 20:57
+ * @date 2019-03-27 20:11
  */
 public abstract class Pizza {
 
-    private String name;
-
+    //名称
+    protected String name;
     //面团
-    protected Dough dough;
-
+    protected String dough;
     //酱汁
-    protected Sauce sauce;
-
-    //奶酪
-    protected Cheese cheese;
-
-    //蔬菜
-    protected Veggies[] veggies;
-
-    //腊肠
-    protected Pepperoni pepperoni;
-
-    //蛤蜊
-    protected Clams clams;
+    protected String sauce;
+    //配料
+    protected List<String> toppings = new ArrayList<>();
 
     //准备
-    public abstract void prepare();
+    protected void prepare(){
+        System.out.println("准备" + name + "所使用的材料");
+        System.out.println("搅拌" + dough);
+        System.out.println("添加" + sauce);
+        System.out.println("添加配料：");
+        for (String topping : toppings) {
+            System.out.println("  " + topping);
+        }
+
+    }
 
     //烘焙
     public void bake(){
@@ -48,25 +45,4 @@ public abstract class Pizza {
         System.out.println(name + "装盒");
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Pizza{" +
-                "name='" + name + '\'' +
-                ", dough=" + dough +
-                ", sauce=" + sauce +
-                ", cheese=" + cheese +
-                ", veggies=" + Arrays.toString(veggies) +
-                ", pepperoni=" + pepperoni +
-                ", clams=" + clams +
-                '}';
-    }
 }
