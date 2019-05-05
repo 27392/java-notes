@@ -19,7 +19,7 @@ public abstract class Pizza {
     protected List<String> toppings = new ArrayList<>();
 
     //准备
-    protected void prepare(){
+    public void prepare(){
         System.out.println("准备" + name + "所使用的材料");
         System.out.println("搅拌" + dough);
         System.out.println("添加" + sauce);
