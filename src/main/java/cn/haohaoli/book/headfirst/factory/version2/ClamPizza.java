@@ -8,6 +8,6 @@ package cn.haohaoli.book.headfirst.factory.version2;
 public class ClamPizza extends Pizza {
 
     public ClamPizza() {
-        name = "蛤蜊披萨";
+        super("蛤蜊披萨");
     }
 }

@@ -6,25 +6,29 @@ package cn.haohaoli.book.headfirst.factory.version2;
  */
 public abstract class Pizza {
 
-    public String name;
+    private final String name;
+
+    protected  Pizza(String name) {
+        this.name = name;
+    }
 
     //准备
-    public void prepare(){
+    protected void prepare(){
         System.out.println("准备" + name + "所使用的材料");
     }
 
     //烘焙
-    public void bake(){
+    protected void bake(){
         System.out.println(name + "开始烘焙");
     }
 
     //切片
-    public void cut(){
+    protected void cut(){
         System.out.println(name + "切片");
     }
 
     //装盒
-    public void box(){
+    protected void box(){
         System.out.println(name + "装盒");
     }
 

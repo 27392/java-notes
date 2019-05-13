@@ -4,18 +4,16 @@ import cn.haohaoli.book.headfirst.factory.version5.pizza.Pizza;
 
 /**
  * @author LiWenHao
- * @date 2019-04-28 22:58
+ * @date 2019-04-24 22:47
  */
 public class Test {
 
     public static void main(String[] args) {
-        PizzaStore nyPizzaStore = new NYPizzaStore();
-        Pizza cheesePizza = nyPizzaStore.orderPizza("cheese");
-        System.out.println(cheesePizza);
+        PizzaStore pizzaStore = new NYPizzaStore();
+        Pizza pizza = pizzaStore.orderPizza("cheese");
 
-        PizzaStore chicagoPizzaStore = new ChicagoPizzaStore();
-        Pizza clamPizza = chicagoPizzaStore.orderPizza("clam");
-        System.out.println(clamPizza);
+        PizzaStore pizzaStore1 = new CaliforniaPizzaStore();
+        Pizza pizza1 = pizzaStore1.orderPizza("veggie");
 
     }
 }

@@ -8,7 +8,7 @@ package cn.haohaoli.book.headfirst.factory.version2;
 public class VeggiePizza extends Pizza {
 
     public VeggiePizza() {
-        name = "素食披萨";
+        super("素食披萨");
     }
 
 }
