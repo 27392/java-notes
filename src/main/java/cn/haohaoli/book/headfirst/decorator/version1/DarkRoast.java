@@ -7,6 +7,10 @@ package cn.haohaoli.book.headfirst.decorator.version1;
  */
 public class DarkRoast extends Beverage {
 
+    public DarkRoast() {
+        super("深焙");
+    }
+
     @Override
     public double cost() {
         return 5;

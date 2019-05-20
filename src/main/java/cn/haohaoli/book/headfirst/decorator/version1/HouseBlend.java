@@ -7,6 +7,10 @@ package cn.haohaoli.book.headfirst.decorator.version1;
  */
 public class HouseBlend extends Beverage {
 
+    public HouseBlend() {
+        super("黑咖啡");
+    }
+
     @Override
     public double cost() {
         return 5.5;

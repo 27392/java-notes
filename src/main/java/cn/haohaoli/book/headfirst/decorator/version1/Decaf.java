@@ -7,6 +7,10 @@ package cn.haohaoli.book.headfirst.decorator.version1;
  */
 public class Decaf extends Beverage {
 
+    public Decaf() {
+        super("低咖啡因");
+    }
+
     @Override
     public double cost() {
         return 6;
