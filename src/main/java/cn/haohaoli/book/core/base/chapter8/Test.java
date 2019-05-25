@@ -1,6 +1,8 @@
 package cn.haohaoli.book.core.base.chapter8;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,6 +35,21 @@ public class Test {
 
         String min = ArrayAlg.min(new String[]{"c", "z", "b"});
         System.out.println(min);
+
+        /**
+         * TODO 泛型类的继承规则
+         *  Manager 继承 Employee
+         *  那么 Pair<Manager> 是 Pair<Employee> 的子类吗?
+         *    答案是：'不是'
+         *    如果是的话将 Pair<Manager> 赋值给 Pair<Employee> 对象将不会有错误，很显然这样是有错误 所以是不是
+         *  泛型可以拓展其他泛型类 {@link List<E>} {@link ArrayList<E>}
+         *  ArrayList 继承 List 这就意味着一个 ArrayList<Manager> 可以被转换为一个 List<Manager>
+         *  但是一个 ArrayList<Manager> 不能一个 List<Employee> 或 ArrayList<Employee>
+         */
+        Pair<Manager> managerPair = new Pair<>();
+        // Pair<Employee> employeePairs = managerPair; // 错误
+        List<Manager> managerList = new ArrayList<>();
+        // List<Employee> employeeList = managerList;  //错误
 
     }
 
@@ -87,4 +104,19 @@ public class Test {
             return smallest;
         }
     }
+
+
+    static class Employee implements Comparable {
+
+        @Override
+        public int compareTo(Object o) {
+            //空 不实现
+            return 0;
+        }
+    }
+
+    static class Manager extends Employee {
+
+    }
+
 }
