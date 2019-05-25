@@ -1,9 +1,6 @@
 package cn.haohaoli.book.core.base.chapter8;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * TODO 泛型类 ()
@@ -15,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pair<T> {

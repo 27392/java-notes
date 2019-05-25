@@ -1,5 +1,9 @@
 package cn.haohaoli.book.core.base.chapter8;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +25,7 @@ public class Test {
         String[] words = {"Mary", "had", "a", "little", "lamb"};
 
         Pair<String> mm = ArrayAlg.minmax(words);
-        Optional.ofNullable(mm).ifPresent(pair -> System.out.println(pair.getFirst()));
-        Optional.ofNullable(mm).ifPresent(pair -> System.out.println(pair.getSecond()));
+        Optional.ofNullable(mm).ifPresent(System.out::println);
 
         /**
          * 在调用一个泛型方法是，在方法名前的尖括号中放入具体的类型
@@ -50,6 +53,41 @@ public class Test {
         // Pair<Employee> employeePairs = managerPair; // 错误
         List<Manager> managerList = new ArrayList<>();
         // List<Employee> employeeList = managerList;  //错误
+
+        /**
+         * TODO 泛型通配符
+         *  通配符类型中, 允许类型参数变化。
+         *    例如：Pair<? extends Employee>
+         *   表示任何泛型Pair类型，它的类型参数是Employee的子类，如Pair<Manager> 但是不是Pair<String>
+         *   使用 Pair<? extends Employee> 在调用 'setFirst()' 方法时有一个类型错误
+         *      实际方法其实是这样
+         *          ? extends Employee getFirst()
+         *          void setFirst(? extends Employee)
+         *      这样将无法调用 'setFirst()' 方法。编译器只知道需要某个Employee的子类型,但不知道具体是什么类型，
+         *      它拒绝传递特定的类型。毕竟 '?' 不能用来匹配。
+         *      使用 'getFirst()' 方法就不存在这个问题 : 将 'getFirst()' 的返回值赋给一个Employee的应用完全合法
+         */
+        Pair<Manager> managerBuddies = new Pair<>();
+        Pair<? extends Employee> wildcardBuddies = managerBuddies;
+        // wildcardBuddies.setFirst(new Employee()); //错误
+        Employee first = wildcardBuddies.getFirst();
+        Pair<Employee> buddies = new Pair<>();
+
+        printBuddies(managerPair);
+        printBuddies(buddies);
+
+        /**
+         * TODO 泛型通配符的超类型限定
+         *  通配符限定与类型变量限定十分类似，但是，还有一个附加的能力，既可以指定一个超类型限定
+         *    例如 ： '? super Manager'
+         *
+         */
+        Manager[] managers = {new Manager(1.0), new Manager(1.0)};
+        Pair<Employee> employeePair = new Pair<>();
+        minmaxBonus(managers, employeePair);
+
+        Pair<Manager> managerPair1 = new Pair<>();
+        minmaxBonus(managers, managerPair1);
 
     }
 
@@ -105,18 +143,46 @@ public class Test {
         }
     }
 
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static abstract class Employee implements Comparable<Double> {
 
-    static class Employee implements Comparable {
+        private Double bonus;
 
         @Override
-        public int compareTo(Object o) {
-            //空 不实现
-            return 0;
+        public int compareTo(Double o) {
+            return Double.compare(bonus, o);
         }
     }
 
     static class Manager extends Employee {
 
+        public Manager(Double bonus) {
+            super(bonus);
+        }
+    }
+
+    static void printBuddies(Pair<? extends Employee> pair){
+        Optional.ofNullable(pair).ifPresent(System.out::println);
+    }
+
+    static void minmaxBonus(Manager[] a, Pair<? super Manager> result) {
+        if (null == a || a.length == 0) {
+            return;
+        }
+        Manager min = a[0];
+        Manager max = a[0];
+        for (Manager m : a) {
+            if (min.compareTo(m.getBonus()) < 0) {
+                min = m;
+            }
+            if (max.compareTo(m.getBonus()) > 0) {
+                max = m;
+            }
+        }
+        result.setFirst(max);
+        result.setSecond(min);
     }
 
 }
