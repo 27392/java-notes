@@ -1,5 +1,8 @@
 package cn.haohaoli.book.core.base.chapter8;
 
+import java.io.Serializable;
+import java.util.Optional;
+
 /**
  * 泛型测试类
  * @author LiWenHao
@@ -16,8 +19,8 @@ public class Test {
         String[] words = {"Mary", "had", "a", "little", "lamb"};
 
         Pair<String> mm = ArrayAlg.minmax(words);
-        System.out.println("min = " + mm.getFirst());
-        System.out.println("max = " + mm.getSecond());
+        Optional.ofNullable(mm).ifPresent(pair -> System.out.println(pair.getFirst()));
+        Optional.ofNullable(mm).ifPresent(pair -> System.out.println(pair.getSecond()));
 
         /**
          * 在调用一个泛型方法是，在方法名前的尖括号中放入具体的类型
@@ -28,22 +31,25 @@ public class Test {
         String middle = ArrayAlg.getMiddle("John", "Q.", "Public");
         System.out.println(middle);
 
+        String min = ArrayAlg.min(new String[]{"c", "z", "b"});
+        System.out.println(min);
+
     }
 
     static class ArrayAlg {
 
-        static Pair<String> minmax(String[] strings){
-            if (null == strings || strings.length == 0) {
+        static <T extends Comparable> Pair<T> minmax(T[] ts){
+            if (null == ts || ts.length == 0) {
                 return null;
             }
-            String min = strings[0];
-            String max = strings[0];
-            for (String str : strings) {
-                if (max.compareTo(str) > 0) {
-                    max = str;
+            T min = ts[0];
+            T max = ts[0];
+            for (T t : ts) {
+                if (max.compareTo(t) > 0) {
+                    max = t;
                 }
-                if (min.compareTo(str) < 0) {
-                    min = str;
+                if (min.compareTo(t) < 0) {
+                    min = t;
                 }
             }
             return new Pair<>(min, max);
@@ -57,6 +63,28 @@ public class Test {
         @SafeVarargs
         static <T> T getMiddle(T... a) {
             return a[a.length / 2];
+        }
+
+        /**
+         * TODO 泛型变量限定
+         *  使用 <T extends Comparable> 限定 'T' 必须是Comparable的子类
+         *  在这里为什么使用 'extends' 而不是 'implements' 毕竟 'Comparable' 是一个接口
+         *     'T' 应该是限定类型的子类型，'T' 的限定类型可以是类，也可以是接口。
+         *     选择 'extends' 关键字的原因是更接近子类
+         *  一个类型变量或者通配符可以有多个限定,例如用 '&' 分割, 而用逗号来分割类型变量
+         *  参考 {@link java.util.Comparator }
+         */
+        static <T extends Comparable & Serializable> T min (T[] ts) {
+            if (null == ts || ts.length == 0) {
+                return null;
+            }
+            T smallest = ts[0];
+            for (T t : ts) {
+                if (smallest.compareTo(t) < 0) {
+                    smallest = t;
+                }
+            }
+            return smallest;
         }
     }
 }
