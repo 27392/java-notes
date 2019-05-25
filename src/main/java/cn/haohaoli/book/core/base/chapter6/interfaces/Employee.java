@@ -63,7 +63,7 @@ public class Employee implements Comparable<Employee>, Cloneable {
      *  重写Comparable接口中的compareTo方法
      *  接口中还有一个没有明确说明的附加要求: 在调用 x.compareTo(y) 的时候，
      *  这个 compareTo 方法必须确实比较两个对象的内容， 并返回比较的结果。
-     *      当x小于y时，返回一 个负数;
+     *      当x小于y时，返回-1;
      *      当x等于y时，返回0; 否则返回一个正数。
      */
     @Override
