@@ -17,6 +17,9 @@ import lombok.*;
 @NoArgsConstructor
 public class Pair<T> {
 
+    // 不能在静态中使用
+    // private static T staticField;  //错误
+
     private T first;
     private T second;
 
