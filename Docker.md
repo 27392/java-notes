@@ -1,21 +1,34 @@
 # Docker
 
  > 常用命令
+ 
+   + 搜索镜像
    
+     `docker search 关键字`
+ 
+   + 下载镜像
+     
+     `docker pull [OPTIONS] NAME[:TAG]`
+     
    + 查看本地镜像
     
      `docker images`
      
    + 删除本地镜像
-      `docker image rm 镜像id`
+     
+     `docker rmi 镜像id`
     
    + 查看运行中的容器
     
-     `docker ps`
-   
-   + 查看所有的容器
-       
-     `docker ps -a`
+     `docker ps [OPTIONS]`
+     
+        + OPTIONS
+        
+            - `-a` : 查看所有的容器  (默认显示正在运行)
+        
+            - `-s` : 显示总文件大小
+        
+            - `-q` : 显示容器id
      
    + 启动一个存在的容器
        
@@ -34,20 +47,24 @@
             - `-p` : 指定端口映射，格式为：主机(宿主)端口:容器端口
      
    + 启动一个存在的容器
-       
+      
      `docker start 容器id`
      
    + 停止容器
-       
+      
      `docker stop 容器id`
           
    + 删除容器
        
      `docker rm 容器id`
      
-拉取镜像   
-docker pull mysql:5.7
+> 安装mysql
+    
+  拉取镜像   
+    
+    docker pull mysql:5.7
 
-运行命令
-docker run -p 33066:3306 --name masterMysql -e MYSQL_ROOT_PASSWORD=mysql123321 -d mysql:5.7
+  运行命令
+
+    docker run -p 33066:3306 --name masterMysql -e MYSQL_ROOT_PASSWORD=mysql123321 -d mysql:5.7
 
