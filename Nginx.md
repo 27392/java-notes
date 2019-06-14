@@ -142,7 +142,7 @@
    
         `acme.sh --issue --dns dns_ali -d haohaoli.cn -d *.haohaoli.cn`
   
-+ 配置到nginx
++ 配置nginx
    
    - 创建文件
    
