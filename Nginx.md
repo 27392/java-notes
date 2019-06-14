@@ -179,6 +179,11 @@
             }
         }
         ```
+        
+        配置http请求转发https请求
+        
+        rewrite ^(.*) https://$server_name$1 permanent;
+   
    - 重启加载nginx配置文件
     
         `systemctl reload nginx.service`
