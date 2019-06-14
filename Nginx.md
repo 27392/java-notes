@@ -108,5 +108,77 @@
         
         `systemctl restart nginx.service`
 
-### 配置HTTPS    
+### 配置HTTPS
+
+   参考：https://www.cnblogs.com/esofar/p/9291685.html
+   
+   参考：https://my.oschina.net/u/3042999/blog/1858891
+   
+   参考：https://github.com/Neilpang/acme.sh
+   
+   参考：https://github.com/Neilpang/acme.sh/wiki/dnsapi
+   
++ 使用 acme.sh 生产Let's Encrypt证书
+    
+   github项目地址：https://github.com/Neilpang/acme.sh
+   
+   - 安装
+   
+        `curl https://get.acme.sh | sh`
         
+   - 创建一个alias方便使用(可不用)
+   
+        `alias acme.sh=~/.acme.sh/acme.sh` 
+   
+   - 配置DNS
+        
+        https://ak-console.aliyun.com/#/accesskey 
+        
+        `export Ali_Key="xxxxxxxxxxx"`
+        
+        `export Ali_Secret="xxxxxxxxxxxxxxxxxxx"`     
+
+   - 生成通配符证书
+   
+        `acme.sh --issue --dns dns_ali -d haohaoli.cn -d *.haohaoli.cn`
+  
++ 配置到nginx
+   
+   - 创建文件
+   
+        `mkdir /usr/local/ssl`
+   
+   - 移动证书
+   
+        `acme.sh --install-cert -d haohaoli.cn \
+        --key-file       /usr/local/nginx/ssl/haohaoli.key  \
+        --fullchain-file /usr/local/nginx/ssl/fullchain.cer \
+        --reloadcmd     "systemctl reload nginx.service"`
+   
+   - 修改nginx配置文件
+        
+        `vim /usr/local/nginx/conf/nginx.conf`
+        
+        ```
+        server {
+            listen       443 ssl;
+            server_name  www.haohaoli.cn haohaoli.cn;
+        
+            ssl_certificate      /usr/local/nginx/ssl/fullchain.cer;
+            ssl_certificate_key  /usr/local/nginx/ssl/haohaoli.key;
+        
+            ssl_session_cache    shared:SSL:1m;
+            ssl_session_timeout  5m;
+        
+            ssl_ciphers  HIGH:!aNULL:!MD5;
+            ssl_prefer_server_ciphers  on;
+        
+            location / {
+                root   html;
+                index  index.html index.htm;
+            }
+        }
+        ```
+   - 重启加载nginx配置文件
+    
+        `systemctl reload nginx.service`
