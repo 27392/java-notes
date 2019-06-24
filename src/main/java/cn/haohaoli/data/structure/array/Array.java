@@ -104,6 +104,22 @@ public class Array<E> {
     }
 
     /**
+     * 获取最后一个元素
+     * @return  元素
+     */
+    public E getLast(){
+        return get(size - 1);
+    }
+
+    /**
+     * 获取第一个元素
+     * @return  元素
+     */
+    public E getFist(){
+        return get(0);
+    }
+
+    /**
      * 修改index索引位置的元素
      * @param index 下标
      * @param e     元素
