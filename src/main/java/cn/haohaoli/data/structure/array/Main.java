@@ -22,7 +22,7 @@ public class Main {
             System.out.println(scores[i]);
         }*/
 
-        Array array = new Array(20);
+        /*Array array = new Array(20);
         for (int i = 0; i < 10; i++) {
             array.addLast(i);
         }
@@ -31,7 +31,26 @@ public class Main {
         System.out.println(array);
         array.remove(10);
         System.out.println(array);
-
+*/
+        Array<Integer> array = new Array<>(20);
+        System.out.println(array.isEmpty());
+        for (int i = 0; i < 10; i++) {
+            array.addLast(i);
+        }
+        System.out.println(array);
+        array.removeFirst();
+        array.removeLast();
+        array.removeElement(5);
+        System.out.println(array);
+        array.add(6, 100);
+        System.out.println(array);
+        System.out.println(array.contains(100));
+        array.remove(array.indexOf(100));
+        System.out.println(array);
+        array.set(0, -1);
+        System.out.println(array);
+        array.addFist(-2);
+        System.out.println(array);
     }
 }
 

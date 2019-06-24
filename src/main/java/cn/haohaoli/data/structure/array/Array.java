@@ -4,9 +4,9 @@ package cn.haohaoli.data.structure.array;
  * @author LiWenHao
  * @date 2019/6/19 17:58
  */
-public class Array {
+public class Array<E> {
 
-    private int[] data;
+    private E[] data;
 
     private int size;
 
@@ -21,8 +21,9 @@ public class Array {
      * 传入数组的容量
      * @param capacity  容量
      */
+    @SuppressWarnings("unchecked")
     public Array(int capacity) {
-        data = new int[capacity];
+        data = (E[]) new Object[capacity];
         size = 0;
     }
 
@@ -54,7 +55,7 @@ public class Array {
      * 在最后面添加元素
      * @param e     元素
      */
-    public void addLast(int e) {
+    public void addLast(E e) {
         if (size == data.length) {
             throw new IllegalArgumentException("添加错误 数组容量已满");
         }
@@ -66,7 +67,7 @@ public class Array {
      * 在最前面添加元素
      * @param e     元素
      */
-    public void addFist(int e) {
+    public void addFist(E e) {
         add(0, e);
     }
 
@@ -75,7 +76,7 @@ public class Array {
      * @param index     下标
      * @param e         元素
      */
-    public void add(int index, int e) {
+    public void add(int index, E e) {
         if (size == data.length) {
             throw new IllegalArgumentException("添加错误 数组容量已满");
         }
@@ -95,7 +96,7 @@ public class Array {
      * @param index 下标
      * @return      元素
      */
-    public int get (int index) {
+    public E get (int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("下标错误");
         }
@@ -107,7 +108,7 @@ public class Array {
      * @param index 下标
      * @param e     元素
      */
-    public void set(int index, int e) {
+    public void set(int index, E e) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("下标错误");
         }
@@ -119,11 +120,11 @@ public class Array {
      * @param index 下标
      * @return      删除的元素
      */
-    public int remove (int index) {
+    public E remove (int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("下标错误");
         }
-        int ret = get(index);
+        E ret = get(index);
         for (int i = index + 1; i < size; i++) {
             data[i - 1] = data[i];
         }
@@ -135,7 +136,7 @@ public class Array {
      * 删除第一个元素
      * @return  删除的元素
      */
-    public int removeFirst(){
+    public E removeFirst(){
         return remove(0);
     }
 
@@ -143,7 +144,7 @@ public class Array {
      * 删除最后一个元素
      * @return  删除的元素
      */
-    public int removeLast(){
+    public E removeLast(){
         return remove(size - 1);
     }
 
@@ -152,12 +153,12 @@ public class Array {
      * @param e 元素
      * @return  是否删除成功
      */
-    public boolean removeElement(int e){
+    public boolean removeElement(E e){
         int index = indexOf(e);
         if (index == -1) {
             return false;
         }
-        remove(e);
+        remove(index);
         return true;
     }
 
@@ -166,9 +167,9 @@ public class Array {
      * @param e 元素
      * @return  true 包含 / false 不包含
      */
-    public boolean contains(int e) {
+    public boolean contains(E e) {
         for (int i = 0; i < size; i++) {
-            if (data[i] == e) {
+            if (data[i].equals(e)) {
                 return true;
             }
         }
@@ -180,9 +181,9 @@ public class Array {
      * @param e 元素
      * @return  下标 (不存在返回 -1)
      */
-    public int indexOf (int e) {
+    public int indexOf (E e) {
         for (int i = 0; i < data.length; i++) {
-            if (data[i] == e) {
+            if (data[i].equals(e)) {
                 return i;
             }
         }
