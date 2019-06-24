@@ -57,7 +57,7 @@ public class Array<E> {
      */
     public void addLast(E e) {
         if (size == data.length) {
-            throw new IllegalArgumentException("添加错误 数组容量已满");
+            resize(2 * data.length);
         }
         data[size] = e;
         size++;
@@ -77,11 +77,11 @@ public class Array<E> {
      * @param e         元素
      */
     public void add(int index, E e) {
-        if (size == data.length) {
-            throw new IllegalArgumentException("添加错误 数组容量已满");
-        }
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("添加错误 下标错误");
+        }
+        if (index == size) {
+            resize(2 * data.length);
         }
         for (int i = size - 1; i >= index; i--) {
             //后一个索引赋值当前索引对应的元素
@@ -129,6 +129,10 @@ public class Array<E> {
             data[i - 1] = data[i];
         }
         size--;
+        //缩小
+        if (size == data.length / 2) {
+            resize(data.length / 2);
+        }
         return ret;
     }
 
@@ -188,6 +192,19 @@ public class Array<E> {
             }
         }
         return -1;
+    }
+
+    /**
+     * 调整大小
+     * @param newCapacity   容量
+     */
+    @SuppressWarnings("unchecked")
+    public void resize(int newCapacity) {
+        E[] newData = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 
     @Override

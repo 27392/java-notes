@@ -51,6 +51,16 @@ public class Main {
         System.out.println(array);
         array.addFist(-2);
         System.out.println(array);
+
+        Array<Integer> arrays = new Array<>(10);
+        for (int i = 0; i < 10; i++) {
+            arrays.addLast(i);
+        }
+        arrays.addLast(10);
+        System.out.println(arrays);
+        arrays.removeLast();
+        arrays.removeLast();
+        System.out.println(arrays);
     }
 }
 
