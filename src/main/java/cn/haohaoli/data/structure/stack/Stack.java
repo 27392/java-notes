@@ -1,6 +1,13 @@
 package cn.haohaoli.data.structure.stack;
 
 /**
+ * TODO 栈
+ *  栈是一种线性结构
+ *  栈是一种后进先出的数据结构
+ *  相比数组,栈对应的操作是数组的子集
+ *  last in first out (LIFO)
+ *      只能从一端添加元素,也只能从一端取出元素
+ *      这一端称为栈顶
  * @author LiWenHao
  * @date 2019-06-24 23:31
  */
