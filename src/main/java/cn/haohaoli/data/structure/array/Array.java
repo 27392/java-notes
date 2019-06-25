@@ -145,8 +145,8 @@ public class Array<E> {
             data[i - 1] = data[i];
         }
         size--;
-        //缩小
-        if (size == data.length / 2) {
+        //缩容
+        if (size == data.length / 4 && data.length / 2 != 0) {
             resize(data.length / 2);
         }
         return ret;
