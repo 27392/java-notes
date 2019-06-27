@@ -28,10 +28,11 @@ public class LinkedList<E> {
      * @param e 元素
      */
     public void addFirst(E e){
-        /*Node node = new Node(e);
-        //node 节点的 nextNode节点等于当前头节点
+        /*
+        Node node = new Node(e);
+        //当前节点(node)的下一个节点(next)指向`当前头节点(head)`
         node.next = head;
-        //node节点等于头节点
+        //`当前头节点(head)`指向`当前节点(node)`
         head = node;
         */
 
@@ -41,13 +42,52 @@ public class LinkedList<E> {
     }
 
     /**
+     * 在指定位置添加元素
+     * @param index 下标
+     * @param e     元素
+     */
+    public void add(int index, E e) {
+        if (index < 0 || index > size) {
+            throw new IllegalArgumentException("index 不合法");
+        }
+        if(index == 0) {
+            addFirst(e);
+        } else {
+            //上一个节点
+            Node prev = head;
+            for (int i = 0; i < index - 1; i++) {
+                prev = prev.next;
+            }
+            /*
+            Node node = new Node(e);
+            //当前节点(node)的下一个节点(next)指向`上一个节点(prev)的下一个节点(next)`
+            node.next = prev.next;
+            //上一个节点(prev)的下一个节点(next)指向当前节点(node)
+            prev.next = node;
+            */
+
+            //简写
+            prev.next = new Node(e, prev.next);
+            size++;
+        }
+    }
+
+    /**
+     * 在最后面添加元素
+     * @param e 元素
+     */
+    public void addLast(E e) {
+        add(size, e);
+    }
+
+    /**
      * 节点
      */
     private class Node{
-        public E e;
-        public Node next;
+        E e;
+        Node next;
 
-        public Node(E e, Node next) {
+        Node(E e, Node next) {
             this.e = e;
             this.next = next;
         }
