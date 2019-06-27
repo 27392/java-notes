@@ -24,6 +24,23 @@ public class LinkedList<E> {
     }
 
     /**
+     * 在链表头添加元素
+     * @param e 元素
+     */
+    public void addFirst(E e){
+        /*Node node = new Node(e);
+        //node 节点的 nextNode节点等于当前头节点
+        node.next = head;
+        //node节点等于头节点
+        head = node;
+        */
+
+        //简写
+        head = new Node(e, head);
+        size++;
+    }
+
+    /**
      * 节点
      */
     private class Node{
