@@ -12,8 +12,14 @@ public class LinkedList<E> {
     /**
      * 头节点
      */
-    private Node head;
+    private Node dummyHead;
     private int size;
+
+    public LinkedList() {
+        this.dummyHead = new Node(null, null);
+        this.size = 0;
+
+    }
 
     public int getSize() {
         return size;
@@ -21,24 +27,6 @@ public class LinkedList<E> {
 
     public boolean isEmpty(){
         return size == 0;
-    }
-
-    /**
-     * 在链表头添加元素
-     * @param e 元素
-     */
-    public void addFirst(E e){
-        /*
-        Node node = new Node(e);
-        //当前节点(node)的下一个节点(next)指向`当前头节点(head)`
-        node.next = head;
-        //`当前头节点(head)`指向`当前节点(node)`
-        head = node;
-        */
-
-        //简写
-        head = new Node(e, head);
-        size++;
     }
 
     /**
@@ -50,26 +38,30 @@ public class LinkedList<E> {
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("index 不合法");
         }
-        if(index == 0) {
-            addFirst(e);
-        } else {
-            //上一个节点
-            Node prev = head;
-            for (int i = 0; i < index - 1; i++) {
-                prev = prev.next;
-            }
-            /*
-            Node node = new Node(e);
-            //当前节点(node)的下一个节点(next)指向`上一个节点(prev)的下一个节点(next)`
-            node.next = prev.next;
-            //上一个节点(prev)的下一个节点(next)指向当前节点(node)
-            prev.next = node;
-            */
-
-            //简写
-            prev.next = new Node(e, prev.next);
-            size++;
+        //上一个节点
+        Node prev = dummyHead;
+        for (int i = 0; i < index ; i++) {
+            prev = prev.next;
         }
+        /*
+        Node node = new Node(e);
+        //当前节点(node)的下一个节点(next)指向`上一个节点(prev)的下一个节点(next)`
+        node.next = prev.next;
+        //上一个节点(prev)的下一个节点(next)指向当前节点(node)
+        prev.next = node;
+        */
+
+        //简写
+        prev.next = new Node(e, prev.next);
+        size++;
+    }
+
+    /**
+     * 在链表头添加元素
+     * @param e 元素
+     */
+    public void addFirst(E e){
+        add(0, e);
     }
 
     /**
