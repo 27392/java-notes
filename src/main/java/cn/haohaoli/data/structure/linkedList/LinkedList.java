@@ -71,6 +71,11 @@ public class LinkedList<E> {
         add(size, e);
     }
 
+    /**
+     * 获取指定位置元素
+     * @param index 下标
+     * @return  元素
+     */
     public E get(int index) {
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("index 不合法");
@@ -82,15 +87,27 @@ public class LinkedList<E> {
         return cur.e;
     }
 
+    /**
+     * 获取第一个元素
+     * @return  元素
+     */
     public E getFirst () {
         return get(0);
     }
 
+    /**
+     * 获取最后一个元素
+     * @return  元素
+     */
     public E getLast () {
         return get(size - 1);
     }
 
-
+    /**
+     * 修改指定位置元素
+     * @param index 下标
+     * @param e     元素
+     */
     public void set(int index, E e){
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("index 不合法");
@@ -102,16 +119,57 @@ public class LinkedList<E> {
         cur.e = e;
     }
 
+    /**
+     * 包含元素
+     * @param e 元素
+     * @return  包含 true/false
+     */
     public boolean contains (E e) {
         Node cur = dummyHead.next;
         while (cur != null) {
-            if (cur.e == e) {
+            if (cur.e.equals(e)) {
                 return true;
             } else {
                 cur = cur.next;
             }
         }
         return false;
+    }
+
+    /**
+     * 删除指定位置元素
+     * @param index 下标
+     * @return      删除后的元素
+     */
+    public E remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("index 不合法");
+        }
+        Node prev = dummyHead;
+        for (int i = 0; i < index; i++) {
+            prev = prev.next;
+        }
+        Node delNode = prev.next;
+        prev.next = delNode.next;
+        delNode.next = null;
+        size--;
+        return delNode.e;
+    }
+
+    /**
+     * 删除第一个元素
+     * @return  删除后的元素
+     */
+    public E removeFirst() {
+        return remove(0);
+    }
+
+    /**
+     * 删除最后一个元素
+     * @return  删除后的元素
+     */
+    public E removeLast() {
+        return remove(size - 1);
     }
 
     /**
