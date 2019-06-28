@@ -1,5 +1,7 @@
 package cn.haohaoli.data.structure.linkedList;
 
+import java.util.Iterator;
+
 /**
  * TODO 链表
  *  优点: 真正的动态,不需要处理固定容量的问题
@@ -18,6 +20,31 @@ public class LinkedList<E> {
     public LinkedList() {
         this.dummyHead = new Node(null, null);
         this.size = 0;
+    }
+
+    public LinkedList(E[] arr) {
+        if (null == arr || arr.length == 0) {
+            throw new IllegalArgumentException();
+        }
+        this.dummyHead = new Node(null, null);
+        Node cur = this.dummyHead;
+        for (int i = 0; i < arr.length; i++) {
+            cur.next = new Node(arr[i]);
+            cur = cur.next;
+        }
+    }
+
+    public LinkedList(Iterable<E> iterable) {
+        if (null == iterable) {
+            throw new IllegalArgumentException();
+        }
+        this.dummyHead = new Node(null, null);
+        Node cur = this.dummyHead;
+        Iterator<E> iterator = iterable.iterator();
+        while (iterator.hasNext()){
+            cur.next = new Node(iterator.next());
+            cur = cur.next;
+        }
     }
 
     public int getSize() {
