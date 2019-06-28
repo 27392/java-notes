@@ -8,7 +8,7 @@ import cn.haohaoli.data.structure.linkedList.LinkedList;
  */
 public class LinkedListStack<E> implements Stack<E> {
 
-    LinkedList<E> list;
+    private LinkedList<E> list;
 
     public LinkedListStack() {
         this.list = new LinkedList<>();

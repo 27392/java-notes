@@ -9,7 +9,6 @@ public class Main {
     public static void main(String[] args) {
         test(new ArrayStack<>());
         test(new LinkedListStack<>());
-
     }
 
     private static void test (Stack<Integer> stack) {
