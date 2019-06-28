@@ -3,6 +3,11 @@ package cn.haohaoli.data.structure.queue;
 import cn.haohaoli.data.structure.array.Array;
 
 /**
+ * TODO 数组队列
+ *  选择数组的最后添加元素是因为在数组头添加元素的话之后的所有元素都会往后移动
+ *  空间复杂度为O(n)
+ *  在数组最后添加元素的就不用移动元素
+ *  空间复杂度为O(1)
  * @author LiWenHao
  * @date 2019-06-25 21:04
  */
