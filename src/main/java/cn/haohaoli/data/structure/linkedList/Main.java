@@ -1,6 +1,5 @@
 package cn.haohaoli.data.structure.linkedList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
