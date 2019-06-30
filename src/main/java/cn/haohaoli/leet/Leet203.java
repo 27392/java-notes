@@ -75,4 +75,34 @@ public class Leet203 {
         return dummyHead.next;
     }
 
+    /**
+     * 使用递归
+     */
+    public ListNode removeElements3(ListNode head, int val) {
+        if (head == null) {
+            return null;
+        }
+        //递归解决删除这个更小链表中对应的元素
+        head.next = removeElements3(head.next, val);
+        return head.val == val ? head.next : head;
+        /*
+        ListNode listNode = removeElements3(head.next, val);
+        if (head.val == val) {
+            return listNode;
+        } else {
+            head.next = listNode;
+            return head;
+        }
+        */
+
+    }
+
+    public static void main(String[] args) {
+        Leet203 leet203 = new Leet203();
+        ListNode list = leet203.new ListNode(new int[]{1, 2, 3, 4});
+        ListNode listNode = leet203.removeElements3(list, 2);
+        System.out.println(listNode);
+    }
+
+
 }

@@ -3,13 +3,15 @@ package cn.haohaoli.data.structure.linkedList;
 /**
  * TODO 递归
  *  本质上,将原来的问题,转化成更小的同一问题
+ *  递归函数的调用,本质就是函数调用
+ *  只不过调用的函数是自己而已
  * @author LiWenHao
  * @date 2019-06-30 20:44
  */
 public class Sum {
 
     public static void main(String[] args) {
-        int[] nums = {1, 2, 3, 4, 5, 6};
+        int[] nums = {1, 2, 3};
         System.out.println(sum(nums));
     }
 
@@ -24,12 +26,11 @@ public class Sum {
      * @return
      */
     public static int sum(int[] arr, int index) {
-        if (arr.length == index) {                  //求解最基本的问题
-            return 0;
-        }
-        //切记 不能使用index++; index++ 是先用在加 ++index 是先加在用
-        //return arr[index] += sum(arr, index++);
-        return arr[index] += sum(arr, ++index);     //将原来的问题,转化成更小的同一问题
+        if (arr.length == index) return 0;              //求解最基本的问题
+//        return arr[index] += sum(arr, index + 1);     //将原来的问题,转化成更小的同一问题
+        int x = sum(arr, index + 1);
+        int res = arr[index] + x;
+        return res;
     }
 
 }
