@@ -1,6 +1,8 @@
 package cn.haohaoli.data.structure.bst;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * TODO 二分搜索树
@@ -113,6 +115,24 @@ public class BST<E extends Comparable<E>> {
      */
     public void postOrder() {
         postOrder(root);
+    }
+
+    /**
+     * 二分搜索树层序遍历
+     */
+    public void levelOrder() {
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()){
+            Node cur = queue.remove();
+            System.out.println(cur.e);
+            if (null != cur.left) {
+                queue.add(cur.left);
+            }
+            if (null != cur.right) {
+                queue.add(cur.right);
+            }
+        }
     }
 
     /**

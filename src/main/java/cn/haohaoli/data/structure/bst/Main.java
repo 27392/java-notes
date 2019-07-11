@@ -24,6 +24,8 @@ public class Main {
         bst.inOrder();
         System.out.println("===========postOrder===========");
         bst.postOrder();
+        System.out.println("===========levelOrder===========");
+        bst.levelOrder();
 //        System.out.println(bst);
     }
 }
