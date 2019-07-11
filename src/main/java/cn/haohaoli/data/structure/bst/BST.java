@@ -1,5 +1,7 @@
 package cn.haohaoli.data.structure.bst;
 
+import java.util.Iterator;
+
 /**
  * TODO 二分搜索树
  *  二分搜索树是二叉树
@@ -13,6 +15,16 @@ public class BST<E extends Comparable<E>> {
 
     private Node root;
     private int size;
+
+    public BST() {
+    }
+
+    public BST(Iterable<E> iterable) {
+        Iterator<E> iterator = iterable.iterator();
+        while (iterator.hasNext()){
+            add(iterator.next());
+        }
+    }
 
     private class Node {
         E e;
@@ -81,11 +93,56 @@ public class BST<E extends Comparable<E>> {
         }
     }
 
+    /**
+     * 二分搜索树前序遍历
+     */
+    public void preOrder(){
+        preOrder(root);
+    }
+
+    /**
+     * 前序遍历以node为根的二分搜索树,递归算法
+     * @param node
+     */
+    private void preOrder(Node node){
+        if (null == node) {
+            return;
+        }
+        System.out.println(node.e);
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
     public int getSize() {
         return size;
     }
 
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        generateBSTString(root, 0, res);
+        return res.toString();
+    }
+
+    private void generateBSTString(Node root, int depth, StringBuilder res){
+        if (root == null) {
+            res.append(generateDepthString(depth)).append("NULL\n");
+            return;
+        }
+        res.append(generateDepthString(depth)).append(root.e).append("\n");
+        generateBSTString(root.left, depth + 1, res);
+        generateBSTString(root.right, depth + 1, res);
+    }
+
+    private String generateDepthString(int depth) {
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            res.append("--");
+        }
+        return res.toString();
     }
 }
