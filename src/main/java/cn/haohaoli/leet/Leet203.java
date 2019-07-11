@@ -1,43 +1,12 @@
 package cn.haohaoli.leet;
 
 /**
+ * 203. 移除链表元素
+ * https://leetcode-cn.com/problems/remove-linked-list-elements/
  * @author LiWenHao
  * @date 2019/6/28 14:38
  */
 public class Leet203 {
-
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-
-        ListNode(int[] arr){
-            if (arr == null || arr.length == 0) {
-                throw new IllegalArgumentException();
-            }
-            this.val = arr[0];
-            ListNode node = this;
-            for (int i = 1; i < arr.length; i++) {
-                node.next = new ListNode(arr[i]);
-                node = node.next;
-            }
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder res = new StringBuilder();
-            ListNode cur = this;
-            while (cur != null){
-                res.append(cur.val).append("->");
-                cur = cur.next;
-            }
-            res.append("NULL");
-            return res.toString();
-        }
-    }
 
     public ListNode removeElements(ListNode head, int val) {
         //删除头节点所有符合的
@@ -99,7 +68,7 @@ public class Leet203 {
 
     public static void main(String[] args) {
         Leet203 leet203 = new Leet203();
-        ListNode list = leet203.new ListNode(new int[]{1, 2, 3, 4});
+        ListNode list = new ListNode(new int[]{1, 2, 3, 4});
         ListNode listNode = leet203.removeElements3(list, 2);
         System.out.println(listNode);
     }

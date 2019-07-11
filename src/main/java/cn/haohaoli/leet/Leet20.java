@@ -3,6 +3,8 @@ package cn.haohaoli.leet;
 import java.util.Stack;
 
 /**
+ * 20. 有效的括号
+ * https://leetcode-cn.com/problems/valid-parentheses/
  * @author LiWenHao
  * @date 2019/6/25 16:14
  */
