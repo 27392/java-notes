@@ -18,8 +18,12 @@ public class Main {
          *   /  \    \
          *  2   4     8
          */
+        System.out.println("===========preOrder===========");
         bst.preOrder();
-        System.out.println("=======================");
-        System.out.println(bst);
+        System.out.println("===========inOrder===========");
+        bst.inOrder();
+        System.out.println("===========postOrder===========");
+        bst.postOrder();
+//        System.out.println(bst);
     }
 }

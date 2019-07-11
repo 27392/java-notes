@@ -8,6 +8,7 @@ import java.util.Iterator;
  *  二分搜索树的每个节点的值
  *      * 大于其左子树的所有节点的值
  *      * 小于其右子树的所有节点的值
+ *  排序参考: https://blog.csdn.net/u013834525/article/details/80421684
  * @author LiWenHao
  * @date 2019/7/11 15:14
  */
@@ -101,6 +102,20 @@ public class BST<E extends Comparable<E>> {
     }
 
     /**
+     * 二分搜索树中序遍历
+     */
+    public void inOrder() {
+        inOrder(root);
+    }
+
+    /**
+     * 二分搜索树后序遍历
+     */
+    public void postOrder() {
+        postOrder(root);
+    }
+
+    /**
      * 前序遍历以node为根的二分搜索树,递归算法
      * @param node
      */
@@ -112,6 +127,33 @@ public class BST<E extends Comparable<E>> {
         preOrder(node.left);
         preOrder(node.right);
     }
+
+    /**
+     * 中序遍历以node为根的二分搜索树,递归算法
+     * @param node
+     */
+    private void inOrder(Node node) {
+        if (null == node) {
+            return;
+        }
+        inOrder(node.left);
+        System.out.println(node.e);
+        inOrder(node.right);
+    }
+
+    /**
+     * 后序遍历以node为根的二分搜索树,递归算法
+     * @param node
+     */
+    private void postOrder(Node node) {
+        if (null == node) {
+            return;
+        }
+        postOrder(node.left);
+        postOrder(node.right);
+        System.out.println(node.e);
+    }
+
 
     public int getSize() {
         return size;
