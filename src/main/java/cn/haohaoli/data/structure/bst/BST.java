@@ -69,7 +69,7 @@ public class BST<E extends Comparable<E>> {
     }
 
     /**
-     * 二分搜索数中是否保存元素
+     * 二分搜索树中是否保存元素
      * @param e
      * @return
      */
