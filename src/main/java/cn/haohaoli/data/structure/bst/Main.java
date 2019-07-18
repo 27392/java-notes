@@ -29,5 +29,10 @@ public class Main {
         System.out.println("===========preOrderNR===========");
         bst.preOrderNR();
 //        System.out.println(bst);
+        System.out.println("===========min max===========");
+        System.out.println(bst.minimum());
+        System.out.println(bst.minimumNR());
+        System.out.println(bst.maximum());
+        System.out.println(bst.maximumNR());
     }
 }

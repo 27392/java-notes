@@ -119,7 +119,7 @@ public class BST<E extends Comparable<E>> {
     }
 
     /**
-     * 二分搜索树层序遍历
+     * 二分搜索树层序遍历 (队列实现)
      */
     public void levelOrder() {
         Queue<Node> queue = new LinkedList<>();
@@ -127,6 +127,7 @@ public class BST<E extends Comparable<E>> {
         while (!queue.isEmpty()){
             Node cur = queue.remove();
             System.out.println(cur.e);
+            //队列是(FIFO 先进先出) 所以左孩子先入对
             if (null != cur.left) {
                 queue.add(cur.left);
             }
@@ -208,6 +209,85 @@ public class BST<E extends Comparable<E>> {
      */
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    /**
+     * 寻找二分搜索树的最小元素
+     * @return e
+     */
+    public E minimum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("树为空");
+        }
+        return minimum(root).e;
+    }
+
+    /**
+     * 寻找二分搜索树的最小元素,非递归
+     * @return e
+     */
+    public E minimumNR() {
+        if (size == 0) {
+            throw new IllegalArgumentException("树为空");
+        }
+        //与链表遍历相同
+        Node cur = root;
+        while (cur.left != null) {
+            cur = cur.left;
+        }
+        return cur.e;
+    }
+
+
+    /**
+     * 寻找二分搜索树的最大元素
+     * @return e
+     */
+    public E maximum() {
+        if (size == 0) {
+            throw new IllegalArgumentException("树为空");
+        }
+        return maximum(root).e;
+    }
+
+    /**
+     * 寻找二分搜索树的最大元素,非递归
+     * @return e
+     */
+    public E maximumNR() {
+        if (size == 0) {
+            throw new IllegalArgumentException("树为空");
+        }
+        //与链表遍历相同
+        Node cur = root;
+        while (cur.right != null) {
+            cur = cur.right;
+        }
+        return cur.e;
+    }
+
+    /**
+     * 寻找以node为根的二分搜索树的最小值所在的节点,递归算法
+     * @param node
+     * @return
+     */
+    private Node minimum (Node node) {
+        if (null == node.left) {
+            return node;
+        }
+        return minimum(node.left);
+    }
+
+    /**
+     * 寻找以node为根的二分搜索树的最大值所在的节点,递归算法
+     * @param node
+     * @return
+     */
+    private Node maximum (Node node) {
+        if (null == node.right) {
+            return node;
+        }
+        return maximum(node.right);
     }
 
     @Override
