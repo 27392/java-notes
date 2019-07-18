@@ -9,14 +9,16 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        BST<Integer> bst = new BST<>(Arrays.asList(5, 3, 6, 8, 4, 2));
+        BST<Integer> bst = new BST<>(Arrays.asList(5, 3, 6, 8, 4, 2, 1, 7));
 
         /**
-         *        5
-         *      /  \
-         *     3    6
-         *   /  \    \
-         *  2   4     8
+         *          5
+         *        /  \
+         *       3    6
+         *     /  \    \
+         *    2   4     8
+         *   /         /
+         *  1         7
          */
         System.out.println("===========preOrder===========");
         bst.preOrder();
@@ -34,5 +36,10 @@ public class Main {
         System.out.println(bst.minimumNR());
         System.out.println(bst.maximum());
         System.out.println(bst.maximumNR());
+        System.out.println("removeMin");
+        System.out.println(bst.removeMin());
+        System.out.println(bst.removeMax());
+        System.out.println("+++++++++++++++++++++++++++++++++++");
+        bst.preOrderNR();
     }
 }

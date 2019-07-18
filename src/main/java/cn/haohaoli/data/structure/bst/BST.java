@@ -238,7 +238,6 @@ public class BST<E extends Comparable<E>> {
         return cur.e;
     }
 
-
     /**
      * 寻找二分搜索树的最大元素
      * @return e
@@ -288,6 +287,66 @@ public class BST<E extends Comparable<E>> {
             return node;
         }
         return maximum(node.right);
+    }
+
+    /**
+     * 删除二分搜索树的最小元素
+     * @return e
+     */
+    public E removeMin() {
+        if (size == 0) {
+            throw new IllegalArgumentException("树为空");
+        }
+        E minimum = minimum();
+        root = removeMin(root);
+        return minimum;
+    }
+
+    /**
+     * 删除二分搜索树的最大元素
+     * @return e
+     */
+    public E removeMax() {
+        if (size == 0) {
+            throw new IllegalArgumentException("树为空");
+        }
+        E maximum = maximum();
+        root = removeMax(root);
+        return maximum;
+    }
+
+    /**
+     * 删除以node为根的二分搜索树的最大值所在的节点,递归算法
+     * 返回刪除节点后二分搜索数的根
+     * @param node
+     * @return
+     */
+    private Node removeMax (Node node) {
+        if (null == node.right) {
+            Node leftNode = node.left;
+            node.left = null;
+            size--;
+            return leftNode;
+        }
+        node.right = removeMax(node.right);
+        return node;
+    }
+
+    /**
+     * 删除以node为根的二分搜索树的最小值所在的节点,递归算法
+     * 返回刪除节点后二分搜索数的根
+     * @param node
+     * @return
+     */
+    private Node removeMin(Node node) {
+        if (null == node.left) {
+            Node rightNode = node.right;
+            node.right = null;
+            size--;
+            return rightNode;
+        }
+        node.left = removeMin(node.left);
+        return node;
     }
 
     @Override
