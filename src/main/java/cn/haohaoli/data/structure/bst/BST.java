@@ -3,6 +3,7 @@ package cn.haohaoli.data.structure.bst;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * TODO 二分搜索树
@@ -174,11 +175,37 @@ public class BST<E extends Comparable<E>> {
         System.out.println(node.e);
     }
 
+    /**
+     * 非递归实现前序遍历(使用栈)
+     */
+    public void preOrderNR(){
+        Stack<Node> stack = new Stack<>();
+        stack.add(root);
+        while (!stack.isEmpty()){
+            Node pop = stack.pop();
+            System.out.println(pop.e);
+            //栈是(INFO 后进先出) 所以右孩子先入栈
+            if (null != pop.right) {
+                stack.add(pop.right);
+            }
+            if (null != pop.left) {
+                stack.add(pop.left);
+            }
+        }
+    }
 
+    /**
+     * 获取大小
+     * @return
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * 是否为空
+     * @return
+     */
     public boolean isEmpty() {
         return size == 0;
     }
@@ -190,6 +217,12 @@ public class BST<E extends Comparable<E>> {
         return res.toString();
     }
 
+    /**
+     * 生成树字符串
+     * @param root
+     * @param depth
+     * @param res
+     */
     private void generateBSTString(Node root, int depth, StringBuilder res){
         if (root == null) {
             res.append(generateDepthString(depth)).append("NULL\n");
@@ -200,6 +233,11 @@ public class BST<E extends Comparable<E>> {
         generateBSTString(root.right, depth + 1, res);
     }
 
+    /**
+     * 生成深度字符串
+     * @param depth
+     * @return
+     */
     private String generateDepthString(int depth) {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < depth; i++) {
