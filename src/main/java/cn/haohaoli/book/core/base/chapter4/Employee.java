@@ -47,7 +47,6 @@ public class Employee {
      *    所有对象变量将设置为 null
      *  如果类中提供了至少一个构造器， 但是没有提供无参数的构造器，则在构造对象时如果 没有提供参数就会被视为不合法
      */
-
     public Employee(String name) {
         this.name = name;
     }
