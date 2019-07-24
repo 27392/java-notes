@@ -106,7 +106,7 @@ class className{
        
        **在一个源文件中,只能有一个共有类,但可以有任意数目的非公有类**
 
-**`Employee`类解读**
+### Employee类解读
   
    + **方法**
    
@@ -159,6 +159,35 @@ class className{
            - **构造器可以有 0 个、1 个或多个参数**
            - **构造器没有返回值**
            - **构造器总是伴随着 `new`操作一起调用**
+           
+### 隐式参数与显式参数
+
+方法用于操作对象以及存取它的实例域.例如,方法:
+```java
+public void raiseSalary(double byPercent) {
+    double v = salary * byPercent / 100;
+    salary += v;
+}
+```
+将调用这个方法的对象的`salary`实例域设置为新值,看看下面的调用:
+```java
+Employee employee = new Employee("赵四",4000d, 1981, 4, 4);
+employee.raiseSalary(2);
+```
+它的结果将 `employee`对象`salary`域的值增加了2%,具体说,这个条用将执行下列命令
+
+```java
+double v = employee.salary * 2 / 100;
+employee.salary += v;
+```
+
+`raiseSalary`有两个参数.
+    
+   + 第一个参数称为隐式参数,是出现在方法名前的`Employee`对象
+   
+   + 第二个参数位于方法名后面括号中的数值,这是一个显示参数
+
+**在每个方法中,关键字`this`表示隐式参数**
 
 ## 方法参数
 ## 对象构造
