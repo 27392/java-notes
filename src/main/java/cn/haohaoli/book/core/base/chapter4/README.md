@@ -106,64 +106,62 @@ class className{
        
        **在一个源文件中,只能有一个共有类,但可以有任意数目的非公有类**
 
-+ **`Employee`类解读**
+**`Employee`类解读**
   
-    + 方法
-  
-        在`Employee`类中包含一个构造器和四个方法,该类的所有方法都被标记为`public`
-        
-        ```java
-        public Employee(String name, Double salary, int year, int month, int day)
-        public String getName()
-        public Double getSalary()
-        public LocalDate getHireDay() 
-        public void raiseSalary(double byPercent)
-        ```
-        关键字`public`意味着任何类的任何方法都可以调用这个些方法
-  
-    +  实例域
+   + **方法**
+   
+       在`Employee`类中包含一个构造器和四个方法,该类的所有方法都被标记为`public`
+       
+       ```java
+       public Employee(String name, Double salary, int year, int month, int day)
+       public String getName()
+       public Double getSalary()
+       public LocalDate getHireDay() 
+       public void raiseSalary(double byPercent)
+       ```
+       关键字`public`意味着任何类的任何方法都可以调用这个些方法
+   
+   + **实例域**
+   
+       接下来在`Employee`类的实例中还有三个实例域来存放将要操作的数据
+       ```java
+       private String name;
+       private Double salary;
+       private LocalDate hireDay;
+       ```
+       关键字`priave`确保只有`Employee`类的实例能够访问这些实例域,而其他类的方法不能够读写这些域
+       
+   + **构造器**
+   
+       在来看看`Employee`类的构造器
+       ```java
+       public Employee(String name, Double salary, int year, int month, int day) {
+           this.name = name;
+           this.salary = salary;
+           this.hireDay = LocalDate.of(year, month, day);
+       }
+       ```
+       可以看到构造器与类同名,在构造`Employee`类的对象是,构造器会运行,以便将实例域初始化为所希望的状态
+       
+       例如,使用下面代码创建`Employee`类实例时:
+       ```
+       new Employee("小明", 10000, 1990, 12, 2);
+       ```
+       将会把实例域设置为:
+       ```
+       name = "小明";
+       salary = 10000;
+       hireDay = LocalDate.of(1990, 12, 2);
+       ```
+       + **注意**
+           - **构造器与类同名**
+           - **每个类可以有一个以上的构造器**
+           - **构造器可以有 0 个、1 个或多个参数**
+           - **构造器没有返回值**
+           - **构造器总是伴随着 `new`操作一起调用**
 
-        接下来在`Employee`类的实例中还有三个实例域来存放将要操作的数据
-        ```java
-        private String name;
-        private Double salary;
-        private LocalDate hireDay;
-        ```
-        关键字`priave`确保只有`Employee`类的实例能够访问这些实例域,而其他类的方法不能够读写这些域
-        
-    + 构造器
-    
-        在来看看`Employee`类的构造器
-        ```java
-        public Employee(String name, Double salary, int year, int month, int day) {
-            this.name = name;
-            this.salary = salary;
-            this.hireDay = LocalDate.of(year, month, day);
-        }
-        ```
-        可以看到构造器与类同名,在构造`Employee`类的对象是,构造器会运行,以便将实例域初始化为所希望的状态
-        
-        例如,使用下面代码创建`Employee`类实例时:
-        ```
-        new Employee("小明", 10000, 1990, 12, 2);
-        ```
-        将会把实例域设置为:
-        ```
-        name = "小明";
-        salary = 10000;
-        hireDay = LocalDate.of(1990, 12, 2);
-        ```
-        + 注意
-            - **构造器与类同名**
-            - **每个类可以有一个以上的构造器**
-            - **构造器可以有 0 个、1 个或多个参数**
-            - **构造器没有返回值**
-            - **构造器总是伴随着 new 操作一起调用**
-            - **构造器与其他的方法有一个重要的不同。 构造器总是伴随着 `new` 操作符的执行被调用**
-            - **而不能对一个已经存在的对象调用构造器来达到重新设置实例域的目的**
-            - **如果在编写一个类时没有编写构造器， 那么系统就会提供一个无参数构造器。 这个构造器将所有的实例域设置为默认值。**
-                + **实例域中的数值型数据设置为 0、**
-                + **布尔型数据设置为 false、**
-                + **所有对象变量将设置为 null**
-            - **如果类中提供了至少一个构造器， 但是没有提供无参数的构造器，则在构造对象时如果 没有提供参数就会被视为不合法**
-        
+## 方法参数
+## 对象构造
+## 静态域与静态方法
+## 类设计技巧
+## 文档注释
