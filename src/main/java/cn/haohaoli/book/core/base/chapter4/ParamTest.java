@@ -30,12 +30,12 @@ public class ParamTest {
          *      2 ) raiseSalary 方法应用于这个对象引用。 x 和 harry 同时引用的那个 Employee 对象的薪金提高了 200%。
          *      3 ) 方法结束后， 参数变量 x 不再使用。 当然， 对象变量 harry 继续引用那个薪金增至 3倍的雇员对象
          */
-        Employee employee = new Employee("张三",10000d);
+        Employee employee = new Employee("张三",10000d,1991,1,1);
         OverLoadingTest.tripleValue(employee);
         System.out.println(employee.getSalary());
 
-        Employee x = new Employee("王五",10300d);
-        Employee y = new Employee("赵四",4050d);
+        Employee x = new Employee("王五",10300d,1980,12,1);
+        Employee y = new Employee("赵四",4050d,1988,1,23);
         swap(x, y);
         /**
          * 方法并没有改变存储在变量 a 和 b 中的对象引用。
@@ -44,8 +44,8 @@ public class ParamTest {
          *  在方法结束时参数变量 X 和 y 被丢弃了。
          *  原来的变量 a 和 b 仍然引用 这个方法调用之前所引用的对象
          */
-        System.out.printf("name=%s,salary=%.1f\n", x.getName(), x.getSalary());
-        System.out.printf("name=%s,salary=%.1f\n", y.getName(), y.getSalary());
+//        System.out.printf("name=%s,salary=%.1f\n", x.getName(), x.getSalary());
+//        System.out.printf("name=%s,salary=%.1f\n", y.getName(), y.getSalary());
 
 
 
