@@ -3,7 +3,7 @@ package cn.haohaoli.book.core.base.chapter4;
 import java.util.Arrays;
 
 /**
- * 参数
+ * 方法参数
  * @author liWenHao
  * @date 2019/1/23 05:05
  */
@@ -44,9 +44,8 @@ public class ParamTest {
          *  在方法结束时参数变量 X 和 y 被丢弃了。
          *  原来的变量 a 和 b 仍然引用 这个方法调用之前所引用的对象
          */
-//        System.out.printf("name=%s,salary=%.1f\n", x.getName(), x.getSalary());
-//        System.out.printf("name=%s,salary=%.1f\n", y.getName(), y.getSalary());
-
+        System.out.printf("name=%s,salary=%.1f\n", x.getName(), x.getSalary());
+        System.out.printf("name=%s,salary=%.1f\n", y.getName(), y.getSalary());
 
 
         //可以修改数组
@@ -54,9 +53,7 @@ public class ParamTest {
         OverLoadingTest.tripleValue(strArray);
         System.out.println(Arrays.toString(strArray));  //{1,x}
 
-        /**
-         * TODO 方法不能修改一个基本类型参数的值
-         */
+        //一个方法不能修改一个基本类型参数的值
         double salary = 100d;
         OverLoadingTest.tripleValue(salary);
         System.out.println(salary);         //100
