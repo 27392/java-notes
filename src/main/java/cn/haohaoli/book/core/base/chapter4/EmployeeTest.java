@@ -30,7 +30,7 @@ public class EmployeeTest {
 class Employee {
 
     //实例域定义为 final 构建对象时必须初始化这样的域
-    private final String name;
+    private String name;
 
     private double salary;
 

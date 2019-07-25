@@ -22,7 +22,9 @@ public class StaticTest {
 
 class Staff {
 
+    //静态域不属于任何对象,它属于类
     private static int nextId = 1;
+    //实例域定义为 final 构建对象时必须初始化这样的域
     private final String name;
     private double salary;
     private int id;
