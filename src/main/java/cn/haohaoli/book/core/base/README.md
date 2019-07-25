@@ -6,12 +6,11 @@
     - [x] 自定义类
     - [x] 静态域与静态方法
     - [x] 方法参数
-    - [ ] 对象构造
-    - [ ] 文档注释
-    - [ ] 类设计技巧
-+ 第5章 - 继承
+    - [x] 对象构造
+    - [x] 类设计技巧
++ [第5章 - 继承](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter5)
     - [ ] 类,超类和子类
-    - [ ] Object
+    - [ ] Object类
     - [ ] 对象包装器与自动装箱
     - [ ] 参数数量可变的方法
     - [ ] 枚举
