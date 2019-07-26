@@ -139,11 +139,11 @@ super(name, salary, year, month, day);
 
 ### 继承层次
 
-继承并不仅限于一个层次.
+继承并不仅限于一个层次. 
 
-例如: 可以由`Manager`类派生`Executive`类.有一个公共超类派生出来的所有类的集合被称为"继承层次"(inheritance hierarchy)
+例如: 可以由`Manager`类派生`Executive`类.有一个公共超类派生出来的所有类的集合被称为"继承层次"
 
-在继承层次中,从某个特定的类到其祖先的路径被称为该类的继承连(inheritance chain)
+在继承层次中,从某个特定的类到其祖先的路径被称为该类的继承链
 
     // 继承层次
     
@@ -157,7 +157,64 @@ super(name, salary, year, month, day);
 
 例如,可以由`Employee`类派生出子类`Secretary`它与`Manager`类没任何关系. 必要的话可以将这个过程一直延迟下去
 
-> Java 中不支持多继承
+> **注意! Java 中不支持多继承**
+
+### 多态
+
+**有一个用来判断是否应该设计为继承关系的简单规则,这就是"is-a"规则,它表明子类的每个对象也是超类的对象**
+
+例如,每个经理都是雇员,因此将Manager类设计为Employee类的子类是显而易见的, 反之不然,不是每个雇员都是经理
+
+"is-a"规则的另一中表述法是置换法则. 他表示程序中出现超类对象的任何地方都可以用子类对象置换
+
+例如,可以将一个子类的对象赋给超类变量
+
+```java
+Employee e;
+e = new Employee();
+e = new Manager();
+```
+
+在Java中对象变量是多态的.
+
+一个`Employee`变量既可以引用一个`Employee`类对象,也可以引用一个`Employee`类的任何一个子类的对象(`Manager`,`Executive`等)
+
+看一个例子:
+
+```java
+Manager boss = new Manager();
+Employee[] staff = new Employee[3];
+staff[0] = boss;
+```
+
+在变量`staff[0]`与`boss`引用同一个对象. 但编译器将`staff[0]`看成`Employee`对象
+
+这就意味着,可以这样调用
+
+```java
+boss.setBonus(5000);
+```
+
+但是不能这样调用
+
+```java
+staff[0].setBonus(5000);
+```
+
+这是因为`staff[0]`声明的类型是`Employee`,而`setBonus`不是`Employee`类的方法
+
+然而,不能将一个超类的引用赋给子类变量.例如下面的赋值就是非法的
+
+```java
+Manager m = staff[0];
+```
+
+原因很清楚: 不是所有的雇员都是经理.
+
+如果赋值成功,`m`有可能引用了一个不是经理的`Employee`对象,当后面调用`setBonus`时就有可能发生运行时错误
+
+### 理解方法调用
+
 
 ## Object类
 ## 对象包装器与自动装箱
