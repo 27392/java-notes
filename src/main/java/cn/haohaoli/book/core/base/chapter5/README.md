@@ -137,6 +137,27 @@ super(name, salary, year, month, day);
 >
 > 构造参数即可以传递给本类(this)的其他构造器,也可以传递给超类(super)的构造器
 
+### 继承层次
+
+继承并不仅限于一个层次.
+
+例如: 可以由`Manager`类派生`Executive`类.有一个公共超类派生出来的所有类的集合被称为"继承层次"(inheritance hierarchy)
+
+在继承层次中,从某个特定的类到其祖先的路径被称为该类的继承连(inheritance chain)
+
+    // 继承层次
+    
+          Employee
+       ┌-----↑-----┐
+    Manager    Secretary
+       ↑
+    Executive
+    
+通常,一个祖先类可以拥有多个子孙继承链.
+
+例如,可以由`Employee`类派生出子类`Secretary`它与`Manager`类没任何关系. 必要的话可以将这个过程一直延迟下去
+
+> Java 中不支持多继承
 
 ## Object类
 ## 对象包装器与自动装箱
