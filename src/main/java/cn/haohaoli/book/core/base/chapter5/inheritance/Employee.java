@@ -25,24 +25,12 @@ public class Employee {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
     public LocalDate getHireDay() {
         return hireDay;
-    }
-
-    public void setHireDay(LocalDate hireDay) {
-        this.hireDay = hireDay;
     }
 
     public void raiseSalary(double b) {

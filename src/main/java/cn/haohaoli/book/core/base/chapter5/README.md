@@ -101,9 +101,9 @@ public double getSalary() {
     return baseSalary + bonus;
 }
 ```
-> 有些人认为super与this引用是类似的概念,实际上,这样比较并不太恰当.
+> 有些人认为`super`与`this`引用是类似的概念,实际上,这样比较并不太恰当.
 >
-> 这是因为super不是一个对象的引用,不能讲super赋给另一个对象变量,它只是一个指示编译器调用超类方法的特殊关键字
+> 这是因为`super`不是一个对象的引用,不能讲`super`赋给另一个对象变量,它只是一个指示编译器调用超类方法的特殊关键字
 
 ### 子类构造器
 
@@ -214,6 +214,160 @@ Manager m = staff[0];
 如果赋值成功,`m`有可能引用了一个不是经理的`Employee`对象,当后面调用`setBonus`时就有可能发生运行时错误
 
 ### 理解方法调用
+
+弄清楚如何在对象上应用方法调用非常重要. 
+
+下面假设要调用`x.f(args)`,隐式参数`x`声明为类C的一个对象.下面是调用过程的详细描述
+
+```java
+public class C{
+    public f(int i) {}
+    public f(String s) {}
+}
+
+C x = new C();
+x.f(args);
+```
+1)  
+    编译器查看对象的声明类型和方法名. 假设嗲用`x.f(param)`,且隐式参数`x`声明为`C`的类对象
+
+    需要注意的是: 有可能存在多个名字为`f`,但是参数类型不一样的方法.
+
+    例如,可能存在方法`f(int)`和方法`f(String)`. 
+
+    编译器将会一一例举所有`C`类中名为`f`的方法 和其超类中访问属性为`public`且方法名为`f`的方法(超类的私有方法不可访问)
+
+    至此,编译器已获得所有可能被调用的候选方法
+   
+2)  
+    接下来,编译器将查看调用方法时提供的参数类型.
+    
+    如果在所有名为`f`的方法中存在一个与提供的参数类型完全匹配,就选择这个方法.这个过程被称为**重载解析**
+    
+    例如, 对于调用`x.f("hello")`来说,编译器会挑选`f(String)`,而不是`f(int)`
+    
+    由于允许类型转换(int可以转换成double,Manager可以转换成Employee,等等),所以这个过程可能很复杂
+    
+    如果编译器没有找到与参数类型匹配的方法,或者发现经过类型转换后有多个方法与之匹配,就会报告一个错误
+    
+    至此,编译器已获得需要调用的方法名字和参数类型
+    
+    > 之前说过,**方法的名字和参数列表称为方法的签名.** _(第4章重载有介绍)_
+    > 
+    > 例如, `f(int)`和`f(String)`是两个具有县共同名字,不用签名的方法.
+    > 
+    > 如果在子类中定义了一个与超类签名相同的方法,那么子类中的这个方法就覆盖了超类中的这个相同签名的方法
+    > 
+    > **不过返回类型不是签名的一部分**,因此,在覆盖方法时,一定要保证返回类型的兼容性
+    >
+    > 允许子类将覆盖方法的返回类型定义为原返回类型的子类型,
+    >
+    > 例如,假设Employee类有
+    > ```java
+    > public Emplyee getBuddy(){}
+    > ```
+    > 但是经理不会想找到非经理的员工,为反映这一点,在后面的子类`Manager`中可以按照如下所示的方式覆盖整个方法
+    > ```java
+    > public Manager getBuddy(){}
+    > ```
+    > 我们说,这两个getBuddy方法具有可协变的返回类型
+3)
+    
+    可以具体参考: https://www.cnblogs.com/ygj0930/p/6554103.html
+    
+    如果是`private`方法、`static`方法、`final`方法或者构造器
+    
+    那么编译器将可以准确的知道应该调用哪个方法,我们将这种调用方式成为静态绑定
+    
+    于此对应的是,调用的方法依赖于隐式参数的实际类型,并且在运行时实现动态绑定
+
+4)
+    当程序运行,并且采用动态绑定方法时,虚拟机一定调用与x所引用对象的实际类型最合适的那个类的方法
+    
+    假设x的实际类型是D,他是C类的子类,如果D类定义了一个方法`f(String)`,就直接调用它
+    
+    ```java
+    public class D extends C {
+       public void f (String s) {};
+    }   
+    C x = new C();
+    x.f(agrs);
+    // 此时调用的是D类中的f(String)
+    ```
+    
+    否则,将在D类的超类中寻找`f(String)`,以此类推
+    
+    每次调用方法都要进行搜索,事件开销相当大.
+    
+    因此,虚拟机预先为每个类创建了一个**`方法表`**,其中列出了所有方法的签名和实际调用的方法
+    
+    这样一来,在真正调用方法的时候,虚拟机仅查找这个表就行.
+    
+    在前面的例子中,虚拟机搜索D类的方法表,以便寻找与调用`f(String)`想匹配的方法
+    
+    这个方法既有可能是`D.f(String)`,也有可能是`C.f(String)`,这里的C是D的超类
+    
+    > 如果调用super.f(String),编译器将对隐式参数超类的方法表进行搜索
+    
+    举个例子:
+    ```java
+    Employee e = new Manager();
+    e.getSalary();
+    ```
+    这里e声明为Employee类型
+    
+    Employee类只有一个名叫`getSalary`的方法,这个方法没有参数,因此不必担心重载解析的问题
+    
+    由于`getSalary`不是`private`方法、`static`方法或final方法,所以讲采用动态绑定
+    
+    虚拟机为Employee和Manager两个类生成方法表
+    
+    在Employee的方法表中,列出了这个类定义的所有方法
+      
+    ```    
+    Employee
+        getName()           -> Emplyee.getName()
+        getSalary()         -> Emplyee.getSalary()
+        getHireDay()        -> Emplyee.getHireDay()
+        raiseSalary(double) -> Emplyee.raiseSalary(double)
+    ```
+    实际上,上面列出的方法并不完整,我们只看我们定义的方法
+    
+    Manager方法表则稍微有些不同,其中有三个方法是继承而来,一个方法时重新定义的,还有一个方法是新增加的
+    
+    ```    
+    Manager
+        getName()           -> Emplyee.getName()
+        getSalary()         -> Emplyee.getSalary()
+        getHireDay()        -> Emplyee.getHireDay()
+        raiseSalary(double) -> Emplyee.raiseSalary(double)
+        setBonus(double)    -> Emplyee.setBonus(double)
+    ```
+    在运行时,调用`e.getSalary`的解析过程为:
+    
+     1) 首先,虚拟机提取`e`的实际类型的方法表.即可能是`Employee、Manager`的方法表,也有可能是其他子类的方法表
+        
+     2) 接下来,虚拟机搜索定义`getSalary`签名的类. 此时,虚拟机已经知道应该调用哪个方法
+        
+     3) 最后虚拟机调用方法
+    
+    动态绑定有一个非常重要的特性:无需对现存的代码进行修改,就可以对程序进行拓展
+    
+    假设增加一个新类`Executive`类,并且变量`e`有可能引用这个类的对象,我们不需要对包含调用`e.getSalary()`的代码进行重新编译
+    
+    如果`e`恰好引用一个`Executive`类的对象,就会自动的调用`Executive.getSalary()`方法
+    
+> 注意 :
+>
+> 在覆盖一个方法的时候,子类方法不能低于超类方法的可见性.
+>
+> 特别是,如果超类方法时`public`,子类方法一定要声明为`public` 
+    
+   
+
+
+
+
 
 
 ## Object类
