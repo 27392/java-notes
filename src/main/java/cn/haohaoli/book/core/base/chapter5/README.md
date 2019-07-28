@@ -461,7 +461,7 @@ String s = (String)staff[1];
 
 重新设计超类,并添加`setBonus`方法才是正确的选择
 
-请记住,只要木有捕获`ClassCastException`异常,程序就会终止执行.在一般青空下,尽量少用类型转换和`instanceof`运算符
+请记住,只要没有捕获`ClassCastException`异常,程序就会终止执行.在一般青空下,尽量少用类型转换和`instanceof`运算符
 
 + 总结:
 
@@ -474,6 +474,111 @@ String s = (String)staff[1];
 > 之所以这样是因为null没有引用任何对象,当然也不会引用C类型的对象
 
 ### 5.1.9 - 抽象类
+
+如果自下而上在类的继承层次结构上移,位于上层的类更具有通用性,甚至可能更加抽象
+
+从某种角度看,祖先类更加通用,人们只将它作为派生其他类的基类,而不作为想使用的特定的实例类
+
+例如,考虑一下对Employee类层次的拓展. 一个雇员是一个人,一个学生也是一个人. 下面将类Person和Student添加到类的层次结构中
+
+    // 层次图
+    
+           Person
+       ┌-----↑-----┐
+    Employee    Student
+    
+为什么要花费精力进行这样高层的抽象呢? 每个人都有一些诸如姓名这样的属性.
+
+学生与雇员都有姓名属性,因此可以将getName方法放置在位于继承关系较高层次的通用超类中
+
+现在,在增加一个getDescription方法,它可以返回对一个人的简短描述. 例如:
+    
+     年薪50,000.00美元的员工
+     
+     计算机科学专业的学生
+
+在Employee类和Student类中实现这个方法很容易. 但是要提供什么功能呢?除了姓名之外,Person类一无所知. 
+
+当然,可以让Person中的getDescription方法返回一个空字符串
+
+然而还有一个更好的办法,就是使用`abstract`关键字,这样就不需要实现这个方法了. 例如:
+
+```java
+public abstract String getDescription();
+```
+
+为了提高程序的清晰度,**包含一个或多个抽象方法的类本身必须被声明为抽象的**
+
+```java
+public abstract class Person{
+    public abstract String getDescription();
+}
+```
+除了抽象的方法之外,抽象类还可以包含具体数据和具体的方法. 例如,Person类还保存着姓名和一个返回姓名的具体方法
+
+```java
+public abstract class Person{
+    private String name;
+    
+    public Person (String name) {
+        this.name = name;
+    }
+    
+    public abstract String getDescription();
+    
+    public String getName () {
+        return this.name;
+    }
+}
+```
+
+> 建议尽量将通用的域和方法(不管是不是抽象的)放在超类(不管是否是抽象类)中
+
+**抽象方法充当着占位的角色,他们的具体实现在子类中**
+
+拓展抽象类可以有两种选择一种是在抽象类中定义部分抽象类方法或不定义抽象类方法,
+
+这样就必须将子类也标记为抽象类;另一种是定义全部的抽象方法,这样依赖子类就不是抽象的了
+
+例如,通过拓展抽象Person类,并实现`getDescription`来定义`Student`类,由于Student类中不再包含有抽象方法,也可以将类声明为抽象类
+
+**类即使不包含抽象方法,也可以将类声明为抽象类**
+
+**抽象类不能被实例化.也就是说,如果将一个类声明为`abstract`,就不能创建这个类的对象**.例如,代码
+
+```java
+new Person();
+```
+
+是错误的,但可以创建一个具体子类的对象.
+
+**需要注意,可以定义一个抽象类的对象变量,但是他只能引用非抽象子类的对象.** 例如,
+
+```java
+Person p = new Student("xx","desc");
+```
+
+这里的`p`是一个抽象类Person的变量,`Person`引用了一个非抽象子类`Student`的实例
+
+下面定义一个拓展抽象类Person的具体子类Student
+
+```java
+public class Student extends Person {
+    
+    private Strint major;
+    
+    public Student (String name, String major){
+        super(name);
+        this.major = major;
+    }
+    
+    public String getDescription() {
+        return major + "专业学生";
+    }
+}
+```
+
+在`Student`类中定义了`getDescription`方法. 因此,在Student类中的全部方法都是非抽象的,这个类不再是抽象类
 
 ### 5.1.10 - 访问修饰符
 

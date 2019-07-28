@@ -20,7 +20,7 @@ public class Employee extends Person {
      *      1 ) 仅对本类可见 private。
      *      2 ) 对所有类可见 public:
      *      3 ) 对本包和所有子类可见 protected。
-     *      4 ) 对本包可见—默认(很遗憾，) 不需要修饰符。
+     *      4 ) 对本包可见—默认(很遗憾) 不需要修饰符。
      */
     protected LocalDate hireDay;
 
@@ -39,20 +39,8 @@ public class Employee extends Person {
         return salary;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
     public LocalDate getHireDay() {
         return hireDay;
     }
 
-    public void setHireDay(LocalDate hireDay) {
-        this.hireDay = hireDay;
-    }
-
-    public void raiseSalary(double b) {
-        double v = salary * b / 100;
-        salary += v;
-    }
 }
