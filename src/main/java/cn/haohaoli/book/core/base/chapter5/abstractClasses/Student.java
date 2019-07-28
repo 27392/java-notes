@@ -15,6 +15,6 @@ public class Student extends Person {
 
     @Override
     public String getDescription() {
-        return major;
+        return major + "专业";
     }
 }
