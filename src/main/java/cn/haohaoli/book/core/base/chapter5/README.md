@@ -574,7 +574,7 @@ public class Student extends Person {
     
     public String getDescription() {
         return major + "专业学生";
-    };
+    }
 }
 ```
 
@@ -697,7 +697,7 @@ public class Employee {
 > return Objects.equals(name, e.name) && salary == e.salary && Objects.equals(hireDay,e.hireDay);
 > ```
 > 
-> 在子类中定义`equals`方法时,首先调用超类的equals, 如果超类中的域都相等,就需要比较子类的中实例域
+> **在子类中定义`equals`方法时,首先调用超类的`equals`, 如果超类中的域都相等,就需要比较子类的中实例域**
 >
 > ```java
 > public class Manager extends Employee {
@@ -707,12 +707,114 @@ public class Employee {
 >    public boolean equals (Object o) {
 >        if (!super.equals(o)) return false;
 >        Manager m = (Manager) o;
->        return bonus == m.bonus; 
+>        return bonus == m.bonus;
 >    }
 > }
 > ```
 
 ### 5.2.2 相等测试与继承
+
+如果隐式和显式的参数不属于同一个类,equals方法将如何处理呢? 这是一个很有争议的问题.
+
+在前面的列子中,如果发现类不匹配,equals方法就返回false. 但是很多人却喜欢用`instanceof`进行检查
+
+```java
+if(!(o instanceof Employee)) rerurn false;
+```
+
+这样做不但没有解决`o`是子类的情况,并且还有可能会招致一些麻烦.这就是建议不要使用这种处理方式的原因所在.
+
+Java语言规范要求`equals`方法具有下面的特性:
+
+1. **自反性: 对于任何非空引用x, `x.equals(x)`应该返回true**
+2. **对称性: 对于任何引用x和y,当且仅当`y.equals(x)`返回true,`x.equals(y)`也应该返回true**
+3. **传递性: 对于任何引用x、y和z,如果x.equals(y)返回true,`y.equals(z)`返回true,`x.equals(z)`也应该返回true**
+4. **一致性: 如果x和y引用的对象没有发生变化,反复调用`x.equals(z)`应该返回true**
+5. **对于任意非空引用x,`x.equals(null)`应该返回false**
+
+这些规则十分合乎情理,从而避免了类库实现者在数据结构中定位一个元素是还要考虑`x.equals(y)`,还是调用`y.equals(x)`的问题
+
+然而,就`对称性`来说,当参数不属于同一个类的时候需要仔细的思考一下. 看下面这个调用
+
+```java
+e.quals(m)
+```
+
+这里的`e`是一个Employee对象,`m`是一个Manager对象,并且两个对象具有相同的姓名、薪水和雇佣日期
+
+如果在`Employee.equals`中用instanceof进行检查,则返回true. 然而这意味着反着来调用:
+
+```java
+m.equals(e)
+```
+
+也需要返回true.`对称性`不允许这个方法调用返回false,或抛出异常
+
+这就使得Manager类受到了束缚. 这个类的`equals`方法必须能够用自己与任何一个Employee对象进行比较, 而不考虑经理拥有的那部分特有信息! 猛然间会让人感觉`instanceof`检查并不是完美无瑕
+
+有些人认为不应该利用`getClass`来检查,因为这样不符合`置换原理`(具体没仔细研究,暂时就不解释这个了)
+
+下面可以从两个截然不同的情况看一下这个问题:
+
++ **如果子类能够拥有自己的相等概念,则`对称性`需求将采用`getClass`进行检查.**
+
++ **如果由超类决定相等的概念那么就可以使用`instanceof`进行检查,这样可以在不用的子类对象之间进行相等的比较**
+
+在雇员和经理的例子中,只要对应的域相等,就认为两个对象相等.
+
+如果两个Manager对象所对应的姓名、薪水和雇佣日期均相等,而奖金不同就认为他们是不相同的,因此可以使用`getClass`检查
+
+但是,假设使用雇员的ID作为相等的检测标准,并且这个相等的概念适用于所有的子类,就可以使用`instanceof`进行检查,并应该将`Employee.equals`声明为`final`
+
+> 编写一个完美的equals方法的建议
+>
+> 1. 显式参数命名`o`,稍后需要将它转换成另一个叫`other`的变量
+> 
+> 2. 检测`this`与`o`是否引用同一个对象
+>
+>   ```java
+>    if (this == o) return true;
+>   ```
+>
+>   这条语句只是一个优化.
+>    
+>   实际上,这是一种经常采用的形式. 因为计算这个等式要比一个一个地比较类中的域所付出的代价小得多
+>
+> 3. 检测 `o` 是否为null,如果为null,返回false,这项检测是很重要的
+>
+>   ```java
+>   if (o == null) return false;
+>   ```
+>
+> 4. 比较`this`与`o`是否属于同一个类. 如果`equals`的语义在每个子类中有所改变,就使用`getClass`检测
+>
+>   ```java
+>   if (getClass() != o.getClass()) return false;
+>   ``` 
+> 
+>   如果所有的子类都拥有统一的语义,就是用`instanceof`检测
+>
+>   ```java
+>   if (o instanceof ClassName) return false;
+>   ```
+>   
+> 5. 将`o`转换为相应的类类型变量
+>
+>   ```java
+>   ClassName other = (ClassName) o;
+>   ```
+> 
+> 6. 现在开始对所有需要比较的域进行比较了,使用`==`比较基本类型域,使用`equals`比较对象域
+>
+>   如果所有的域都匹配,就返回`true`;否者返回`false`
+>
+>   ```java
+>   return field1 = other.field1 && Objects.equals(field2,other.field2);
+>   ```
+>
+>   如果在子类中定义了`equals`,就要在其中包含调用`super.equals(other)`
+
+> **对于数值类型域,可以使用静态的`Arrays.equals`方法检测相应的数组元素是否相等**
 
 ## 5.4 - 对象包装器与自动装箱
 ## 5.5 - 参数数量可变的方法

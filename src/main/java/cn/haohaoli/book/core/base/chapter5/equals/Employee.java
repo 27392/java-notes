@@ -60,8 +60,8 @@ public class Employee {
      *      if (!(otherObject instanceof ClassName)) return false;
      *  5 ) 将 otherObject 转换为相应的类类型变量: ClassName other = (ClassName) otherObject
      *  6 )现在开始对所有需要比较的域进行比较了。使用= 比较基本类型域，使用equals比 较对象域。如果所有的域都匹配，就返回true; 否则返回false。
-     *      return fieldl == other.field
-     *      && Objects.equa1s(fie1d2, other.field2)
+     *      return field == other.field
+     *      && Objects.equals(fie1d2, other.field2)
      *      && ...
      *  如果在子类中重新定义equals, 就要在其中包含调用super.equals(other)
      */
@@ -69,10 +69,10 @@ public class Employee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Double.compare(employee.salary, salary) == 0 &&
-                Objects.equals(name, employee.name) &&
-                Objects.equals(hireDay, employee.hireDay);
+        Employee other = (Employee) o;
+        return Double.compare(other.salary, salary) == 0 &&
+                Objects.equals(name, other.name) &&
+                Objects.equals(hireDay, other.hireDay);
     }
 
     /**
