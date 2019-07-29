@@ -23,5 +23,6 @@ public class ObjectTest {
         Employee[] staff = new Employee[10];
         obj = staff;        // OK
         obj = new int[10];  // OK
+
     }
 }

@@ -16,7 +16,6 @@ public class EqualsTest {
          *  资料：
          *      https://www.cnblogs.com/Eason-S/p/5524837.html
          *      https://www.cnblogs.com/tinyphp/p/3768214.html
-         *
          */
         Employee alice1 = new Employee("a",75000,1987,12,15);
         Employee alice2 = alice1;

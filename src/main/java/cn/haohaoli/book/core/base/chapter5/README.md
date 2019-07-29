@@ -614,6 +614,106 @@ public class Student extends Person {
   - 4.**对本包可见 - 默认,不需要修饰符**
 
 ## 5.2 - Object类
+
+Object类是Java中所有类的始祖,在Java中每个类都是有它拓展而来的.但是并不需要这样写
+
+```java
+public class Employee extends Object{
+}
+```
+如果没有明确的指出超类,Object就被认为是这个类的超类. 
+
+由于在Java中每个类都是由Object类拓展而来的,所以熟悉这个类供的所有服务十分重要
+
+我们可以用使用Object类型的变量引用任何类型的对象
+
+```java
+Object obj = new Employee();
+```
+
+当然,Object类型的变量只能用于作为各种值得通用拥有者.
+
+要想对其中的内容进行具体的操作,还需要清楚对象的原始类型,并进行相应的类型转换
+
+```java
+Object obj = new Employee();
+Employee e = (Employee) obj;
+```
+
+在Java中只有基本类型不是对象,例如,数值、字符和布尔类型的值都不是对象
+
+**所有的数值类型,不管是对象数值还是基本类型的数值都拓展了Object类**
+
+```java
+Object obj = new Employee();
+Employee[] staff = new Employee[10];
+obj = staff;        // OK
+obj = new int[10];  // OK
+```
+### 5.2.1 - equals方法
+
+**Object类中的`equals`方法用于检测一个对象是否等于另一个对象.**
+
+在Object类中,这个方法将判断两个对象是否具有相同的引用,如果两个对象具有相同的引用,他们一定是相等的.
+
+对于多数的类来说,这种判断并没有什么意义. 例如:
+
+采用这种方法比较两个`PrintStream`对象是否相等就完全没有意义
+
+然而,经常需要检测两个对象状态的相等性,如果两个对象的状态相等,就认为这两个对象是相等的
+
+例如: 如果两个雇员对象的姓名、薪水和雇佣日期都一样,就认为他们是相等的
+
+```java
+public class Employee {
+    
+    private String name;
+    private double salary;
+    private LocalDate hireDay;
+
+    public boolean equals(Object o) {
+        //检查引用是否一致
+        if (this == o) return true;
+        //如果为空返回false
+        if (o == null) return false;
+        //判断类型
+        if (getClass() != o.getClass()) return false;
+        Employee e = (Employee) o;
+        //检查字段是否具有相同的值
+        return name.equals(e.name) && salary == e.salary && hireDay.equals(o.hireDay);
+    }
+}
+```
+
+**`getClass`方法将返回一个对象所属的类,只有在两个对象属于同一个类时,才有可能相等**
+
+> 为了防止`name`或`hireDay`可能为null的情况,需要使用`Objects.equals`方法
+>
+> 如果两个参数都为null,`Objects.equals(a,b)`调用将返回true;如果其中一个参数为null,则返回false
+> 
+> 否则,如果两个参数都不为null,则调用`a.equals(b)`,利用这个方法,Employee.equals方法的最后一条语句要改写为:
+>
+> ```java
+> return Objects.equals(name, e.name) && salary == e.salary && Objects.equals(hireDay,e.hireDay);
+> ```
+> 
+> 在子类中定义`equals`方法时,首先调用超类的equals, 如果超类中的域都相等,就需要比较子类的中实例域
+>
+> ```java
+> public class Manager extends Employee {
+>    
+>    private double bonus;
+>    
+>    public boolean equals (Object o) {
+>        if (!super.equals(o)) return false;
+>        Manager m = (Manager) o;
+>        return bonus == m.bonus; 
+>    }
+> }
+> ```
+
+### 5.2.2 相等测试与继承
+
 ## 5.4 - 对象包装器与自动装箱
 ## 5.5 - 参数数量可变的方法
 ## 5.6 - 枚举

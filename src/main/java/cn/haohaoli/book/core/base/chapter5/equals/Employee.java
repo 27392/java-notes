@@ -26,24 +26,12 @@ public class Employee {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
     public LocalDate getHireDay() {
         return hireDay;
-    }
-
-    public void setHireDay(LocalDate hireDay) {
-        this.hireDay = hireDay;
     }
 
     public void raiseSalary(double b) {
@@ -67,7 +55,7 @@ public class Employee {
      *  3 ) 检测 otherObject 是否为 null , 如 果 为 null , 返 回 false。 这项检测是很必要的。
      *      if (otherObject = null) return false;
      *  4 ) 比较 this 与 otherObject 是否属于同一个类。如果 equals 的语义在每个子类中有所改 变， 就使用 getClass 检测:
-     *      if (getClass() != otherObject.getCIassO) return false;
+     *      if (getClass() != otherObject.getClass) return false;
      *      如果所有的子类都拥有统一的语义， 就使用 instanceof 检测:
      *      if (!(otherObject instanceof ClassName)) return false;
      *  5 ) 将 otherObject 转换为相应的类类型变量: ClassName other = (ClassName) otherObject
