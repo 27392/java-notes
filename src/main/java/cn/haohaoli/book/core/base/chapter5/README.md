@@ -816,6 +816,91 @@ m.equals(e)
 
 > **对于数值类型域,可以使用静态的`Arrays.equals`方法检测相应的数组元素是否相等**
 
+### hashCode
+
+**散列码(hash code)是由对象导出的一个整数值,散列码是没有规律的**
+
+如果`x`和`y`是两个不同的对象,`x.hashCode()`与`y.hashCode()`基本不会相同
+
+**由于`hashCode`方法定义在`Object`类中,因此每个对象都有一个默认的散列值,其值为对象的储存地址**
+
+举个例子:
+
+```java
+String s = "Ok";
+StringBuilder sb = new StringBuilder(s);
+String t = new String("Ok");
+StringBuilder tb = new StringBuilder(t);
+
+//结果
+// s = 2556 ; sb = 1146848448
+// t = 2556 ; tb = 1638215613
+```
+
+请注意,字符串变量`s`,与`t`拥有相同的散列码,这是因为字符串的散列码是由内容导出的,而`String`类中重新定义了`hashCode`
+
+`String`类中定义的`hashCode`方法:
+
+```java
+public int hashCode() {
+    int h = hash;
+    if (h == 0 && value.length > 0) {
+        char val[] = value;
+        for (int i = 0; i < value.length; i++) {
+            h = 31 * h + val[i];
+        }
+        hash = h;
+    }
+    return h;
+}
+```
+
+然而字符串缓冲类型变量`sb`与`tb`却有着不同的散列码,这是因为在`StringBuilder`类中没有定义`hashCode`方法,所以它的散列码是有Object类的默认`hashCode`方法导出的对象储存地址
+
+如果重新定义`equals`方法,就必须重新定义`hashCode`,以便用户可以将对象插入散列表中(例如HashMap等)
+
+`hashCode`方法应该返回一个整型数值(也可以是负数),并合理的组合实例域的散列码以便能够让各个不同的对象产生的散列码更加均匀
+
+例如,我们在`Employee`类中定义`hashCode`方法
+
+```java
+public int hashCode(){
+    return 7 * name.hashCode()
+        + 11 * new Double(salary).hashCode()
+        + 13 * hireDay.hashCode();     
+}
+```
+
+不过,还可以做得更好. 首先,最后使用null安全的`Objects.hashCode`如果其参数为null,这个方法会返回0,否则返回对参数调用hashCode的结果
+
+另外,使用静态方法`Double.hashCode`来避免创建Double对象
+
+```java
+public int hashCode(){
+    return 7 * name.hashCode()
+        + 11 * Double.hashCode(salary)
+        + 13 * hireDay.hashCode();  
+}
+```
+
+还有更好的做法,需要组合多个散列值时,可以调用`Objects.hash`并提供多个参数.
+
+这个方法会对各个参数调用`Objects.hashCode`,并组合这些散列值.
+
+```java
+public int hashCode(){
+    return Objects.hash(name,salary,hireDay);
+}
+```
+
+`equals`与`hashCode`的定义必须一致: 如果`x.equals(y)`返回true,那么`x.hashCode()`就必须与`y.hashCode`具有相同的值
+
+假如,用定义的`Employee.equals`比较雇员的ID,那么`hashCode`方法就需要散列ID,而不是雇员的姓名或存储地址等信息
+
+> 如果存在数组类型的域,那么可以使用静态的`Arrays.hashCode`方法计算一个散列码,这个散列码由数组元素的散列码组成
+
+### toString
+
 ## 5.4 - 对象包装器与自动装箱
 ## 5.5 - 参数数量可变的方法
 ## 5.6 - 枚举

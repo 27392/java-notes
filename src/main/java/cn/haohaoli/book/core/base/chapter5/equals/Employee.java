@@ -89,7 +89,7 @@ public class Employee {
 
     /**
      * TODO toString
-     *   toString方法， 它用于返回表示对象值的字符串
+     *   toString方法,它用于返回表示对象值的字符串
      *   随处可见 toString 方法的主要原因是: 只要对象与一个字符串通过操作符 "+" 连接起来， Java 编译就会自动地调用 toString 方法，
      *
      * @return
