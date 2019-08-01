@@ -816,7 +816,7 @@ m.equals(e)
 
 > **对于数值类型域,可以使用静态的`Arrays.equals`方法检测相应的数组元素是否相等**
 
-### hashCode
+### 5.2.3 - hashCode
 
 **散列码(hash code)是由对象导出的一个整数值,散列码是没有规律的**
 
@@ -881,7 +881,7 @@ public int hashCode(){
         + 11 * Double.hashCode(salary)
         + 13 * hireDay.hashCode();  
 }
-```
+````
 
 还有更好的做法,需要组合多个散列值时,可以调用`Objects.hash`并提供多个参数.
 
@@ -899,7 +899,117 @@ public int hashCode(){
 
 > 如果存在数组类型的域,那么可以使用静态的`Arrays.hashCode`方法计算一个散列码,这个散列码由数组元素的散列码组成
 
-### toString
+### 5.2.4 - toString
+
+在`Object`类中还有一个重要的方法,就是`toString`方法,它用于返回表示对象值的字符串.
+
+例如`Point`类的`toString`方法将返回下面这样的字符串
+
+```java
+System.out.print(new Point());
+//java.awt.Point[x=0,y=0]
+```
+
+绝大多数(但不是全部)的`toString`方法都遵循这样的格式: 类的名字,随后是一对括号括起来的域值
+
+下面是`Employee`类中的`toString`方法实现
+
+```java
+public String toString() {
+    return "Employee[" + "name='" + name +
+            ", salary=" + salary +
+            ", hireDay=" + hireDay +
+            ']';
+}
+```
+
+实际上,还可以设计的更好一些,最好通过调用`getClass().getName()`获得类名的字符串,而不要将类名硬加到`toString`方法中
+
+```java
+public String toString() {
+    return getClass().getName() + "[" + "name='" + name +
+            ", salary=" + salary +
+            ", hireDay=" + hireDay +
+            ']';
+}
+```
+
+`toString`方法也可以供子类调用.
+
+当然,设计子类也应该定义自己的`toString`方法,并将子类域的描述添加进去
+
+如果超类使用了`getClass().getName()`,那么子类只要调用`super.toString()`就可以了,例如下面是`Manager`类中的`toString`方法
+
+```java
+public class Manager extends Employee {
+    
+    public String toString(){
+        return super.toString() + 
+            "[bonus= " + bonus + 
+            "]";
+    }
+}
+```
+
+现在,`Manager`对象将打印输出如下所示内容:
+
+    Manager[name=...,salary=...,hireDay=...][bonus=...]
+
+随处可见`toString`方法主要原因是: 只要对象与一个字符串通过操作符`"+"`连接起来,java编译就会自动的调用`toString`方法
+
+> 在调用`x.toString()`的地方可以用`""+x`代替.
+>
+> 这条语句将一个空串与x的字符串表示相连接,这里的x就是toString(), 与toString不同的是,如果x是基本类型,这条语句照样能执行
+
+如果x是任意一个对象,并调用
+
+```java
+System.out.println(x);
+```
+
+`println`方法就会直接的调用`x.toString()`,并打印输出得到的字符串
+
+Object类定义了`toString`方法,用于打印输出对象所属的类名和散列码. 
+
+```java
+public String toString() {
+    return getClass().getName() + "@" + Integer.toHexString(hashCode());
+}
+```
+
+例如,调用:
+
+```java
+System.out.println(System.out);
+```
+
+将输出下列内容
+
+    java.io.PrintStream@445b84c0
+
+之所以得到这样的结果是因为`PrintStream`类没有覆盖`Object`类的`toString`方法
+
+> 注意:
+>
+> 数组继承了Object类的toString方法,数组类型将调用Object类中的toString方法打印
+>
+> 例如:
+> 
+> ```java
+> int[] arrays = {1,2,3,4,5};
+> String s = "" + arrays;
+> // [I@135fbaa4
+> ```
+>
+> 打印结果`[I@135fbaa4`,(前缀[I表明是一个整型数组). 修正的方式是调用静态方法`Arrays.toString`. 代码:
+>
+> ```java
+> String s = Arrays.toString(arrays);
+> ``` 
+> 
+> 将生成字符串`[1,2,3,4,5]`.
+>
+> 想要打印多维数组则需要调用`Arrays.deepToString`方法
 
 ## 5.4 - 对象包装器与自动装箱
 ## 5.5 - 参数数量可变的方法
