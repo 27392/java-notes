@@ -1079,11 +1079,76 @@ int i = total.intValue();
 >
 > 包装器中的`equals`将自动调用包装类的基本类型的值进行对比
 > 
-> 自动装箱规范要求 `byte、char <= 127`,介于`-128 ~ 127`之间的`short`和`int`被包装到固定的对象中
+> **自动装箱规范要求 `byte、char <= 127`,介于`-128 ~ 127`之间的`short`和`int`被包装到固定的对象中**
 > 
-> 例如,如果在前面的例子中将`x`和`y`初始化为100,对他们进行比较的结果一定成立. 因为被缓冲了
+> **例如,如果在前面的例子中将`x`和`y`初始化为100,对他们进行比较的结果一定成立. 因为被缓冲了**
 
 ## 5.5 - 参数数量可变的方法
+
+在JDK5之前的版本中,每个Java方法都有固定数量的参数.然而,现在的版本提供了可以用可变的参数数量调用的方法
+
+前面已经看到过这样的方法: `printf`. 例如下面的方法调用
+
+```java
+System.out.printf("%d", n);
+System.out.printf("%d %s", n, "hello");
+```
+
+在上面两条语句中,尽管一个调用包含两个参数,另一个调用包含三个参数,但他们调用的都是用一个方法.
+
+在`printf`方法是这样定义的:
+
+```java
+public PrintStream printf(String format, Object ... args) {
+    return format(format, args);
+}
+```
+
+这里的省略号`...`是Java代码的一部分,它表明这个方法可以接受任意数量的对象(除`format`参数之外)
+
+实际上,`printf`方法接受两个参数,一个是格式字符串,另一个是`Object[]`数组,其中保存着所有的参数 (如果调用者提供的是整型数组或者其他其他基本类型的值,自动装箱功能将他们转换成对象)
+
+现在将扫描`format`字符串,并将第`i`个格式说明符域`arg[i]`的值匹配起来
+
+换句话说,对于`print`的实现着来说,`Object...`参数类型与`Object[]`完全一样
+
+编译器需要对`print`的每次调用进行转换,以便将参数绑定到数组上,并在必要的时候进行自动装箱
+
+```java
+System.out.printf("%d %s", new Object[]{new Integer(n), "hello"});
+```
+
+用户自己也可以定义可变参数的方法,并将参数指定为任意类型,甚至是基本类型. 
+
+下面是一个简单的实例: 其功能为计算若干个数值的最大值
+
+```java
+public static double max (double... values) {
+    double largest = Double.NEGATIVE_INFINITY;
+    for(double v : values) {
+        if (v > largest) {
+            largest = v;
+        }
+    }
+}
+```
+
+可以像下面这样调用这个方法:
+
+```java
+double n = max(3.1, 40.4, -5);
+```
+
+编译器将`new double[] {3.1, 40.4, -5}`传递给`max`方法
+
+> 允许将一个数组传递给可变参数方法的最后一个参数. 例如:
+> 
+> ```java
+> System.out.printf("%d %s", new Object[]{new Integer(1), "hello"});
+> ```
+> 
+> 因此,可以将依据存在且最后一个参数是数组的方法重新定义为可变参数的方法,而不会破坏任何已经存在的代码
+
 ## 5.6 - 枚举
 ## 5.7 - 反射
 ## 5.8 - 继承的设计技巧
