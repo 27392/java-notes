@@ -1150,5 +1150,62 @@ double n = max(3.1, 40.4, -5);
 > 因此,可以将依据存在且最后一个参数是数组的方法重新定义为可变参数的方法,而不会破坏任何已经存在的代码
 
 ## 5.6 - 枚举
+
+下面是定义一个枚举类型的经典例子:
+
+```java
+public enum Size {
+    SMALL, MEDIUM, LARGE, EXTRA_LARGE;
+}
+```
+
+实际上,这个声明定义的类型是一个类,它刚好有4个实例,在此尽量不要构造新对象
+
+因此,在比较两个枚举类型的值时,永远不需要调用`equals`,而直接使用`==`就可以了
+
+如果需要的话,可以在枚举类型中添加一些构造器、方法和域. 当然构造器只是在构造枚举常量的时候被调用. 例如:
+
+```java
+public enum Size {
+    SMALL("S"), MEDIUM("M"), LARGE("L"), EXTRA_LARGE("XL");
+    
+    private String abbreviation;
+    
+    public Size (String abbreviation){
+        this.abbreviation = abbreviation;
+    }
+    
+    public String getAbbreviation(){
+        return this.abbreviation;
+    }
+}
+```
+
+**所有的枚举类型都是`Enum`类的子类,他们继承了这个类的许多方法.**
+
+其中最有用的一个是`toString`,这个方法能够返回枚举常量名. 例如: `Size.SMALL.toString()`将返回字符串"SMALL"
+
+`toString`的逆方法是静态方法`valueOf`. 例如,语句
+
+```java
+Size s = Enum.valueOf(Size.class, "SMALL");
+```
+
+将s设置成`Size.SMALL`.
+
+每个枚举类型都有一个静态的`values`方法,它将返回一个包含全部枚举值的数组. 例如,如下调用
+
+```java
+Size[] values = Size.values();
+```
+
+返回包含元素 `Size.SMALL`, `Size.MEDIUM`, `Size.LARGE`, `Size.EXTRA_LARGE` 的数组
+
+`ordinal`方法返回`enum`声明中枚举常量的位置,位置从0开始计数.例如: `Size.MEDIUM.ordinal()` 返回1
+
+> 如同`Class`类一样,鉴于简化的考虑,`Enum`类省略了一个类型参数
+> 
+> 例如,实际上,应该将枚举类型`Size`拓展为`Enum<Size>`
+
 ## 5.7 - 反射
 ## 5.8 - 继承的设计技巧

@@ -34,7 +34,7 @@ public class EnumTest {
         //每个枚举类型都有一个静态的 values 方法， 它将返回一个包含全部枚举值的数组
         Size[] values = Size.values();
         for (Size value : values) {
-            System.out.printf("%s  ",value);
+            System.out.printf("%s - %d ", value, value.ordinal());
         }
     }
 }
