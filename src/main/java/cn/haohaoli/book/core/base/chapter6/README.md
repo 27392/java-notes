@@ -130,4 +130,73 @@ if(a[i].compareTo(a[j]) > 0){
 
 不过,在实现接口时,必须把方法声明为`public`
 
+### 6.1.2 - 接口的特性
+
+**接口不是类,尤其不能使用`new`运算符实例化一个接口**
+
+```java
+Comparable x = new Comparable();   //错误的!
+```
+
+然后,尽管不能构造接口对象,却能声明接口变量:
+
+```java
+Comparable x;
+```
+
+**接口变量必须引用实现了接口的类对象**
+
+```java
+class Employee extends Comparable<Employee>
+Comparable x = new Employee();
+```
+
+如同使用`instanceof`检查一个对象是否属于某个特定类一样,也可以使用`instanceof`检查一个对象是否实现了某个特定的接口:
+
+```java
+if(x instanceof Comparable) {
+}
+```
+
+**与可以建立类的继承关系一样,接口也可以被拓展**
+
+这里允许存在多条从具有较高通用性的接口道较高专用性的接口的链. 例如,假设有一个称为`Moveable`的接口
+
+```java
+public interface Moveable{
+    void move (double x, double y);
+}
+```
+
+然后,可以以它为基础推展一个叫`Powered`的接口:
+
+```java
+public interface Powered extends Moveable{
+    double milesPerGallon();
+} 
+```
+
+虽然在接口中不包含实例域或静态方法,但却可以包含常量. 例如:
+
+```java
+public interface Powered extends Moveable{
+    double milesPerGallon();
+    
+    double SPEED_LIMIT = 95;
+} 
+```
+
+**与接口中的方法都自动的设置为`public`一样,接口中的域将被自己动的设为`public static final`**
+
+#### 注意
+
+有些接口中定义了常量,而没有定义方法.例如,
+
+在JDK标准库中有一个`SwingConstants`就是这样的一个接口,其中只包含`NORTH`、`SOUTH`和`HORIZONTAL`等常量
+
+任何实现`SwingConstants`接口的类都自动的继承了这些常量,并可以在方法中直接的引用`NORTH`,而不必采用`SwingConstants.NORTH`这样的形式
+
+然而,这样应用接口似乎有点偏离了接口概念的初衷,最好不要这样使用它
+
+
 ## 6.2 - 接口示例
