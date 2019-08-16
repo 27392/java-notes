@@ -198,5 +198,36 @@ public interface Powered extends Moveable{
 
 然而,这样应用接口似乎有点偏离了接口概念的初衷,最好不要这样使用它
 
+### 6.1.3 - 接口与抽象类
+
+说到抽象类与接口的话就有可能会很多疑问,比如说: 为什么Java要引进接口概念?
+
+为什么不将我们上面介绍的`Comparable`接口设计成抽象类?
+
+```java
+//当然这里也可以完全和Comparable接口一样加泛型, 为了方便就最简单的来
+public abstract class Comparable{
+    
+    public int compareTo(Object o);
+}
+```
+
+但是,如果使用抽象类的话就会存在一个问题: 每个类只能推展一个类.
+
+假如`Employee`类已经拓展了一个类,例如`Person`,它就不能在拓展第二个类了例如: 
+
+```java
+class Employee extends Person, Comparable // 错误的!
+```
+
+但每个类可以实现多个接口
+
+```java
+class Employee extends Person implements Comparable
+```
+
+
+
+
 
 ## 6.2 - 接口示例
