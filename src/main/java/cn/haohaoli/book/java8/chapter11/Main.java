@@ -2,6 +2,8 @@ package cn.haohaoli.book.java8.chapter11;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author LiWenHao
@@ -32,11 +34,10 @@ public class Main {
         Shop.delay(3);
 
         try {
-
             // 阻塞,直到该异步任务完成
-            double price = priceSync.get();
+            double price = priceSync.get(10, TimeUnit.SECONDS);
             System.out.printf("价格 : %.2f%n", price);
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
