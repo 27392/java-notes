@@ -226,6 +226,35 @@ class Employee extends Person, Comparable // 错误的!
 class Employee extends Person implements Comparable
 ```
 
+### 6.1.4 静态方法
+
+在JDK8中,允许在接口中增加静态方法,理论上说,没有任何理由认为这是不合法的,只是这样有违于将接口作为抽象规范的初衷
+
+在此之前,通常的做法都是讲静态方法放在伴随类中.
+
+例如在标准库中,你会看到成对出现的接口和使用实用工具类,如`Collection/Collecionts`或`Path/Paths`
+
+下面来看看`Paths`类,其中只包含两个`工厂方法 - 静态工厂方法`
+
+可以由一个字符串序列构造一个文件或目录的路径,如`Paths.get("C","Program Files","jdk1.8.0_192")`
+
+在JDK8中,可以为`Path`接口增加以下方法
+
+```java
+public interface Path {
+    
+    static Path get(String first, String... more) {
+        return FileSystems.getDefault().getPath(first, more);
+    }
+}
+```
+
+这样一来,`Paths`类就不再是必要的了
+
+不过整个Java库都以这种方法重构也是不太可能的,但是实现你自己的接口时,不在需要为实用工具方法另外提供一个伴随类
+
+### 6.1.5 默认方法
+
 
 
 

@@ -1,6 +1,9 @@
 package cn.haohaoli.book.core.base.chapter6.interfaces.method;
 
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * TODO 接口静态方法
@@ -17,7 +20,7 @@ public interface Static {
      * @see java.nio.file.Paths
      * 具体可以查看Paths类
      */
-    static java.nio.file.Path get(String first, String... more) {
+    static Path get(String first, String... more) {
         return FileSystems.getDefault().getPath(first, more);
     }
 }
