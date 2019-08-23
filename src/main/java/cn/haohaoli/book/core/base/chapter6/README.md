@@ -255,6 +255,73 @@ public interface Path {
 
 ### 6.1.5 默认方法
 
+默认方法可以为接口提供一个默认实现. 但是必须用`default`修饰表示这样一个方法
+
+```java
+public interface Comparable<T>{
+    
+    default int compareTo(T o) {
+        return 0;
+    }
+}
+```
+
+当然,这并没有太大的用处,因为`Comparable`的每一个实现类都要覆盖这个方法
+
+不过有些情况下默认方法可能很有用
+
+例如,`Collecion`接口中可以定义一个便利方法:
+
+```java
+public interface Collection{
+    
+    int size();
+    
+    default boolean isEmpty(){
+        return size() == 0;
+    }
+}
+```
+
+这样实现`Collecion`接口后就不用操作实现`isEmpty`方法了
+
+> 在JavaAPI中,会看到很多接口都有相应的伴随类,这个伴随类中实现了相应接口的部分或所有方法
+>
+> 如 Collection/AbstractCollection 或 MouseListener/MouseAdapter
+>
+> 在JDK8中,这个技术已经过时.现在可以直接在接口中实现方法
+
+#### 接口的演化
+
+默认方法的一个重要用法是"接口演化"
+
+以Collection接口为例,这个接口作为Java的一部分已经有很多年了,假设很久以前你写了这样一个类
+
+```java
+public class Bag implements Collection
+```
+
+后来在JDK8中,又为这个接口增加了一个`stream`方法
+
+假设`stream`方法不是一个默认方法. 那么`Bag`类将不能编译,因为它没有实现这个新方法
+
+为接口增加一个非默认方法不能保证**源代码兼容**. 不过,假设不重新编译这个类,而只是使用原先的一个包含这个类的Jar文件. 
+
+这个类仍能正常加载,尽管没有这个新方法. 程序仍然可以正常构造`Bag`实例,不会有意外发生
+
+不过,如果程序在一个`Bag`实例上调用`stream`方法,将会出现一个`AbstractMethodError`异常
+
+将方法实现为一个默认方法就可以解决这两个问题. Bag类又能正常编译
+
+另外如果没有重新编译而直接加载这个类,并在一个Bag实例上调用`stream`方法,将调用`Collection.stream`方法
+
+**在JDK8后`com.java.util.function`包中大量类使用了静态方法包括默认方法**
+
+
+
+
+
+
 
 
 
