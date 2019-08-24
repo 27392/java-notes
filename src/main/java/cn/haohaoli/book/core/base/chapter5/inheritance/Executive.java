@@ -9,7 +9,6 @@ package cn.haohaoli.book.core.base.chapter5.inheritance;
  */
 public final class Executive extends Manager {
 
-
     public Executive() {
         super("新建人员", 0d, 2019, 1, 1);
     }

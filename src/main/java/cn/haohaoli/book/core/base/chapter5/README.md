@@ -28,9 +28,7 @@ public class Manager extends Employee {
 > 
 > 新类称为`子类`(subclass)、`派生类`(derived class)或`孩子类`(child class)
 
-尽管`Employee`类是一个超类,但并不是因为它优于子类或者拥有比子类更多的功能
-
-实际上恰恰相反,子类比超类拥有的功能更加丰富
+尽管`Employee`类是一个超类,但并不是因为它优于子类或者拥有比子类更多的功能.实际上恰恰相反,子类比超类拥有的功能更加丰富
  
 现在我们在`Manager`类中增加用于储存奖金信息(`bonus`)的域,以及一个用于设置这个域的新方法
 
@@ -57,6 +55,8 @@ public class Manager extends Employee {
 这样一来,每个Manager类对象就包含了4个域 : `name`、`salary`、`hireDay`和`bonus`
 
 **在通过拓展超类定义子类的时候,一个将通用的方法放在超类中,而将具有特殊用途的方法放在子类中.**
+
+> **注意不能继承父类的`private`修饰的域与方法**
 
 ### 5.1.2 - 覆盖方法
 
