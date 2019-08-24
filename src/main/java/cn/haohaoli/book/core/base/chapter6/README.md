@@ -253,6 +253,17 @@ public interface Path {
 
 不过整个Java库都以这种方法重构也是不太可能的,但是实现你自己的接口时,不在需要为实用工具方法另外提供一个伴随类
 
+**接口不会继承`static`修饰的方法,像下面这样定义并不会有什么问题**
+
+```java
+public interface Paths extends Path {
+    
+    static Path get(String first, String... more) {
+        return FileSystems.getDefault().getPath(first, more);
+    }
+}
+```
+
 ### 6.1.5 默认方法
 
 默认方法可以为接口提供一个默认实现. 但是必须用`default`修饰表示这样一个方法
@@ -268,9 +279,7 @@ public interface Comparable<T>{
 
 当然,这并没有太大的用处,因为`Comparable`的每一个实现类都要覆盖这个方法
 
-不过有些情况下默认方法可能很有用
-
-例如,`Collecion`接口中可以定义一个便利方法:
+不过有些情况下默认方法可能很有用.例如,`Collecion`接口中可以定义一个便利方法:
 
 ```java
 public interface Collection{
