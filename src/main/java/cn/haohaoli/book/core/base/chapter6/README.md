@@ -419,3 +419,62 @@ class Student extends Person implements Named{
 >  资料：https://blog.csdn.net/shallowinggg/article/details/78039372
 
 ## 6.2 - 接口示例
+
+### 6.2.1 接口回调
+
+> 参考: https://blog.csdn.net/jiayi_yao/article/details/51046526
+
+### 6.2.2 Comparator接口
+
+在6.1.1节,我们已经了解了如何对一个对象数组排序,嵌套是这些对象是实现了`Comparable`接口的类的实例
+
+例如: 可以对一个字符串数组排序,因为`String`类实现了`Comparable<String>`,而且`String.compareTo`方法可以按字典顺序比较字符串
+
+现在假设我们希望按照长度递增的顺序对字符串进行排序,而不是按字典顺序进行排序
+
+这样一来我们肯定不能让`String`类用两种不同的方法实现`compareTo()`方法,更何况`String`类也不应该由我们来修改
+
+要处理这种情况,`Arrays.sort`方法还有第二个版本,有一个数组和一个比较器(Comparator)作为参数,比较器是实现了`Comparator`接口的类的实例
+
+下面是`Comparator`接口:
+
+```java
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+}
+```
+
+要按长度比较字符串,那么久可以定义一个实现`Comparator<String>`的类
+
+```java
+public class LengthComparator implements Comparable<String> {
+    
+    public int compare(String o1, String o2){
+        return o1.length() - o2.length();
+    }
+}
+```
+
+> 尽管`LengthComparator`对象没有状态,不过还是需要建立这个对象的一个实例. 我们需要这个实例来调用`compare`方法
+
+```java
+public class ComparatorTest {
+
+    public static void main(String[] args) {
+        String[] s = {"x", "xxxx", "xx"};
+        Arrays.sort(s, new LengthComparator());
+        System.out.println(Arrays.toString(s));
+        // [x, xx, xxxx]
+    }
+}
+```
+
+### 6.2.3 对象克隆
+
+## 6.3 lambda表达式
+
+> 具体参考 java8 in active
+
+## 6.4 内部类
+
+## 代理

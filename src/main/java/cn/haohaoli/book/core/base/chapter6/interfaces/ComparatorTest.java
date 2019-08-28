@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ComparatorTest {
 
     public static void main(String[] args) {
-        String[] s = {"x","axxxx","zxx"};
+        String[] s = {"x","xxxx","xx"};
         Arrays.sort(s, new LengthComparator());
         // 以下是 java8 实现
 //        Arrays.sort(s, ((first, second) -> first.length() - second.length()));
