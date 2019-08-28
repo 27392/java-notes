@@ -326,13 +326,96 @@ public class Bag implements Collection
 
 **在JDK8后`com.java.util.function`包中大量类使用了静态方法包括默认方法**
 
+### 6.1.6 解决默认方法冲突
+
+如果先在一个接口中将一个方法定义为默认方法,然后又在超类或另一个接口中定义了同样的方法,会发生什么情况?
+
+规则如下:
+
+   1. **`超类优先`.如果超类提供了一个具体方法,同名而且有相同参数类型的默认方法就会被忽略**
+   
+   2. **`接口冲突`.如果一个超接口提供了一个默认方法,另一个接口提供了一个同名而且参数类型相同的方法,必须覆盖这个方法类解决冲突**
+
+下面来看第二个规则
+
+新建两个接口有着相同的默认方法
+
+```java
+interface Named{
+    default String getName(){
+        return "Named";
+    }
+}
+
+interface Person{
+    default String getName(){
+        return "Person";
+    }
+}
+```
+
+当同一个类同时实现这两个接口时,类会继承`Person`和`Named`接口提供的两个不一致的`getName`方法
+
+并不是从中选择一个,编译器会报告一个错误,让我们自己来解决这个二义性.
+
+这时,只需要在`Student`类中提供一个`getName`方法,这个方法可以选择两个冲突方法中的一个,如下:
+
+```java
+class Student implements Person, Named{
+    @Override
+    public String getName() {
+        // 可以从两个默认接口中选择默认方法,也可以自己重新实现
+        return Named.super.getName();
+        //return Person.super.getName();
+    }
+}
+```
+
+假设`Named`接口没有为`getName`提供默认的实现
+
+```java
+interface Named{
+    String getName();
+}
+interface Person{
+    default String getName(){
+        return "Person";
+    }
+}
+```
+
+那么`Student`类会从`Person`接口继承默认方法吗? 毕竟在`Person`类中有着默认实现,这样好像说得过去
+
+不过java强调一致性.两个接口如何冲突并不重要.如果至少有一个接口提供了一个实现,编译器就会报告错误,而我们必须解决这个二义性
 
 
+上面我们只看了两个接口命名冲突.现在来考虑另一种情况
 
+一个类推展了一个超类,同时又实现了一个接口,并从超类和接口继承了相同的方法. 例如:
 
+```java
+interface Named{
+    String getName();
+}
 
+public class Person{
+    public String getName(){
+        return "Person";
+    }
+}
+```
 
+继承超类,实现接口
 
+```java
+class Student extends Person implements Named{
+}
+```
 
+在这种情况下,只会考虑超类方法,接口的所有默认方法都会被忽略掉
+
+在例子中,`Student`从`Person`继承了`getName`方法,`Named`接口是否为`getName`提供默认实现并不会带来什么区别. 这正是**类优先**规则
+
+>  资料：https://blog.csdn.net/shallowinggg/article/details/78039372
 
 ## 6.2 - 接口示例
