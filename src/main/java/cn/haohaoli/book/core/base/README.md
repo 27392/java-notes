@@ -17,9 +17,9 @@
     - [ ] 反射
     - [x] 继承的设计技巧
 + [第6章 - 接口、lambda表达式与内部类](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter6)
-    - [ ] 接口
-    - [ ] 接口示例
-    - [ ] lambda表达式
+    - [x] 接口
+    - [x] 接口示例
+    - [x] lambda表达式
     - [ ] 内部类
     - [ ] 代理
 + 第7章 - 异常

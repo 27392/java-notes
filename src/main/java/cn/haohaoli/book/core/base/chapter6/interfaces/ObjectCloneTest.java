@@ -28,6 +28,5 @@ public class ObjectCloneTest {
         System.out.println("原数组 ： " + Arrays.toString(array));
         cloneArrays[0] = 5;
         System.out.println("克隆数组 ： " + Arrays.toString(cloneArrays));
-
     }
 }

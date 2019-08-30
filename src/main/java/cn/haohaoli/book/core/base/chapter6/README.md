@@ -471,6 +471,155 @@ public class ComparatorTest {
 
 ### 6.2.3 对象克隆
 
+当一个包含对象引用的变量建立副本时会发生什么? 例如:
+
+```java
+Employee original = new Employee();
+
+//将original所引用的地址再负值给copy对象
+Employee copy = original;
+```
+    priginal和copy指向同一对象 
+   
+        original   copy
+            ↓       ↓
+          new Emplyee()
+
+此时任何一个变量改变都会影响另一个对象,例如:
+
+```java
+Employee original = new Employee();
+Employee copy = original;
+copy.raiseSalary(10);
+```
+
+如果希望`copy`是指向一个新的对象,它的初始状态与`original`相同,但是之后它们各自会有自己不同的状态,这种情况就可以使用`clone`方法
+
+```java
+Employee original = new Employee();
+Employee copy = original.clone();
+copy.raiseSalary(10);
+```
+
+但是并没有想象中的这么简单,`clone`方法是`Object`的一个`protected`方法,这说明你的代码不能直接调用这个方法
+
+只有`Employee`类可以克隆`Employee`对象这个限制是有原因的,`Object`类对需要克隆的对象一无所知,所以只能逐个拷贝
+
+如果对象中的所有数据域都是数值或其他基本类型,拷贝这些域没有任何问题
+
+但是如果对象内包含子对象的引用,拷贝域就会得到相同子对象的另一个引用,这样一来,原对象和克隆的对象仍然会共享一些信息
+
+为了更直观的说明这个问题使用下面的`Employee`类
+
+```java
+class Employee {
+    String name;
+    double salary;
+    Date hireDay;
+}
+```
+
+接着使用`Object`类的`clone`方法克隆这个样一个`Employee`对象
+
+```java
+Employee original = new Employee();
+Employee copy = original.clone();
+```
+
+        original                   copy
+     name salary hireDay       name salary hireDay
+       │            │           │            │
+       └────┬───────┼───────────┘            │
+            │       └───────────┬────────────┘
+            ↓                   ↓
+         String                Date
+    
+可以看到,默认的克隆操作是**浅拷贝**,并没有克隆对象中引用的其他对象
+
+浅拷贝会有什么影响吗?
+
+   - 如果原对象和浅克隆对象共享的子对象是不可变的,那么这种共享就是安全的.如果子对象属于一个不可变的类,如`String`,就是这种情况
+
+或者在对象的生命期中,子对象一直包含不变的常量,没有更改器方法会改变它,也没有方法会生成它的引用,这种情况下同样是安全的
+
+不过,通常子对象都是可变的,必须重新定义`clone`方法来建立一个**深拷贝**,同时克隆所有子对象
+
+在上面的例子中,`hireDay`域是一个`Date`这是可变的,所以它也需要克隆, 如果`hireDay`是不可变的`LocalDate`类的一个实例,就无需做处理
+
+对于每个类,需要确定:
+    
+   1. 默认的`clone`方法是否满足要求
+   
+   2. 是否可以在可变的子对象上调用`clone`类修补默认的`clone`方法
+   
+   3. 是否不该使用`clone`
+
+实际上第3个选项是默认选项.如果选择第1项或第2项,类必须:
+
+   1. 实现`Cloneable`接口
+   
+   2. 查询定义`clone`方法,并指定`public`访问修饰符
+
+> `Object`类中`clone`方法声明为`protected`,所以不能直接调用`clone`
+> 
+> 只能调用受保护的`clone`方法来克隆它自己的对象.必须重新定义`clone`为`public`才能允许所有方法克隆对象
+>
+> 但是`Cloneable`接口并没有指定`clone`方法,这个方法是从`Object`类继承的.
+>
+> 这个接口只是作为一个标记.如果一个对象请求克隆,但没有实现这个接口,就会生成一个受查异常
+>
+> `Cloneable`接口是Java提供的一组标记接口之一,`Comparable`等接口通常用途是确保一个类实现或一组特定方法
+> 
+>   - 标记接口不包含任何方法;它唯一的作用就是允许在类型查询中使用`instanceof`,建议不要在自己的程序中使用标记接口
+> 
+>  即使`clone`的默认(浅拷贝)实现能够满足要求,还是需要实现`Cloneable`接口,将`clone`重新定义为`public`再调用`super.clone()`
+>
+> ```java
+> class Employee implements Cloneable {
+>     
+>     @Override
+>     public Employee clone() {
+>         return (Employee) super.clone();
+>     }
+> }
+> ```
+
+### 深拷贝
+
+与`Object.clone`提供的浅拷贝相比,重写父类的`clone`方法并没有为他增加任何功能,这里只是让这个方法是公有的
+
+如果要建立深拷贝,克隆对象中可变的实例域.下面是一个创建深拷贝的`clone`方法例子:
+
+```java
+class Employee implements Cloneable {
+    
+    @Override
+    public Employee clone() {
+        Employee cloned = (Employee) super.clone();
+        cloned.hireDay = (Date)hireDay.clone();
+        return cloned;
+    }
+}
+```
+ 
+如果在一个对象上调用`clone`,但这个对象的类并没有实现`Cloneable`接口,`Object`类的`clone`方法就会抛出`CloneNotSupportedException`异常
+
+当然,`Employee`和`Date`类实现了`Cloneable`接口,所以不会抛出这个异常.不过,最好还是将异常声明出去,然后由调用方检查
+
+### 注意
+
+必须当心子类的克隆,例如,一旦为`Employee `类定义了`clone`方法,任何人都可以用它来克隆子类对象
+
+如果子类中都是基本类型那就没有问题,但是如果子类中有需要深拷贝或者不可克隆的域.这时不能保证`clone`正常工作
+
+出于这个原因父类中的`clone`方法声明为`peotected`,不过如果你希望直接调用`clone`,就不能这么做
+
+那么要不要在自己的类中实现`clone`方法呢?
+    
+   - 如果你的需要需要建立深拷贝,可能需要这个方法,但是应该完全避免使用`clone`
+
+> 所有数组类型都有一个`public`的`clone` 方法,而不是`protected`.可以用这个方法建立一个新数组,包含原数组所有元素的副本
+
 ## 6.3 lambda表达式
 
 > 具体参考 java8 in active

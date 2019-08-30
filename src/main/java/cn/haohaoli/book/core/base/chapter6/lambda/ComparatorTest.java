@@ -7,7 +7,7 @@ import java.util.function.Function;
 /**
  * TODO Comparator 接口 （java8）
  *  Comparator 接口包含很多方便的静态方法来创建比较器。 这些方法可以用于 lambda 表 达式或方法引用。
- *  静态 comparing 方法取一个“ 键提取器” 函数， 它将类型 T 映射为一个可比较的类型 (如 String)。 对要比较的对象应用这个函数， 然后对返回的键完成比较。
+ *  静态 comparing 方法取一个"键提取器" 函数,它将类型 T 映射为一个可比较的类型 (如 String)。 对要比较的对象应用这个函数， 然后对返回的键完成比较。
  * @author liWenHao
  * @date 2019/1/7 21:05
  */
