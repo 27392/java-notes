@@ -584,7 +584,7 @@ Employee copy = original.clone();
 > }
 > ```
 
-### 深拷贝
+#### 深拷贝
 
 与`Object.clone`提供的浅拷贝相比,重写父类的`clone`方法并没有为他增加任何功能,这里只是让这个方法是公有的
 
@@ -606,7 +606,7 @@ class Employee implements Cloneable {
 
 当然,`Employee`和`Date`类实现了`Cloneable`接口,所以不会抛出这个异常.不过,最好还是将异常声明出去,然后由调用方检查
 
-### 注意
+#### 注意
 
 必须当心子类的克隆,例如,一旦为`Employee `类定义了`clone`方法,任何人都可以用它来克隆子类对象
 
@@ -625,5 +625,206 @@ class Employee implements Cloneable {
 > 具体参考 java8 in active
 
 ## 6.4 内部类
+
+内部类是定义在另一个类中的类,为什么需要使用内部类呢?其主要原因有以下三点:
+
+  1. **内部类方法可以访问改类定义所在的作用域中的数据,包含私有数据**
+  
+  2. **内部类可以对同一个包的其他类隐藏起来**
+  
+  3. **当想要定义一个回调函数却不想编写大量代码时,使用匿名内部类比较便捷**
+
+### 成员内部类
+
+**成员内部类是最普通的内部类,它的定义位于另一个类的内部**.例如:
+
+```java
+public class OuterClass {
+    
+    private double radius = 0;
+
+    class InnerClass {  
+     
+        public void print() {
+            System.out.println("radius : " + radius);
+        }
+    }
+}
+```
+
+这样看起来,`InnerClass`类像是`OuterClass`类的一个成员,`InnerClass`称为外部类.
+
+**成员内部类可以无条件访问外部类的所有域和方法(包含`private`域和`static`域)**
+
+```java
+public class OuterClass {
+    
+    private double     radius = 0;
+    private static int count  = 1;
+
+    class InnerClass {  
+     
+        public void print() {
+            // 外部类的private域
+            System.out.println("radius : " + radius);
+            // 外部类的static域
+            System.out.println("count : " + count);
+        }
+    }
+}
+```
+**当成员内部类拥有和外部类同名的域或者方法时,会发生隐藏现象,即默认情况下访问的是成员内部类的域或方法**
+
+```java
+public class OuterClass {
+    
+    private double radius = 0;
+
+    public void print() {
+        System.out.println("OuterClass:radius : " + radius);
+    }
+
+    class InnerClass {  
+     
+        private double radius = 0;
+        
+        public void print() {
+            System.out.println("InnerClass:radius : " + radius);
+        }
+        
+        public void call () {
+            print();
+        }
+    }
+}
+```
+
+也就是说调用内部类`InnerClass`的`call`方法时输出的结果为`InnerClass:radius : 0`,而不是调用`OuterClass`的`print`方法
+
+ - 如果在内部类`InnerClass`中并没有定义`print`方法时,此时输出的结果必然是`OuterClass:radius : 0`
+
+如果要访问外部类的同名对象,需要下面的形式进行访问:
+
+ - **外部类.this.域**
+ 
+ - **外部类.this.方法**
+
+虽然成员内部类可以无条件的访问外部类的域,而外部类想访问成员内部类的域就不是这么随心所欲了
+
+ - **在外部类中如果要访问成员内部类的成员,就必须先创建一个成员内部类的对象,在通过指向这个对象的引用来访问**
+
+**成员内部类是依附外部类而存在的,也就是说,如果要创建成员内部类的对象,前提是必须存在一个外部类的对象**
+ 
+```java
+OuterClass other            = new OuterClass();
+OuterClass.InnerClass inner = other.new InnerClass();
+```
+
+### 局部内部类
+
+**局部内部类是定义在一个方法或者一个作用域里面的类,他和成员内部类的却别在于局部内部类的访问权限与方法内或者该作用域内**
+
+```java
+public static void method(Employee e) {
+
+    @ToString
+    @AllArgsConstructor
+    class Result {
+        private String name;
+    }
+    Result result = new Result(e.getName());
+    System.out.println(result);
+}
+```
+
+> 局部内部类使用主要是应用与解决比较复杂的问题,想创建一个类来辅助我们的解决方案,到那时又不希望这个类是公共可用的
+>
+> 局部内部类就像是方法里面的一个局部变量一样,是不能有`public`、`protected`、`private`以及`static`修饰符的
+
+### 匿名内部类
+
+**匿名内部类也就是没有名字的内部类**
+
+**匿名内部类是唯一一种没有构造器的类.正因为其没有构造器,所以匿名内部类的使用范围非常有限,大部分匿名内部类用于接口回调**
+
+> 匿名内部类在编译的时候由系统自动起名为`外部类$1.class`例如(`OuterClass.$1class`)
+
+**一般来说,匿名内部类用于继承其他类或是实现接口,并不需要增加额外的方法,只是对继承方法的实现或是重写.**
+
+之前在学习`Comparator`接口时我们通过实现它完成了对字符串的长度的排序.如下:
+
+```java
+public class LengthComparator implements Comparator<String> {
+
+    @Override
+    public int compare(String first, String second) {
+        return first.length() - second.length();
+    }
+}
+```
+```java
+String[] arrays = {"x","xxxx","xx"};
+Arrays.sort(arrays, new LengthComparator())
+```
+
+通过`Arrays`类`sort`方法传入数组和`Comparator`接口实例完成排序
+
+在这里我们可以利用匿名内部类的方式实现同样的操作:
+
+```java
+String[] arrays = {"x","xxxx","xx"};
+
+Arrays.sort(arrays, new Comparator<String>() {
+
+    @Override
+    public int compare(String o1, String o2) {
+        return o1.length() - o2.length();
+    }
+});
+```
+
+> 只要一个类是抽象的或是一个接口,那么其子类中的方法都可以使用匿名内部类来实现
+
+### 静态内部类
+
+**静态内部类也是定义在另一个类里面的类,只不过在类的前面多了一个关键字`static`**
+
+静态内部类是不需要依赖于外部类,这点和类的静态域有点类似,并且它不能使用外部类的非`static`域或者方法
+
+   - 因为在没有外部类对象的情况下,可以创建静态内部类的对象,如果允许方法外部类的非`static`域就会有矛盾,外部类的非`static`域必须依附于具体对象
+
+```java
+public class OuterClass {
+    
+    private double     radius = 0;
+    private static int count  = 0;
+
+    public void print() {
+        System.out.println("OuterClass:radius : " + radius);
+    }
+
+    public static class InnerClass {
+        
+        private String name;
+
+        public static void print() {
+            // System.out.println("OuterClass:radius : " + radius); 错误! 不能访问非静态域
+            System.out.println("OuterClass:count : " + count);
+        }
+    }
+}
+```
+
+> 静态内部类是不需要依赖于外部类, 所以直接可以构造,无需依附外部类.同样如普通静态类一样,可以直接调用静态方法
+
+```java
+OuterClass.InnerClass staticInner = new OuterClass.InnerClass();
+// 非静态方法
+staticInner.print();
+// 直接调用静态方法
+OuterClass.Inner.staticPrint();
+```
+
+> 非静态内部类中不能存在静态域或静态方法,只有静态内部类中才可存在静态域和静态方法
 
 ## 代理
