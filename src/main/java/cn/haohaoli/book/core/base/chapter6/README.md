@@ -827,4 +827,14 @@ OuterClass.Inner.staticPrint();
 
 > 非静态内部类中不能存在静态域或静态方法,只有静态内部类中才可存在静态域和静态方法
 
-## 代理
+#### 参考资料
+
+> https://www.cnblogs.com/dolphin0520/p/3811445.html
+>
+> https://www.cnblogs.com/chenssy/p/3388487.html   （系列）
+>
+> https://www.cnblogs.com/nerxious/archive/2013/01/25/2876489.html
+
+## 6.5 代理
+
+> 具体参考`HeadFirst`内中的代理模式
