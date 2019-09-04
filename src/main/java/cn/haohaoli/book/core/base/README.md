@@ -22,11 +22,11 @@
     - [x] lambda表达式
     - [x] 内部类
     - [x] 代理
-+ 第7章 - 异常
-    - [ ] 异常处理
++ [第7章 - 异常](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter7)
+    - [x] 异常处理
     - [ ] 捕获异常
     - [ ] 使用异常机制的技巧
-+ 第8章 - 泛型程序设计
++ [第8章 - 泛型程序设计](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter8)
     - [ ] 泛型类
     - [ ] 泛型方法
     - [ ] 类型变量限定
@@ -34,7 +34,7 @@
     - [ ] 泛型类型的继承规则
     - [ ] 通配符类型
     - [ ] 反射与泛型
-+ 第9章 - 集合
++ [第9章 - 集合](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter9)
     - [ ] java集合框架
     - [ ] 具体的集合
     - [ ] 映射
