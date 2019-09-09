@@ -63,6 +63,69 @@ Java异常层次简化结构如下:
 
 ### 7.1.2 - 声明受查异常
 
+如果遇到了无法处理的情况,Java的方法可以抛出一个异常
+
+这个道理很简单: **一个方法不仅需要告诉编译器将要返回什么值,还要告诉编译器有可能发生什么错误**
+
+例如,一段读取文件的代码知道有可能读取的文件不存在,获取内容为空
+
+ - 因此,试图处理文件信息的代码就需要通知编译器可能会抛出`IOException`类的异常
+
+方法应该在其首部声明所有可能抛出的异常.这样可以从首部方法出这个方法可能抛出哪类受查异常.例如:
+
+```java
+public static Class<?> forName(String className) throws ClassNotFoundException 
+```
+
+> 这个声明表示这个方法将根据给定的`String`参数产生一个`Class`对象,但也有可能抛出一个`ClassNotFoundException`异常
+>
+> 如果发生了这种糟糕的情况,构造器将不会初始化一个新的`Class`对象,而是抛出一个`ClassNotFoundException`类对象
+>
+> 如果这个方法方法真的抛出了这样一个异常对象,运行时系统就会开始搜索异常处理器,以便知道如何处理`ClassNotFoundException`
+
+**在自己编写方法时,不必将所有可能抛出的异常都进行声明**
+
+至于什么时候需要在方法中用`throws`子句声明异常,什么异常必须使用`throws`子句声明,需要记住在遇到下面4种情况时应该抛出异常:
+
+ 1. **调用一个抛出受查异常的方法**,例如: FileInputStream构造器
+ 
+ 2. **程序运行过程中发现错误**,并且利用`throw`语句抛出一个受查异常
+ 
+ 3. **程序出现错误**,例如: `a[-1] =0`会抛出一个`ArrayIndexOutBoundsException`这样的非受查异常
+ 
+ 4. **Java虚拟机和运行时库出现的内部错误**
+
+如果出现前两种情况之一,则必须告诉调用方有可能抛出的异常.为什么要这么做?
+  
+  - 因为任何一个抛出异常的方法都有可能是一个死亡陷阱,如果没有处理器捕获这个异常,当前执行的线程就会结束
+ 
+**对于那些可能被他人使用的方法,应该根据异常规范在方法的首部声明这个方法可能抛出的异常**
+
+```java
+public static Class<?> forName(String className) throws ClassNotFoundException
+```
+
+如果一个方法有可能抛出多个受查异常类型,那么就必须在方法的首部列出所有的异常类,每个异常类之间用逗号隔开.例如:
+
+```java
+public T newInstance() throws InstantiationException, IllegalAccessException
+```
+
+但是,不需要声明Java的内部错误,就是从`Error`继承的错误.任何程序代码都具有抛出那些异常的潜能,而我们对其没有任何控制能力
+ 
+同样,也不应该声明从`RuntimeException`继承的那些非受检查的异常,因为这些运行时错误完全在我们的控制之下.
+
+```java
+// NullPointerException 继承于 RuntimeException
+public void print() throws NullPointerException
+```
+
+**如果特别关注数组下标引发的错误,就一个将更多的时间花费在修正程序中的错误上,而不是说明这些错误发生的可能性上**
+
+> 总之,一个方法必须声明所有可能抛出的受查异常,而非受查异常要么不可控制(Error),要么就应该避免发生(RuntimeException)
+>
+> 如果方法没有声明所有可能发生的受查异常,编译器将会发出错误信息
+
 ### 7.1.3 - 抛出异常
 
 ### 7.1.4 - 创建自定义异常
