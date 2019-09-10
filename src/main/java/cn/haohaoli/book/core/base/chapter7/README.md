@@ -128,6 +128,24 @@ public void print() throws NullPointerException
 
 ### 7.1.3 - 抛出异常
 
+`print()`方法用于打印一个字符.然而我们希望参数不为空,如果为空我们认为这是一种不正常的情况,希望抛出(`throw`)一个异常
+
+但是首先要决定应该抛出什么类型的异常,将上述异常归结为`RuntimeException`是一种很好的选择
+
+```java
+/**
+ * @param
+ * @throws NullPointerException
+ */
+public void print (String str) {
+    if (null == str) {
+        throw new NullPointerException();
+    }
+    System.out.print(str);
+}
+```
+> 可以将方法中抛出的(非检查)异常在注释`@throws`中标明,提高可读性
+
 ### 7.1.4 - 创建自定义异常
 
 ## 7.2 - 捕获异常
