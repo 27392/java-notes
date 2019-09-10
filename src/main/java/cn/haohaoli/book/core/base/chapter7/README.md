@@ -144,9 +144,51 @@ public void print (String str) {
     System.out.print(str);
 }
 ```
+
 > 可以将方法中抛出的(非检查)异常在注释`@throws`中标明,提高可读性
 
+对于一个已经存在的异常我们只需要,找到合适的异常类然后创建该类的对象将其抛出
+
+**一旦方法抛出了异常,这个方法就不可能返回到调用者.也就是说,不必为返回的默认值或错误代码担忧**
+
 ### 7.1.4 - 创建自定义异常
+
+在程序中,可能会遇见任何标准异常类都没有能够充分描述清楚的问题,在这种情况下,创建自己的异常类就是一件顺理成章的事情了
+
+我们只需要定义一个派生于`Exception`或是派生于`Exception`子类的类
+
+例如,定义一个派生于`RuntimeException`的类
+
+```java
+public class PrintException extends RuntimeException {
+    
+    public PrintException(){
+    }
+
+    public PrintException(String message) {
+        super(message);
+    }
+}
+```
+
+**习惯上,定义的类应该包含两个构造器,一个是默认构造器;另一个是带有详细描述信息的构造器**
+
+ - 超类`Throwable`的`toString`方法会打印这些详细信息,这在调试中非常有用
+
+现在就可以抛出自己定义的异常类型了
+
+```java
+/**
+ * @param
+ * @throws PrintException
+ */
+public void print (String str) {
+    if (null == str) {
+        throw new PrintException();
+    }
+    System.out.print(str);
+}
+```
 
 ## 7.2 - 捕获异常
 
