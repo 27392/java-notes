@@ -242,4 +242,68 @@ try {
 }
 ```
 
+### 7.2.3 再次抛出异常与异常链
+
+**在`catch`子句中可以在抛出一个异常,这样做的目的是改变异常的类型**
+
+假如我们在开发一个邮件子系统,那么,用于表示子系统故障的异常类型可能会有多种解释;例如:
+
+```java
+try {
+    // 发送邮件
+} catch (AuthenticationFailedException ex) {
+    throw new MailAuthenticationException("Authentication failed");
+} 
+```
+> 这里的`MailAuthenticationException`用带有异常信息文本的构造器来构造
+>
+> 不过有可以有一种更好的处理方式,并且将原始的异常设置为新异常的"原因"
+
+```java
+try {
+    // 发送邮件
+} catch (AuthenticationFailedException ex) {
+    Throwable se = new AuthenticationFailedException("Authentication failed");
+    se.initCause(e);
+    throw se;
+}
+```
+
+> 在Throwable中有包含异常信息和原因的构造器 `Throwable(String message, Throwable cause)`,
+>
+> 或只有原因的构造器`Throwable(Throwable cause)`
+>
+> 只需要在我们自定义的异常中定义相同的构造器调用父类构造器
+
+```java
+try {
+    // 发送邮件
+} catch (AuthenticationFailedException ex) {
+    throw new AuthenticationFailedException("Authentication failed", ex);
+}
+```
+
+当捕获到异常时,就可以使用下面的语句重新获得原始的异常:
+
+```java
+Throwable e = ex.getCause();
+```
+
+**强烈建议使用这种包装技术.这样可以让用户抛出子系统中的高级异常,而不会丢失原始异常的细节**
+
+**如果在一个方法中发生了一个受查异常,而不允许抛出它,那么包装技术就十分有用. 我们可以捕获这个异常,并将它包装秤一个运行时异常**
+
+有时你可能只想记录异常,在将它重新抛出,而不做任何的改变:
+
+```java
+try {
+    // 发送邮件
+} catch (AuthenticationFailedException ex) {
+    // 记录日志
+    throw ex;
+}
+```
+
+> 参考**`spring-boot-starter-mail`**包中的邮件代码和异常体系
+
 ## 7.3 - 使用异常机制的技巧

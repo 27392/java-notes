@@ -24,7 +24,7 @@
     - [x] 代理
 + [第7章 - 异常](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter7)
     - [x] 异常处理
-    - [ ] 捕获异常
+    - [x] 捕获异常
     - [ ] 使用异常机制的技巧
 + [第8章 - 泛型程序设计](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter8)
     - [ ] 泛型类
