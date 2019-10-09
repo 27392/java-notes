@@ -483,6 +483,142 @@ public static void finallyThrowExample(File file) throws Exception {
 }
 ```
 
+## 7.2.5 带资源的try语句
+
+在往常对资源进行操作通常像以下一样,我们在操作完或发送异常时手动释放资源
+
+```java
+BufferedReader br = null;
+try {
+    br = new BufferedReader(new FileReader(file));
+    String s;
+    while (null != (s = br.readLine())) {
+        System.out.println(s);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    try {
+        if (Objects.nonNull(is)) {
+            is.close();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+假设资源是一个实现了`AutoCloseable`接口的类,在JDK7之后为这种代码模式提供了一个很有用的快捷方式.
+
+> `AutoCloseable`接口只有一个方法
+>
+> ```java
+> void close() throws Exception;
+> ```
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader(file));) {
+    String s;
+    while (null != (s = br.readLine())) {
+        System.out.println(s);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+> **在正常退出`try`块,或者存在一个异常时,都会调用`br.close`方法,就好像使用了`finally`块一样**
+
+**还可以指定多个资源,多个表达式后面加(`;`),最后一个可以不加**
+
+```java
+try (InputStream inputStream = resource.openConnection().getInputStream();
+     OutputStream outputStream = new FileOutputStream(file)) {
+    byte[] buff = new byte[1024];
+    while (inputStream.read(buff, 0, buff.length) != -1) {
+        outputStream.write(buff, 0, buff.length);
+        outputStream.flush();
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+**无论这个块如果退出,`inputStream`和`outputStream`都会关闭**.如果你用常规的手动编程,就需要两个嵌套的`try/finally`语句.如下:
+
+```java
+InputStream  inputStream  = null;
+OutputStream outputStream = null;
+Exception    ex           = null;
+try {
+    inputStream  = resource.openConnection().getInputStream();
+    outputStream = new FileOutputStream(file);
+    byte[] buff = new byte[1024];
+    while (inputStream.read(buff, 0, buff.length) != -1) {
+        outputStream.write(buff, 0, buff.length);
+        outputStream.flush();
+    }
+} catch (IOException e) {
+    ex = e;
+    throw ex;
+} finally {
+    try {
+        if (null != inputStream) {
+            inputStream.close();
+        }
+    } catch (Exception e) {
+        if (null == ex) {
+            ex = e;
+            throw e;
+        }
+    }
+    if (null != outputStream) {
+        try {
+            outputStream.close();
+        } catch (Exception e) {
+            if (null == ex) {
+                throw e;
+            }
+        }
+    }
+}
+```
+
+> 这种方式显然很麻烦.所以需要关闭资源,就要尽可能使用带资源的`try`语句
+
+### 验证AutoCloseable接口
+
+定义一个类实现`AutoCloseable`接口
+
+```java
+public class Close implements AutoCloseable {
+
+    @Override
+    public void close() {
+        System.out.println("执行了close");
+    }
+}
+```
+
+使用`try-whit-resource`方法看是否会调用`close`方法
+
+```java
+public static void main(String[] args) {
+    try (Close close = new Close()) {
+        System.out.println(close.getClass().getSimpleName());
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+```
+结果很显然依次输出了`Close`和`执行了close`
+
+**所以得出结果,实现了`AutoCloseable`接口的类使用`try-whit-resource`方法时肯定会调用`close`方法**
+
+> 此外`InputStream,OutputStream`都实现了`Closeable`接口.
+> 
+> `Closeable`接口它是`AutoCloseable`接口的子类,也包含一个`close`方法.不过,这个方法声明为抛出一个`IOException`
+
 ## 7.3 - 使用异常机制的技巧
 
 ## 7.6 - 调试技巧
