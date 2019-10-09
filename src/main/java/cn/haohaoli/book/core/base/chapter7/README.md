@@ -306,4 +306,183 @@ try {
 
 > 参考**`spring-boot-starter-mail`**包中的邮件代码和异常体系
 
+### 7.2.4 finally子句
+
+当代码抛出一个异常时,就会终止方法中剩余代码的处理,并退出这个方法的执行.
+
+如果方法获得了一些本地资源,并且只有这个方法自己知道,有如果这些资源在退出方法之前必须被回收,那么就会产生资源回收问题
+
+一种解决方案是捕获并重新抛出所有的异常.但是这种解决方法不是很理想,这是因为需要在两个地方清除所分配的资源.
+
+一个在正常的代码中,而另一个在异常的代码中
+
+```java
+BufferedReader br = null;
+try {
+    br = new BufferedReader(new FileReader(file));
+    String s;
+    while (null != (s = br.readLine())) {
+        System.out.println(s);
+    }
+    // 正常的代码中清除所分配的资源
+    br.close();
+} catch (IOException e) {
+    // 异常的代码中清除所分配的资源
+    br.close();
+    e.printStackTrace();
+}
+```
+
+而在Java中有一种更好的解决方法,就是`finally`子句
+
+**不管是否有异常被捕获,`finally`子句中的代码都被执行:**
+
+````java
+BufferedReader br = null;
+try {
+    // 1
+    br = new BufferedReader(new FileReader(file));
+    String s;
+    while (null != (s = br.readLine())) {
+        System.out.println(s);
+    }
+    // 2
+} catch (IOException e) {
+    // 3
+    e.printStackTrace();
+    // 4
+} finally {
+    // 5
+    br.close();
+}
+// 6
+````
++ 在上面的代码中,有下列三种情况会执行`finally`子句
+ 
+  - **代码没有抛出异常.**
+     
+     在这种情况下,程序首先执行`try`语句块中的全部代码,然后执行`finally`子句中的代码.
+     
+     随后,继续执行`try`语句块之后的第一条语句,也就是说,执行标注的`1,2,5,6`处
+  
+  - **抛出一个在`catch`子句中捕获的异常.在上面的实例中就是`IOException`异常**
+  
+     在这种情况下,程序将执行`try`语句块中的所有代码,知道发生异常为止.
+     
+     此时,将跳过`try`语句块中剩余代码,转去执行与改异常匹配的`catch`子句中的代码,最后执行`finally`子句中的代码
+     
+       + 如果`catch`子句没有抛出异常,程序将执行`try`语句块之后的第一条语句. 执行标注`1,3,4,5,6`处的语句
+       + 如果`cathc`子句抛出异常,异常将被抛会这个方法的调用者,执行标注`1,3,5`处的语句
+     
+  - **代码抛出一个异常,但这个异常不是由`catch`子句捕获的.**
+  
+     在这种情况下,程序将执行`try`语句块中的所有语句,知道有异常被抛出为止.
+     
+     此时,将跳过`try`语句块中剩余代码,然后执行`finally`子句中的语句,并将异常抛给这个方法的调用者,执行标注`1.5`处的语句
+
+> **`try`语句可以只有`finally`子句,而没有`catch`子句**
+>
+> **无论在`try`语句块中是否遇到异常,`finally`子句中`br.close()`语句都会被执行**
+>
+> **如果真的遇到一个异常,这个异常将会被重新抛出,并且必须由另一个`catch`子句捕获**
+
+```java
+BufferedReader br = null;
+try {
+    br = new BufferedReader(new FileReader(file));
+    String s;
+    while (null != (s = br.readLine())) {
+        System.out.println(s);
+    }
+} finally {
+    br.close();
+}
+```
+
+> **强烈建议解耦合`try/catch`和`try/finally`语句块.这样可以提高代码的清晰度**
+> 
+> **内层的`try`语句块只有一个职责,就是确保关闭输入流.**
+>
+> **外层的`try`语句块也只有一个职责,就是确保报告出现的错误**
+>
+> **这种设计方式不仅清楚,而且还具有一个功能,就是将会报告`finally`子句中出现的错误**
+>
+```java
+BufferedReader br = null;
+try {
+    try {
+        br = new BufferedReader(new FileReader(file));
+        String s;
+        while (null != (s = br.readLine())) {
+            System.out.println(s);
+        }
+    } finally {
+        if (Objects.nonNull(br)) {
+            br.close();
+        }
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+#### finally子句包含return语句
+
+当`finally`子句中包含`return`语句时,将会出现一个意想不到的结果.
+
+**假设利用`return`语句从`try`语句块中退出.在方法返回前,`finally`子句的内容将被执行.**
+
+**如果`finally`子句中也有一个`return`语句,这个返回值将会不改原始的返回值**
+
+```java
+public static int finallyReturnExample (){
+    try{
+        return 1 / 1;
+    } finally {
+        System.out.println("finally！");
+        return -1;
+    }
+}
+```
+**在方法执行时,`try`语句块的计算结果为"0",并执行`return`语句.**
+
+**然而,在方法真正返回前,还要执行`finally`子句.`finally`子句将使用方法返回"-1",这个返回值覆盖了原始返回值"0"**
+
+#### try语句块与finally语句块同时发生异常
+
+现在假设在`try`语句块中的代码抛出了一些非`IOException`的异常,这些异常只有这个方法的调用者才能够给予处理
+
+执行`finally`语句块,并调用`close`方法.而`close`方法本身也有可能抛出`IOException`异常.
+
+当出现这种情况时,原始的异常将会丢失,转而抛出`close`方法的异常.
+
+这会有问题,因为第一个异常很可能更有意思.如果要做适当的处理,重新抛出原来的异常,代码会变的极其繁琐.如下:
+
+```java
+public static void finallyThrowExample(File file) throws Exception {
+    BufferedReader br = null;
+    Exception      ex = null;
+    try {
+        br = new BufferedReader(new FileReader(file));
+        print(br);
+    } catch (IOException e) {
+        ex = e;
+        throw ex;
+    } finally {
+        try {
+            if (Objects.nonNull(br)) {
+                br.close();
+            }
+        } catch (Exception e) {
+            // 当有异常时不在抛出
+            if (null == ex) {
+                throw e;
+            }
+        }
+    }
+}
+```
+
 ## 7.3 - 使用异常机制的技巧
+
+## 7.6 - 调试技巧
