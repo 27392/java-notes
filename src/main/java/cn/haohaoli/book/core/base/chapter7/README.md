@@ -483,7 +483,7 @@ public static void finallyThrowExample(File file) throws Exception {
 }
 ```
 
-## 7.2.5 带资源的try语句
+### 7.2.5 带资源的try语句
 
 在往常对资源进行操作通常像以下一样,我们在操作完或发送异常时手动释放资源
 
@@ -586,7 +586,7 @@ try {
 
 > 这种方式显然很麻烦.所以需要关闭资源,就要尽可能使用带资源的`try`语句
 
-### 验证AutoCloseable接口
+#### 验证AutoCloseable接口
 
 定义一个类实现`AutoCloseable`接口
 
@@ -618,6 +618,34 @@ public static void main(String[] args) {
 > 此外`InputStream,OutputStream`都实现了`Closeable`接口.
 > 
 > `Closeable`接口它是`AutoCloseable`接口的子类,也包含一个`close`方法.不过,这个方法声明为抛出一个`IOException`
+
+### 7.2.6 分析堆栈轨迹元素
+
+**堆栈轨迹是一个方法调用过程的列表,它包含了程序执行过程中方法调用的特定位置**
+
+  + `printStackTrace`方法
+  
+    可以使用`Throwable`类的`printStackTrace`方法访问堆栈轨迹的文本描述信息
+
+    ```java
+    Throwable    throwable = new Throwable();
+    StringWriter out       = new StringWriter();
+    throwable.printStackTrace(new PrintWriter(out));
+    System.out.println(out.toString());
+    ```
+  + `printStackTrace`方法
+  
+    还可以使用`getStackTrace`方法,它同样是`Throwable`类的方法,它会得到StackTraceElement对象的一个数组
+   
+    `StackTraceElement`类含有能够获得文件名和当前执行的代码行号的方法,同时,还含有能够获得类名和方法名的方法.
+   
+    ```java
+    Throwable           t        = new Throwable();
+    StackTraceElement[] elements = t.getStackTrace();
+    for (StackTraceElement stackTraceElement : elements) {
+        System.out.println(stackTraceElement);
+    }
+    ```
 
 ## 7.3 - 使用异常机制的技巧
 
