@@ -62,7 +62,7 @@ public class ExceptionTest {
      *  在这种情况下:
      *  一旦方法抛出了异常， 这个方法就不可能返回到调用者。也就是说， 不必为返回的默认 值或错误代码担忧。
      */
-    public static void readTxt(File file) throws FileFormatException {
+    private static void readTxt(File file) throws FileFormatException {
         boolean b = file.getName().endsWith(".txt");
         if(!b) {
             throw new FileFormatException("文件错误，不是文本");
