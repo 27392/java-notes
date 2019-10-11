@@ -30,7 +30,7 @@
     - [ ] 日志
     - [ ] 调试技巧
 + [第8章 - 泛型程序设计](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter8)
-    - [ ] 泛型类
+    - [x] 泛型类
     - [ ] 泛型方法
     - [ ] 类型变量限定
     - [ ] 约束与局限性
