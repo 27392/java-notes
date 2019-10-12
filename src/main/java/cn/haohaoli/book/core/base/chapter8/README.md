@@ -118,6 +118,67 @@ double middle = ArrayAlg.getMiddle(3.14, 1729.0, 0.0);
 
 ## 8.4 - 类型变量的限定
 
+有时,类或者方法需要对类型变量加以约束.例如:我们需要计算数组中的最小元素
+
+```java
+public static <T> T min (T[] ts) {
+    if (null == ts || ts.length == 0) {
+        return null;
+    }
+    T smallest = ts[0];
+    for (T t : ts) {
+        // 错误! 不能保证smallest类有compareTo方法
+        if (smallest.compareTo(t) > 0) {
+            smallest = t;
+        }
+    }
+    return smallest;
+}
+```
+
+但是这有一个问题, 变量`smallest`类型为`T`,这以为这它可以是任何一个类的对象.这就不能保证`T`所属的类有`compareTo`方法
+
+解决这个问题的方法就是将`T`限制为实现了`Comparable`接口的类,可以通过对类型变量`T`设置限定实现这一点
+
+**使用泛型限定的格式为`<T extends BundingType>`**
+
+```java
+public static <T extends Comparable> T min (T[] ts) {
+    if (null == ts || ts.length == 0) {
+        return null;
+    }
+    T smallest = ts[0];
+    for (T t : ts) {
+        if (smallest.compareTo(t) > 0) {
+            smallest = t;
+        }
+    }
+    return smallest;
+}
+```
+
+现在,这个方法只能被实现了`Comparable`接口的类(`String、LocalDate`等)的数组调用
+
+### 为什么使用extends而不是implements
+
+但是这里为什么使用关键`extends`而不是使用`implements`?毕竟`Comparable`是一个接口
+
+`<T extends BundingType>`,`T`应该是绑定类型的子类型,`T`和绑定类型可以是类,也可以是接口
+
+**选择字关键`extends`的原因是更接近子类的概念**
+
+### 多个限定
+
+**一个类型变量,可以有多个限定.用`&`分隔,而逗号用来分隔类型变量**
+
+```java
+<T extends Comparable & Serializable, U>
+```
+
+> Java中类只支持单继承,但是可以实现多个接口
+>
+> 所以限定中最多只能有一个类,如果用一个类做限定,它必须是限定列表的第一个
+
 ## 8.5 - 泛型代码和虚拟机
 
 ## 8.6 - 约束与局限性
