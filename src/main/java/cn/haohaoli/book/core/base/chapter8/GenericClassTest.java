@@ -1,0 +1,39 @@
+package cn.haohaoli.book.core.base.chapter8;
+
+import java.util.Optional;
+
+/**
+ * 泛型类
+ * @author LiWenHao
+ * @date 2019/10/14 15:57
+ */
+public class GenericClassTest {
+
+    public static void main(String[] args) {
+
+        // JDK7之后的版本在构造函数中可以省略泛型类,省略的类型可以从变量的类型推断得出
+        Pair<String> jdk7 = new Pair<String>();
+        Pair<String> jdk8 = new Pair<>();
+
+        String[]     words = {"Mary", "had", "a", "little", "lamb"};
+        Pair<String> mm    = minmax(words);
+        Optional.ofNullable(mm).ifPresent(System.out::println);
+    }
+
+    private static Pair<String> minmax(String[] ts) {
+        if (null == ts || ts.length == 0) {
+            return null;
+        }
+        String min = ts[0];
+        String max = ts[0];
+        for (String t : ts) {
+            if (max.compareTo(t) > 0) {
+                max = t;
+            }
+            if (min.compareTo(t) < 0) {
+                min = t;
+            }
+        }
+        return new Pair<>(min, max);
+    }
+}
