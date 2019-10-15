@@ -16,9 +16,16 @@ public class GenericEraseTest {
         System.out.println(stringPair.getClass() == integerPair.getClass());
         // 结果为:true,说明泛型已经被擦除
 
-        Limit x = new Limit();
-        Comparable t = x.getT();
+        Limit      limit = new Limit();
+        Comparable value = limit.getT();
         // 使用第一个限定的类型变量来替换
+
+        Pair<Integer> pair  = new Pair<>();
+        Integer       first = pair.getFirst();
+        // 如果擦除返回类型,编译器将会插入强制类型转换
+        // Integer first = (Integer)pair.getFirst();
+
+
     }
 
     @Getter
@@ -26,7 +33,7 @@ public class GenericEraseTest {
 
         private T t;
 
-        public int compareTo(T o){
+        public int compareTo(T o) {
             return o.compareTo(this.t);
         }
     }
@@ -36,11 +43,12 @@ public class GenericEraseTest {
 
         private T t;
 
-        public int compareTo(T o){
+        public int compareTo(T o) {
             // 如果在调用第二个限定类的方法时就会进行强制类型转换
             // return ((Comparable)o).compareTo(this.t);
             return o.compareTo(this.t);
         }
-
     }
+
 }
+
