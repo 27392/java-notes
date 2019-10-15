@@ -15,6 +15,9 @@ public class GenericClassTest {
         Pair<String> jdk7 = new Pair<String>();
         Pair<String> jdk8 = new Pair<>();
 
+        // 不使用泛型构造对象时,默认变量就是Object
+        Pair pair = new Pair();
+
         String[]     words = {"Mary", "had", "a", "little", "lamb"};
         Pair<String> mm    = minmax(words);
         Optional.ofNullable(mm).ifPresent(System.out::println);

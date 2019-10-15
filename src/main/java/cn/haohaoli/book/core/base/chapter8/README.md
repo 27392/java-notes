@@ -51,13 +51,21 @@ Pair<String> pair = new Pair<>();
 ```java
 // 构造方法
 Pair<String>();
-Pair<String>(String first,String second);
+Pair<String>(String first, String second);
 // 方法
 String getFirst();
 String getSecond();
 void setFirst(String first);
 void setSecond(String second);
 ```
+
+当然我们也可以不使用泛型构造对象
+
+```java
+Pair pair = new Pair();
+```
+
+这样默认参数类型就是`Object`类型
 
 ## 8.3 - 泛型方法
 
@@ -180,6 +188,105 @@ public static <T extends Comparable> T min (T[] ts) {
 > 所以限定中最多只能有一个类,如果用一个类做限定,它必须是限定列表的第一个
 
 ## 8.5 - 泛型代码和虚拟机
+
+虚拟机没有泛型对象,所有对象都属于普通类
+
+### 8.5.1 - 泛型擦除
+
+**无论何时定义一个泛型类型,都自动提供了一个相对应的原始类.原始类型的名字就是删除类型变量后的泛型类型名**
+
+**同时擦除类型变量,并替换为限定类型(无限定的变量用`Object`)** 
+
+例如,`Pair<T>`的原始类型如下:
+
+```java
+public class Pair {
+
+    private Object first;
+    private Object second;
+    
+    public Pair(Object first, Object second) {
+        this.first  = first;
+        this.second = second;
+    }
+    
+    public Object getFirst() { return first; }
+    public void setFirst(Object first) { this.first = first; }
+    
+    public Object getSecond() { return second; }
+    public void setSecond(Object second) { this.second = second; }
+
+}
+```
+
+因为`T`是一个无限定的变量,所以指定用`Object`替换,这就像是我们不使用泛型构造这个对象一样
+
+结果就是一个普通的类,就好像Java在泛型引入之前那样
+
+> 在程序中可以包含不同类型的`Pair`,例如,`Pair<String>`,`Pair<LocalDate>`.而擦除类型后变成原始的`Pair`类型了
+
+#### 验证泛型擦除
+
+我们定义两个不同泛型类型不同的`Pair`对象,将他们的`Class`进行对比,看看结果如何
+
+```java
+public static void main(String[] args) {
+
+    Pair<String>  stringPair  = new Pair<>();
+    Pair<Integer> integerPair = new Pair<>();
+    System.out.println(stringPair.getClass() == integerPair.getClass());
+}
+```
+
+结果是`true`.这就说明两个`class`文件是同一个(是擦除后的类型)
+
+#### 限定类型替换
+
+**原始类型用第一个限定的类型变量来替换,如果没有给限定就用`Object`替换**
+
+**例如,类`Pair<T>`中的类型变量没有显式的限定,因此,原始类型用`Object`替换`T`**
+
+假设声明了限定,例如:
+
+```java
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+public class Pair<T extends Comparable & Cloneable> {
+
+    private T first;
+    private T second;
+}
+```
+
+原始类型`Pair`如下:
+
+```java
+public class Pair {
+
+    private Comparable first;
+    private Comparable second;
+    
+    public Pair(Comparable first, Comparable second) {
+        this.first  = first;
+        this.second = second;
+    }
+    
+    public Comparable getFirst() { return first; }
+    public void setFirst(Comparable first) { this.first = first; }
+    
+    public Comparable getSecond() { return second; }
+    public void setSecond(Comparable second) { this.second = second; }
+
+}
+```
+
+如果说我们将声明改为`Pair<T extends Cloneable & Comparable>`,这样做呢?
+
+这样做的话还是一样会用`Cloneable`代替来替换,但是这样在调用`Comparable`接口的方式时会进行强制类型转换
+
+**所以为了提供效率,应该将标记接口(没有方法的接口)放在限定边界的末尾**
 
 ## 8.6 - 约束与局限性
 
