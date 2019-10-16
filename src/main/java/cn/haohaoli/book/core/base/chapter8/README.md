@@ -374,7 +374,18 @@ public void setSecond(Object second) {
 
 **因此,编译器可能生成两个仅返回类型不同的方法字节码,虚拟机自己能够正确地处理这一情况**
 
+> [参考资料](https://blog.csdn.net/PacosonSWJTU/article/details/50374131)
+
 ## 8.6 - 约束与局限性
+
+### 8.6.1 - 不能使用基本类型实例化类型参数
+
+**不能用类型参数代替基本类型**
+
+因此,没有`Pair<double>`,只有`Pair<Double>`
+
+**这其中的原因是类型擦除,在擦除之后,`Pair`类含有`Object`类型的域,而`Object`不能存储`double`值**
+
 
 ## 8.7 - 泛型类型的继承规则
 
