@@ -407,6 +407,46 @@ Pair<String> p = (Pair<String>)a
 
 **同样的道理,`getClass()`方法总是返回原始类型(在泛型擦除中已经有验证)**
 
+### 8.6.3 不能创建参数化类型的数组
+
+> 也就说不能创建泛型数组~
+
+在开始之前我们需要知道
+
+**在Java中,`Object[]`数组可以是任何数组的父类,或者说,任何一个数组都可以向上转型成它在定义时指定元素类型的父类的数组.**
+
+**这个时候如果我们往里面放不同于原始数据类型,但是满足后来使用的父类类型的话,编译不会有问题**
+
+**但是在运行时会检查加入数组的对象的类型,如果试图存储其他类型的元素,就会抛出一个`ArrayStoreException`异常**
+
+> **也就是说,数组会记住它的元素类型,如果试图存储其他类型的元素,就会抛出一个`ArrayStoreException`异常**
+
+```java
+String[] strArray = new String[20];
+Object[] objArray = strArray;
+objArray[0]       = new Integer(1);   // throws ArrayStoreException
+```
+
+如果说Java允许我们使用类似如下的代码:
+
+```java
+Pair<String> [] table = new Pair<String>[10]
+```
+
+在擦除之后,`table`的类型是`Pair[]`.可以将它转换成`Object[]`,然后放入`Pair<String>`泛型实例
+
+```java
+Object[] objarray = table;
+objarray[0]       =  new Pair<String>();   //ok
+```
+
+这样能通过数组存储检查,它能知道我们往里放了`Pair`实例,至于我们定义的`<String>`在这个时候已经擦除掉了
+
+对它而言,只要是`Pair`实例都是合法的,而我们本来定义的是转`Pair<String>`的数组,结果我们却可以放任何`Pair`对象
+
+如果说Java允许我们这样定义的话,我们在取值时将无法保证数据的正确性,所以Java是不允许创建参数化类型的数组
+
+> 尽管不允许创建这些数组,但是声明类型为`Pair<String> []`的变量仍是合法的
 
 ## 8.7 - 泛型类型的继承规则
 
