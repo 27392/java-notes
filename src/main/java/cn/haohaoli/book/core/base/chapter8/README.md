@@ -309,6 +309,71 @@ Integer       first = pair.getFirst();
 
 ### 8.5.3 - 翻译泛型方法
 
+类型的擦除也会出现在泛型方法中,看下面的例子
+
+```java
+private static <T extends Comparable> T min(T[] ts) {
+    T min = ts[0];
+    for (T t : ts) {
+        if(t.compareTo(min) < 0) {
+            min = t;
+        }
+    }
+    return min;
+}
+```
+
+在擦除类型后,会使用限定进行替换就会变成下面这样:
+
+```java
+private static Comparable min(Comparable[] ts) {
+    Comparable min = ts[0];
+    for (Comparable t : ts) {
+        if(t.compareTo(min) < 0) {
+            min = t;
+        }
+    }
+    return min;
+}
+```
+
+##### 方法擦除带来的问题
+
+看下面的示例:
+
+```java
+private static class StringPair extends Pair<String> {
+
+    @Override
+    public void setSecond(String second) {
+       super.setSecond(second);
+    }
+}
+```
+
+令人感到奇怪的是,我们从`Pair`继承的`setSecond`方法它在擦除后应该是`setSecond(Object second)`
+
+那么`StringPair`中的`setSecond`肯定就无法覆盖父类的方法,这对多态来说确实是个不小的麻烦,那么编译器是怎么解决的呢?
+
+要解决这个问题,编译器会在`StringPair`类中生成一个桥方法:
+
+```java
+public void setSecond(Object second) {
+   setSecond((String)second);
+}
+```
+
+这样就能覆盖父类的`setSecond`,并且在桥方法中调用的是`setSecond(String second)`方法,这样一来对多态就没有问题了
+
+但是,假设我们`StringPair`也覆盖了`getSecond`方法.在`StringPair`就会有两个方法
+
+  1. Object getSecond(); 
+  2. String getSecond();
+
+**在Java中是不允许这样的(具有相同参数类型的两个方法是不合法的),他们都没有参数.在虚拟机中,用参数类型和返回类型确定一个方法.**
+
+**因此,编译器可能生成两个仅返回类型不同的方法字节码,虚拟机自己能够正确地处理这一情况**
+
 ## 8.6 - 约束与局限性
 
 ## 8.7 - 泛型类型的继承规则

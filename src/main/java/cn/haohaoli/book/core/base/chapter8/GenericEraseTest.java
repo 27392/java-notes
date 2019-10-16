@@ -24,9 +24,11 @@ public class GenericEraseTest {
         Integer       first = pair.getFirst();
         // 如果擦除返回类型,编译器将会插入强制类型转换
         // Integer first = (Integer)pair.getFirst();
-
-
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // class
+    ///////////////////////////////////////////////////////////////////////////
 
     @Getter
     private static class Limit<T extends Comparable & Cloneable> {
