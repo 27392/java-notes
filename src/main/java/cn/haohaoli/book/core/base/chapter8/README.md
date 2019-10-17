@@ -367,8 +367,8 @@ public void setSecond(Object second) {
 
 但是,假设我们`StringPair`也覆盖了`getSecond`方法.在`StringPair`就会有两个方法
 
-  1. Object getSecond(); 
-  2. String getSecond();
+  1. `Object getSecond();`
+  2. `String getSecond();`
 
 **在Java中是不允许这样的(具有相同参数类型的两个方法是不合法的),他们都没有参数.在虚拟机中,用参数类型和返回类型确定一个方法.**
 
@@ -447,6 +447,43 @@ objarray[0]       =  new Pair<String>();   //ok
 如果说Java允许我们这样定义的话,我们在取值时将无法保证数据的正确性,所以Java是不允许创建参数化类型的数组
 
 > 尽管不允许创建这些数组,但是声明类型为`Pair<String> []`的变量仍是合法的
+
+### 8.6.4 Varargs警告(泛型可变参警告)
+
+到现在我们已经知道了Java不支持泛型类型的数组,而现在我们来考虑一个问题
+
+向参数个数可变的方法传递一个泛型类型的实例,例如:
+
+```java
+public static <T> void print(T... ts) {
+    for (T t: ts) {
+        System.out.println(t.getClass().getSimpleName());
+    }
+}
+```
+
+实际上,参数`ts`就是一个数组,我们之前说过在Java中可变参其实就是一个数组
+
+如果我们现在这么去调用这个方法,
+
+```java
+print(new Pair<>(), new Pair<>());
+```
+
+那么,为了调用这个方法,Java虚拟机必须建立一个`Pair<String>`数组,这就违反了*不能创建泛型数组*这个规则
+
+不过,对于这种情况,规则有所放松,你只会得到一个警告,而不是错误!
+
+可以采用两种方法来抑制这个警告
+
+ - **在调用泛型可变参方法的调用方上上增加注解`@SuppressWarnings("unchecked")`**
+ 
+ - **在泛型可变参方法上增加注解`@SafeVarargs`,在JdK1.7中可以使用**
+
+### 8.6.5 不能实例化类型变量
+
+
+
 
 ## 8.7 - 泛型类型的继承规则
 
