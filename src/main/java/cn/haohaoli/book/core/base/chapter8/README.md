@@ -452,7 +452,7 @@ objarray[0]       =  new Pair<String>();   //ok
 
 到现在我们已经知道了Java不支持泛型类型的数组,而现在我们来考虑一个问题
 
-向参数个数可变的方法传递一个泛型类型的实例,例如:
+像参数个数可变的方法传递一个泛型类型的实例,例如:
 
 ```java
 public static <T> void print(T... ts) {
@@ -482,8 +482,48 @@ print(new Pair<>(), new Pair<>());
 
 ### 8.6.5 不能实例化类型变量
 
+**不能直接使用像`new T()`,`new T[n]`,`T.class`等这样的的表达式中的类型变量**
 
+例如:下面`Pair<T>`类的构造器就是非法的
 
+```java
+public Pair() {
+    // this.first = new T();    //错误
+    // this.second = new T();   //错误
+}
+```
+
+类型擦除将`T`改变成`Object`,而我们本意并不希望调用的是`new Object()`
+
+比较传统的解决方法是通过反射调用`Class.newInstance`方法类构造泛型对象:
+
+```java
+T t = T.class.newInstance();
+```
+
+但是这个表达式`T.class`是不合法的,因为它会擦除为`Object.class`,到头来还是`Object`对象并不是我们想要的
+
+必须像下面这样设计便可以得到一个`Class`对象
+
+```java
+public static <T> Pair<T> makePair(Class<T> clazz) throws IllegalAccessException, InstantiationException {
+    return new Pair<>(clazz.newInstance(), clazz.newInstance());
+}
+```
+
+但是在Java8之后,最好的解决方法是提供一个构造器表达式.例如
+
+```java
+Pair<String> supplierPair = Pair.makePair(String::new);
+```
+
+`makePair`方法接受一个`Supplier<T>`这样一个函数式接口,表示一个无参数而且返回类型是`T`的函数
+
+```java
+public static <T> Pair<T> makePair(Supplier<T> supplier) {
+    return new Pair<>(supplier.get(), supplier.get());
+}
+```
 
 ## 8.7 - 泛型类型的继承规则
 

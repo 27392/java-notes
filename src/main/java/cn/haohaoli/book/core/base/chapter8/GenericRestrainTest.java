@@ -9,25 +9,28 @@ package cn.haohaoli.book.core.base.chapter8;
 public class GenericRestrainTest {
 
     //@SuppressWarnings("unchecked")
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
         print(new Pair<>(), new Pair<>());
+
+        Pair<String> classPair    = Pair.makePair(String.class);
+        Pair<String> supplierPair = Pair.makePair(String::new);
     }
 
     @SafeVarargs
-    private static <E> E[] array (E... es) {
+    private static <E> E[] array(E... es) {
         return es;
     }
 
     /**
      * 打印(泛型可变参方法)
+     *
      * @param ts
      * @param <T>
      */
     @SafeVarargs
     private static <T> void print(T... ts) {
-        for (T t: ts) {
+        for (T t : ts) {
             System.out.println(t.getClass().getSimpleName());
         }
     }
-
 }
