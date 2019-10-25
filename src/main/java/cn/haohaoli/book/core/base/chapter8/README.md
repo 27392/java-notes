@@ -355,7 +355,7 @@ private static class StringPair extends Pair<String> {
 
 那么`StringPair`中的`setSecond`肯定就无法覆盖父类的方法,这对多态来说确实是个不小的麻烦,那么编译器是怎么解决的呢?
 
-要解决这个问题,编译器会在`StringPair`类中生成一个桥方法:
+要解决这个问题,编译器会在`StringPair`类中生成一个**桥方法**:
 
 ```java
 public void setSecond(Object second) {
@@ -374,6 +374,38 @@ public void setSecond(Object second) {
 
 **因此,编译器可能生成两个仅返回类型不同的方法字节码,虚拟机自己能够正确地处理这一情况**
 
+> **桥方法不仅用于泛型类型,在一个方法覆盖另一个方法时可以指定一个更严格的返回类型**
+
+```java
+public class Employee implements Cloneable {
+    
+    public Employee clone() throws CloneNotSupportedException{
+        return (Employee) super.clone();
+    }
+}
+```
+
+`Object.clone`和`Employee.clone`方法被说成具有**协变的返回类型**
+
+实际上`Employee`类有两个克隆方法
+
+```java
+public Employee clone()
+public Object clone()
+```
+
+合成的桥方法调用了新定义的方法
+
+> 注意点
+>
+> 1. **虚拟中没有泛型,只有普通的类和方法**
+>
+> 2. **所有的类型参数都有它们的限定类型替换**
+>
+> 3. **桥方法被合成来保持多态**
+>
+> 4. **为保持类型安全性,必要时插入强制类型转换**
+>
 > [参考资料](https://blog.csdn.net/PacosonSWJTU/article/details/50374131)
 
 ## 8.6 - 约束与局限性
@@ -524,6 +556,9 @@ public static <T> Pair<T> makePair(Supplier<T> supplier) {
     return new Pair<>(supplier.get(), supplier.get());
 }
 ```
+
+### 8.6.6 不能构造泛型数组
+
 
 ## 8.7 - 泛型类型的继承规则
 
