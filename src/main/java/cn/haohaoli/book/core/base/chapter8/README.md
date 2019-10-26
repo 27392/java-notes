@@ -565,6 +565,16 @@ public static <T> Pair<T> makePair(Supplier<T> supplier) {
 T[] array = new T[n]  // 错误
 ```
 
+### 8.6.7 不能在泛型类中定义静态类型变量
+
+```java
+public class Pair<T> {
+     private static T staticField;  //错误
+}
+```
+
+**因为静态域会在对象间共享,所以无法确定需要使用的类型**
+
 ## 8.7 - 泛型类型的继承规则
 
 ## 8.8 - 通配符类型
