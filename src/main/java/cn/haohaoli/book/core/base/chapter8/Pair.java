@@ -30,12 +30,25 @@ public class Pair<T> {
         // this.second = new T();   //错误
     }
 
+    /**
+     * 使用反射创建
+     * @param clazz
+     * @param <T>
+     * @return
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     public static <T> Pair<T> makePair(Class<T> clazz) throws IllegalAccessException, InstantiationException {
         return new Pair<>(clazz.newInstance(), clazz.newInstance());
     }
 
+    /**
+     * 使用Supplier(函数式接口)创建
+     * @param supplier
+     * @param <T>
+     * @return
+     */
     public static <T> Pair<T> makePair(Supplier<T> supplier) {
         return new Pair<>(supplier.get(), supplier.get());
     }
-
 }

@@ -16,11 +16,6 @@ public class GenericRestrainTest {
         Pair<String> supplierPair = Pair.makePair(String::new);
     }
 
-    @SafeVarargs
-    private static <E> E[] array(E... es) {
-        return es;
-    }
-
     /**
      * 打印(泛型可变参方法)
      *
