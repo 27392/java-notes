@@ -414,9 +414,9 @@ public Object clone()
 
 **不能用类型参数代替基本类型**
 
-因此,没有`Pair<double>`,只有`Pair<Double>`
+因此,没有`SimpleGeneric<double>`,只有`SimpleGeneric<Double>`
 
-**这其中的原因是类型擦除,在擦除之后,`Pair`类含有`Object`类型的域,而`Object`不能存储`double`值**
+**这其中的原因是类型擦除,在擦除之后,`SimpleGeneric`类含有`Object`类型的域,而`Object`不能存储`double`值**
 
 ### 8.6.2 - 运行时类型查询只适用于原始类型
 
@@ -427,12 +427,12 @@ public Object clone()
 例如:测试`a`是否是任意类型的一个`Pair`,或强制类型转换
 
 ```java
-if (a instanceof Pair<String>) {}  //错误
+if (a instanceof SimpleGeneric<String>) {}  //错误
 
-if (a instanceof Pair<T>) {}       //错误
+if (a instanceof SimpleGeneric<T>) {}       //错误
 
 // 强制类型转换
-Pair<String> p = (Pair<String>)a
+SimpleGeneric<String> s = (SimpleGeneric<String>)a
 ```
 
 **为提醒这一风险,试图查询一个对象是否属于某个泛型类型时,倘若使用`instanceof`会得到一个编译器错误,如果使用强制类型转换会得到一个警告**
@@ -462,23 +462,23 @@ objArray[0]       = new Integer(1);   // throws ArrayStoreException
 如果说Java允许我们使用类似如下的代码:
 
 ```java
-Pair<String> [] table = new Pair<String>[10]
+SimpleGeneric<String> [] table = new SimpleGeneric<String>[10]
 ```
 
 在擦除之后,`table`的类型是`Pair[]`.可以将它转换成`Object[]`,然后放入`Pair<String>`泛型实例
 
 ```java
 Object[] objarray = table;
-objarray[0]       =  new Pair<String>();   //ok
+objarray[0]       =  new SimpleGeneric<String>();   //ok
 ```
 
 这样能通过数组存储检查,它能知道我们往里放了`Pair`实例,至于我们定义的`<String>`在这个时候已经擦除掉了
 
-对它而言,只要是`Pair`实例都是合法的,而我们本来定义的是转`Pair<String>`的数组,结果我们却可以放任何`Pair`对象
+对它而言,只要是`Pair`实例都是合法的,而我们本来定义的是转`SimpleGeneric<String>`的数组,结果我们却可以放任何`SimpleGeneric`对象
 
 如果说Java允许我们这样定义的话,我们在取值时将无法保证数据的正确性,所以Java是不允许创建参数化类型的数组
 
-> 尽管不允许创建这些数组,但是声明类型为`Pair<String> []`的变量仍是合法的
+> 尽管不允许创建这些数组,但是声明类型为`SimpleGeneric<String> []`的变量仍是合法的
 
 ### 8.6.4 Varargs警告(泛型可变参警告)
 
@@ -488,7 +488,7 @@ objarray[0]       =  new Pair<String>();   //ok
 
 ```java
 public static <T> void print(T... ts) {
-    for (T t: ts) {
+    for (T t : ts) {
         System.out.println(t.getClass().getSimpleName());
     }
 }
@@ -499,10 +499,10 @@ public static <T> void print(T... ts) {
 如果我们现在这么去调用这个方法,
 
 ```java
-print(new Pair<>(), new Pair<>());
+print(new SimpleGeneric<>(), new SimpleGeneric<>());
 ```
 
-那么,为了调用这个方法,Java虚拟机必须建立一个`Pair<String>`数组,这就违反了*不能创建泛型数组*这个规则
+那么,为了调用这个方法,Java虚拟机必须建立一个`SimpleGeneric<String>`数组,这就违反了*不能创建泛型数组*这个规则
 
 不过,对于这种情况,规则有所放松,你只会得到一个警告,而不是错误!
 
@@ -516,12 +516,11 @@ print(new Pair<>(), new Pair<>());
 
 **不能直接使用像`new T()`,`new T[n]`,`T.class`等这样的的表达式中的类型变量**
 
-例如:下面`Pair<T>`类的构造器就是非法的
+例如:下面`SimpleGeneric<T>`类的构造器就是非法的
 
 ```java
-public Pair() {
-    // this.first = new T();    //错误
-    // this.second = new T();   //错误
+public SimpleGeneric() {
+    // this.field = new T();    //错误
 }
 ```
 
@@ -538,22 +537,22 @@ T t = T.class.newInstance();
 必须像下面这样设计便可以得到一个`Class`对象
 
 ```java
-public static <T> Pair<T> makePair(Class<T> clazz) throws IllegalAccessException, InstantiationException {
-    return new Pair<>(clazz.newInstance(), clazz.newInstance());
+static <T> SimpleGeneric<T> make(Class<T> clazz) throws IllegalAccessException, InstantiationException {
+    return new SimpleGeneric<>(clazz.newInstance());
 }
 ```
 
 但是在Java8之后,最好的解决方法是提供一个构造器表达式.例如
 
 ```java
-Pair<String> supplierPair = Pair.makePair(String::new);
+SimpleGeneric<String> supplierPair = SimpleGeneric.make(String::new);
 ```
 
 `makePair`方法接受一个`Supplier<T>`这样一个函数式接口,表示一个无参数而且返回类型是`T`的函数
 
 ```java
-public static <T> Pair<T> makePair(Supplier<T> supplier) {
-    return new Pair<>(supplier.get(), supplier.get());
+static <T> SimpleGeneric<T> make(Supplier<T> supplier) {
+    return new SimpleGeneric<>(supplier.get());
 }
 ```
 
@@ -561,19 +560,106 @@ public static <T> Pair<T> makePair(Supplier<T> supplier) {
 
 **就像不能实例化一个泛型实例一样,也不能实例化泛型数组**
 
+例如: 下面`SimpleGeneric<T>`类的构造器就是非法的
+
 ```java
-T[] array = new T[n]  // 错误
+public SimpleGeneric() {
+    // fields = new T[10](); //错误
+}
+```
+
+如构造泛型实例的解决方式一样,也可以使用反射和函数式接口来实现
+
+具体代码在`GenericRestrainTest`类中,这里我们关注主要的代码
+
+与构造泛型实例的发射方式不同,这里使用`Array`类中的`newInstance()`方法传入类型和长度实例化
+
+```java
+private static <T extends Comparable> T[] minmax(Class<T> clazz, T... a) {
+    // ...其他操作
+    T[] ts = (T[]) Array.newInstance(clazz, 2);
+    // ...其他操作
+    return ts;
+}
+```
+
+而这里使用`IntFunction`,当然使用`Supplier`也是一样的.使用`Supplier`我们可以在方法外面定义长度
+
+```java
+private static <T extends Comparable> T[] minmax(IntFunction<T[]> function, T... a) {
+    //..其他
+    T[] ts = function.apply(2);
+    // ..
+    return ts;
+}
 ```
 
 ### 8.6.7 不能在泛型类中定义静态类型变量
 
 ```java
-public class Pair<T> {
+public static class SimpleGeneric<T> {
      private static T staticField;  //错误
 }
 ```
 
 **因为静态域会在对象间共享,所以无法确定需要使用的类型**
+
+### 8.6.8 不能抛出或捕获泛型类的实例
+
+也就说不能抛出也不能捕获泛型类对象
+
+`catch`子句中不能使用类型变量.例如,以下方法将不能通过编译
+
+```java
+public static <X extends Throwable> void tryEx(String str , X x){
+    try {
+        
+    } catch (X x){  //不能catch类型变量,错误
+
+    }
+}
+```
+
+实际上,甚至泛型类拓展`Throwable`(这里包含它的子类等等)都是不合法的
+
+```java
+public class Ex<T> extends Throwable{
+}
+```
+
+不过,在异常规范中使用类型变量是允许的
+
+```java
+public static <X extends Throwable> void isEmpty(String str, X x) throws X {
+    if (str == null || "".equals(str)){
+        throw x;
+    }
+}
+```
+
+#### 抛出泛型异常
+
+事实上是可以抛出泛型异常的
+
+```java
+public static <X extends Throwable> void isEmpty(String str, X x) throws Throwable {
+    if (str == null || "".equals(str)){
+        throw x;
+    }
+}
+```
+
+由于泛型在擦除后`x`的类型是`Throwable`所以必须声明异常`Throwable`异常,这样一来就算是`RuntimeException`也必须捕获
+
+而如果我们将`<X extends Throwable>`换成`<X extends RuntimeException>`这样一样来就不用声明异常
+
+但是这样一来就根本没意义了,如果我们需要`IOException`的时候难道又要编写一个新的类吗? 这显然不是我们所想的
+
+> **简单说泛型类不能去拓展异常,也不能去捕获和抛出泛型异常(这里是可以的但是只是不太适合),但是我们还是可以使用类型变量**
+
+### 8.6.9 可以消除对受查异常的检查
+
+### 8.6.10 注意擦除后的冲突
 
 ## 8.7 - 泛型类型的继承规则
 

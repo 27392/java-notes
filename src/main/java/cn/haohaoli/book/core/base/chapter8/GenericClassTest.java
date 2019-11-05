@@ -29,12 +29,12 @@ public class GenericClassTest {
         }
         String min = ts[0];
         String max = ts[0];
-        for (String t : ts) {
-            if (max.compareTo(t) > 0) {
-                max = t;
+        for (int i = 1; i < ts.length; i++) {
+            if (max.compareTo(ts[i]) > 0) {
+                max = ts[i];
             }
-            if (min.compareTo(t) < 0) {
-                min = t;
+            if (min.compareTo(ts[i]) < 0) {
+                min = ts[i];
             }
         }
         return new Pair<>(min, max);
