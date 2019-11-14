@@ -679,8 +679,24 @@ public static <X extends Throwable> void isEmpty(String str, X x) throws X {
 
 ## 8.7 - 泛型类型的继承规则
 
-`Employee`和`Manager`
+先来看两个类`Manager`和`Employee`,`Manager`类继承`Employee`类
 
+那么`Pair<Manager>`是`Pair<Employee>`的子类吗?
+
+下面我们将一个`Pair<Manager>`实例赋值给`Pair<Employee>`来看看会怎么样
+
+```java
+Pair<Manager>  managerPair   = new Pair<>();
+Pair<Employee> employeePairs = managerPair;  // 错误 Pair<Manager>并不是Pair<Employee>的子类
+```
+
+编译错误,很显然`Pair<Manager>`并不是`Pair<Employee>`的子类
+
+**所以无论`S`和`T`有什么关系,`Pair<S>`与`Pair<S>`都没有什么联系**
+
+**泛型类也可以实现或者继承其他泛型类,这一点与普通类没有什么区别**
+
+> 注意泛型与Java数组之间的区别,可以将一个`Manager[]数组`赋给一个类型为`Employee[]`的变量
 
 ## 8.8 - 通配符类型
 
