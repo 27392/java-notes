@@ -34,6 +34,7 @@ public class GenericRestrainTest {
         System.out.println(Arrays.toString(minmax(String[]::new, "c", "b", "a")));
         System.out.println(Arrays.toString(minmax(() -> new String[2], "b", "d", "x")));
 
+        // 可以使用异常泛型变量
         isEmpty("xx", new RuntimeException());
         try {
             isEmpty("io", new IOException());
@@ -90,7 +91,7 @@ public class GenericRestrainTest {
     // static class Ex<T> extends Throwable{}
 
     // 不能捕获泛型异常类
-    public static <X extends Throwable> void tryEx(String str, X x) {
+    public static <X extends Throwable> void tryEx(String str, Class<X> x) {
         /*
         try {
 

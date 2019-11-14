@@ -606,12 +606,12 @@ public static class SimpleGeneric<T> {
 
 ### 8.6.8 不能抛出或捕获泛型类的实例
 
-也就说不能抛出也不能捕获泛型类对象
+也就说不能抛出也不能捕获**泛型类对象**
 
 `catch`子句中不能使用类型变量.例如,以下方法将不能通过编译
 
 ```java
-public static <X extends Throwable> void tryEx(String str , X x){
+public static <X extends Throwable> void tryEx(String str , Class<X> x){
     try {
         
     } catch (X x){  //不能catch类型变量,错误
@@ -620,11 +620,43 @@ public static <X extends Throwable> void tryEx(String str , X x){
 }
 ```
 
-实际上,甚至泛型类拓展`Throwable`(这里包含它的子类等等)都是不合法的
+捕获异常的原则是,子类在前,父类在后.而泛型在擦除后`X`会变成`Throwable`,`Throwable`是所有异常的父类
+
+这就说明我们就不能再捕获其他异常,而这违背了异常捕获的原则
+
+实际上,甚至**泛型类**拓展`Throwable`(这里包含它的子类等等)都是不合法的
 
 ```java
 public class Ex<T> extends Throwable{
 }
+```
+
+为什么泛型类不能拓展`Throwable`呢?
+
+因为异常都是在运行时捕获和抛出的,而在编译的时候,泛型则会被擦除.
+
+假设上面的可以编译通过
+
+```java
+try {  
+
+} catch(Ex<Integer> e1){
+
+} catch(Ex<Number> e2){
+  
+} 
+```
+
+在泛型擦除后,在两个`catch`块中的类是一样的,而`catch`两个一样的异常会编译不通过
+
+```java
+try {  
+
+} catch(Ex e1){
+
+} catch(Ex e2){ //不能捕获两个一样的异常
+  
+} 
 ```
 
 不过,在异常规范中使用类型变量是允许的
@@ -637,31 +669,18 @@ public static <X extends Throwable> void isEmpty(String str, X x) throws X {
 }
 ```
 
-#### 抛出泛型异常
-
-事实上是可以抛出泛型异常的
-
-```java
-public static <X extends Throwable> void isEmpty(String str, X x) throws Throwable {
-    if (str == null || "".equals(str)){
-        throw x;
-    }
-}
-```
-
-由于泛型在擦除后`x`的类型是`Throwable`所以必须声明异常`Throwable`异常,这样一来就算是`RuntimeException`也必须捕获
-
-而如果我们将`<X extends Throwable>`换成`<X extends RuntimeException>`这样一样来就不用声明异常
-
-但是这样一来就根本没意义了,如果我们需要`IOException`的时候难道又要编写一个新的类吗? 这显然不是我们所想的
-
-> **简单说泛型类不能去拓展异常,也不能去捕获和抛出泛型异常(这里是可以的但是只是不太适合),但是我们还是可以使用类型变量**
-
 ### 8.6.9 可以消除对受查异常的检查
+
+感觉意义不是很大,后面有具体的例子在说明
 
 ### 8.6.10 注意擦除后的冲突
 
+编译器会检查是否存在冲突,这个不做详细的解释
+
 ## 8.7 - 泛型类型的继承规则
+
+`Employee`和`Manager`
+
 
 ## 8.8 - 通配符类型
 
