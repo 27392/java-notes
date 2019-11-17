@@ -700,7 +700,7 @@ Pair<Employee> employeePairs = managerPair;  // 错误 Pair<Manager>并不是Pai
 
 ## 8.8 - 通配符类型
 
-### 8.8.1 通配符的概念(限定通配符)
+### 8.8.1 通配符的概念(子类限定通配符)
 
 **在通配符类型中,运行类型参数变化**
 
@@ -720,13 +720,19 @@ private static void printBuddies(Pair<Employee> pair) {
 }
 ```
 
-就像在[泛型继承](#泛型类型的继承规则)中说的,不能将`Pair<Managee>`传递给这个方法,解决的方法很简单:使用通配符类型
+就像在[泛型继承](#87---泛型类型的继承规则)中说的,不能将`Pair<Managee>`传递给这个方法,解决的方法很简单:使用通配符类型
 
 ```java
 private static void printBuddies(Pair<? extends Employee> pair) {
     Optional.ofNullable(pair).ifPresent(System.out::println);
 }
 ```
+
+类型`Pair<Manager>`是`Pair<? extends Employee>`的子类型(如下)
+
+        Pair<? extends Employee>
+        ┌──────────┴───────────┐
+    Pair<Manager>        Pair<Employee>
 
 但是将`Pair<Manager>`,传递给`Pair<? extends Employee>`会有什么问题吗?
 
@@ -749,8 +755,45 @@ void setFirst(? extends Employee);
 
 **使用`getFirst`就不存在这个问题:将`getFirst`的返回值赋给一个`Employee`的引用完全合法**
 
+> 子类型限定的通配符可以从泛型对象读取 
+
 ### 8.8.2 通配符的超类限定
+
+通配符限定与类型变量限定十分类似,但是,还有一个附加的能力,即可以指定一个超类型限定.如下所示
+
+```java
+? super Manger
+```
+
+这个通配符限制为`Manager`的所有超类型(如下)
+
+          Pair<? super Manager>
+        ┌──────────┴───────────┐
+    Pair<Employee>        Pair<Object>
+
+为什么要这样做呢? 带有超类型限定的通配符的行为与**子类限定通配符**(`? extends Employee`)恰恰相反
+
+它可以为方法提供参数,但不能使用返回值,例如`Pair<? super Manager>`
+
+```java
+? super Manager getFirst()
+void setFirst(? super Manager)
+```
+
+我们可以把它的方法看成以上内容,这并不是Java的语言,但是可以让我们知道编译器知道什么
+
+编译器无法知道`setFirst`方法的具体类型,因此调用这个方法时不能接受类型为`Employee`或`Object`等参数,只能传递`Manager`类型的对象,或者它的子类型.
+
+另外,如果调用`getFirst`方法,不能保证返回对象的类型.只能把它赋值给一个`Object`
+
+> **直观的将,带有超类限定的通配符可以向泛型对象写入,带有子类型限定的通配符可以从泛型对象读取**
+> 
+> **在方法参数中的区别就是一个是限制了必须是我的子类,而另了一个限制必须是我的父类(这个通过两个简单的图就能看出)**
+>
+> **而在调用时区别就是上面说,一个能读一个能写(比较难理解,可以多看看实例代码加深理解)**
+
 ### 8.8.3 无限定通配符
+
 ### 8.8.4 通配符捕获
 
 ## 8.9 - 反射与泛型
