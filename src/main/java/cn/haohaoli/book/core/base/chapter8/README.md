@@ -700,4 +700,57 @@ Pair<Employee> employeePairs = managerPair;  // 错误 Pair<Manager>并不是Pai
 
 ## 8.8 - 通配符类型
 
+### 8.8.1 通配符的概念(限定通配符)
+
+**在通配符类型中,运行类型参数变化**
+
+例如通配符类型 
+
+```java
+Pair<? extends Employee>
+```
+
+它表示任何泛型`Pair`类型,它的类型参数是`Employee`的子类,如`Pair<Manager>`等
+
+假设我们要编写一个打印雇员的方法:
+
+```java
+private static void printBuddies(Pair<Employee> pair) {
+    Optional.ofNullable(pair).ifPresent(System.out::println);
+}
+```
+
+就像在[泛型继承](#泛型类型的继承规则)中说的,不能将`Pair<Managee>`传递给这个方法,解决的方法很简单:使用通配符类型
+
+```java
+private static void printBuddies(Pair<? extends Employee> pair) {
+    Optional.ofNullable(pair).ifPresent(System.out::println);
+}
+```
+
+但是将`Pair<Manager>`,传递给`Pair<? extends Employee>`会有什么问题吗?
+
+```java
+Pair<Manager>            managerBuddies  = new Pair<>();
+Pair<? extends Employee> wildcardBuddies = managerBuddies;  //OK
+wildcardBuddies.setFirst(new Employee());                   //错误
+```
+
+这好像并没有什么问题,但是对`setFirst`方法的调用有一个类型错误
+
+让我们仔细看一下类型`Pair<? extends Employee>`.它的方法似乎是这样的
+
+```java
+? extends Employee getFirst();
+void setFirst(? extends Employee);
+```
+
+**这样将不可能调用`setFirst`方法,编译器只知道某个`Employee`的子类型,但不知道具体是什么类型.它拒绝传递任何特定的类型.毕竟`?`不能用来匹配**
+
+**使用`getFirst`就不存在这个问题:将`getFirst`的返回值赋给一个`Employee`的引用完全合法**
+
+### 8.8.2 通配符的超类限定
+### 8.8.3 无限定通配符
+### 8.8.4 通配符捕获
+
 ## 8.9 - 反射与泛型

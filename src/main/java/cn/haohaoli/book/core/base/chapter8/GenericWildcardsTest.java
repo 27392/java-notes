@@ -30,7 +30,7 @@ public class GenericWildcardsTest {
          *      它拒绝传递特定的类型.毕竟 '?' 不能用来匹配。
          *      使用 'getFirst()' 方法就不存在这个问题:将 'getFirst()' 的返回值赋给一个Employee的应用完全合法
          */
-        Pair<Manager> managerBuddies = new Pair<>();
+        Pair<Manager>            managerBuddies  = new Pair<>();
         printBuddies(managerBuddies);
 
         Pair<? extends Employee> wildcardBuddies = managerBuddies;  //OK
@@ -70,6 +70,7 @@ public class GenericWildcardsTest {
         Manager   manager      = minBonus(managerArray);
         System.out.println(manager);
     }
+
 
     private static void printBuddies(Pair<? extends Employee> pair) {
         Optional.ofNullable(pair).ifPresent(System.out::println);
@@ -113,7 +114,7 @@ public class GenericWildcardsTest {
     ///////////////////////////////////////////////////////////////////////////
     // class
     ///////////////////////////////////////////////////////////////////////////
-    
+
     @Getter
     @ToString
     @AllArgsConstructor
