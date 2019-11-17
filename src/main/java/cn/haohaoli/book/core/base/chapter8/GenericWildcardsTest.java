@@ -41,6 +41,10 @@ public class GenericWildcardsTest {
         Manager[] managerArray = {new Manager(2.0), new Manager(1.0)};
         Manager   manager      = minBonus(managerArray);
         System.out.println(manager);
+
+        // 无限定通配符
+        Pair<String> pair = new Pair<>();
+        System.out.println(hasNulls(pair));
     }
 
     private static void printBuddies(Pair<? extends Employee> pair) {
@@ -106,7 +110,6 @@ public class GenericWildcardsTest {
         Manager(Double bonus) {
             super(bonus);
         }
-
     }
 
 }

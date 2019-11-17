@@ -35,8 +35,8 @@
     - [x] 类型变量限定
     - [x] 泛型代码与虚拟机
     - [x] 约束与局限性
-    - [ ] 泛型类型的继承规则
-    - [ ] 通配符类型
+    - [x] 泛型类型的继承规则
+    - [x] 通配符类型
     - [ ] 反射与泛型
 + [第9章 - 集合](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter9)
     - [ ] java集合框架
