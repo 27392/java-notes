@@ -829,8 +829,53 @@ private static boolean hasNulls(Pair<?> p) {
 }
 ````
 
-> 也不是绝对不能进行操作,可以调用`setFirst(null)`.对它只可以存`null`值
+> 也不是绝对不能进行操作,可以调用`setFirst(null)`.对! 它只可以存`null`值
 
 ### 8.8.4 通配符捕获
+
+编写一个交换成对元素的方法:
+
+```java
+public static void swap (Pair<?> p) {
+    ? first = p.getFirst();           // 错误
+    p.setFirst(p.getSecond());
+    p.setSecond(first);
+}
+```
+
+通配符不是类型变量,因此,不能再编写代码中使用`?`作为一种类型.
+
+但是我们可以用一个很有趣的办法解决,我们可以写一个辅助方法,如下:
+
+```java
+public static <T> void swapHelper(Pair<T> p){
+    T first = p.getFirst();
+    p.setFirst(p.getSecond());
+    p.setSecond(first);
+}
+```
+
+然后由`swap`调用`swapHelper`
+
+```java
+public static void swap (Pair<?> p) {
+    swapHelper(p);
+}
+```
+
+在这种情况下,**`swapHelper`方法的参数`T`捕获通配符.它不知道是那种类型的通配符,但是这是一个明确的类型**
+
+> 通配符只有在许多限制的情况下才是合法的.编译器必须能够确信通配符表达的是单个、确定的类型
+>
+> 例如`ArrayList<Pair<T>>`中的`T`永远不能捕获`ArrayList<Pair<?>>`中的通配符
+>
+> 数组列表可以保存两个`Pair<?>`,分别针对`?`的不同类型
+
+
+
+
+
+
+
 
 ## 8.9 - 反射与泛型

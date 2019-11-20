@@ -45,6 +45,11 @@ public class GenericWildcardsTest {
         // 无限定通配符
         Pair<String> pair = new Pair<>();
         System.out.println(hasNulls(pair));
+
+        // 通配符捕获
+        Pair<Integer> integerPair = new Pair<>(1, 2);
+        swap(integerPair);
+        System.out.println(integerPair);
     }
 
     private static void printBuddies(Pair<? extends Employee> pair) {
@@ -85,6 +90,17 @@ public class GenericWildcardsTest {
 
     private static boolean hasNulls(Pair<?> p) {
         return p.getFirst() == null || p.getSecond() == null;
+    }
+
+    private static void swap (Pair<?> p) {
+        // 泛型通配符捕获. 编译器必须能够确信通配符表达的是单个、确定的类型,才能捕获
+        swapHelper(p);
+    }
+
+    private static <T> void swapHelper(Pair<T> p){
+        T first = p.getFirst();
+        p.setFirst(p.getSecond());
+        p.setSecond(first);
     }
 
     ///////////////////////////////////////////////////////////////////////////

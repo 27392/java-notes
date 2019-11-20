@@ -14,7 +14,7 @@
     - [x] 对象包装器与自动装箱
     - [x] 参数数量可变的方法
     - [x] 枚举
-    - [ ] 反射
+    - [x] 反射
     - [x] 继承的设计技巧
 + [第6章 - 接口、lambda表达式与内部类](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter6)
     - [x] 接口
@@ -37,7 +37,7 @@
     - [x] 约束与局限性
     - [x] 泛型类型的继承规则
     - [x] 通配符类型
-    - [ ] 反射与泛型
+    - [x] 反射与泛型
 + [第9章 - 集合](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter9)
     - [ ] java集合框架
     - [ ] 具体的集合
