@@ -740,7 +740,7 @@ public static void main(String[] args) {
 
 - **在默认情况下,日志系统的配置有配置文件控制,如果需要的话,应用程序可以替换这个配置**
 
-### 7.5.1 - 基本日志
+### 7.5.1 基本日志
 
 那么想要生成简单的日志,可以使用全局日志记录器(`gloabl logger`)并调用其`info`方法
 
@@ -860,5 +860,60 @@ public static void exceptionLogExample (String className) {
 
 ### 7.5.3 日志管理器配置
 
+#### 加载配置文件
+
+可以通过编辑配置文件来修改日志系统的各种属性
+
+**在默认的情况下,配置文件存在于`jre/lib/logging/properties`**
+
+如果想要使用另一个配置文件,就要将`java.util.logging.config.file`特性设置为配置文件的存储位置,并用下列命令启动应用程序
+
+```shell script
+java -Djava.util.logging.config.file=configFile mainClass
+```
+
+**日志管理器在虚拟机启动过程中初始化,在`main`方法执行之前完成**.如果`main`中调用
+
+```java
+System.setProperty("java.util.logging.config.file", "配置路径");
+```
+
+也会调用`LogManager.readConfiguration()`来重新初始化日志管理器
+
+在书中还提到用`java.util.logging.LogManager`和`java.util.logging.config.class`处理.后面在了解用法
+
+#### 配置文件
+
+想要修改默认的日志记录级别,就要编辑配置文件,并修改以下命令行
+
+```text
+.level=INFO
+```
+
+也可以通过添加以下内容来指定自己的日志记录级别
+
+```text
+cn.haohaoli.book.core.base.level=FINE
+```
+
+> 也就是说,在日志记录器名后加`.level`
+
+日志记录并不将消息发送到控制台上,这是处理器的任务.另外处理器也是有级别的
+
+如果想要在控制台上看到`FINE`级别的消息,就需要进行下列设置
+
+```text
+java.util.logging.ConsoleHandler.level=FINE
+```
+
+### 7.5.4 本地化
+
+### 7.5.5 处理器
+
+### 7.5.6 过滤器
+
+### 7.5.6 格式化器
+
+ 
 
 ## 7.6 - 调试技巧

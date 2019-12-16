@@ -1,6 +1,5 @@
 package cn.haohaoli.book.core.base.chapter7.log;
 
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,8 +14,7 @@ public class LogTest {
     public static void main(String[] args) {
 //        simpleLogRecordExample();                         // 简单的记录日志
 //        childLoggerLevelExample();                        // 测试父子记录器继承
-        // TODO 日志记录器
-        // 以下方法内方法级别都在 `FINER` 所以默认是不显示的.
+        // 以下方法内方法级别都在 `FINER` ,默认的日志处理器不会处理低于`INFO`级别的信息,如果要记录需要修改日志处理器配置
         String r = enteringAndExitingLogExample("this is a log");   // 入参出参日志记录
         exceptionLogExample("nonexistent class");             // 异常日志记录
     }
