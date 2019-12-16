@@ -710,6 +710,155 @@ public static void main(String[] args) {
 
 ## 7.4 - 断言
 
-## 7.5 - 日志
+## 7.5 - 日志 (JUL)
+
+**在没有日志API之前**
+
+调试代码的时候我们通常会插入一些`System.out.print()`方法来帮助我们观察程序运行的操作过程
+
+当然,一旦发现问题的根源就要将这些语句从代码中删除.
+
+如果接下来又出现了这个问题,就需要在插入几个`System.out.print()`语句
+
+日志API就是为了解决这个问题而设计的.
+
+**有日志API之后**
+
+下面先讨论这些API的优化
+
+- **可以很容易的取消全部日志记录,或者仅仅取消某个级别的日志,而且打开和关闭这个操作也很容易**
+
+- **可以很简单的禁止日志记录的输出,因此将这些日志代码留在程序中的开销很小**
+
+- **日志记录可以被定向到不同的处理器,用于在控制台中显示,用于存储在文件中等**
+
+- **日志记录器和处理器都可以记录进行过滤.过滤器可以根据过滤实现器定制的标准丢弃那些无用的记录项**
+
+- **日志记录器可以采用不用的方式格式化,例如,纯文本或XML**
+
+- **应用程序可以使用多个日志记录器,他们使用类似包名的这种具有层次结构的名字,例如`cn.haohaoli.book.core.base.chapter7.log`**
+
+- **在默认情况下,日志系统的配置有配置文件控制,如果需要的话,应用程序可以替换这个配置**
+
+### 7.5.1 - 基本日志
+
+那么想要生成简单的日志,可以使用全局日志记录器(`gloabl logger`)并调用其`info`方法
+
+```java
+Logger logger = Logger.getGlobal();
+logger.info("基本的日志记录");
+```
+
+在默认的情况下,在控制台将显示以下内容
+
+```text
+十二月 16, 2019 10:49:49 上午 cn.haohaoli.book.core.base.chapter7.log.LogTest simpleLogRecordExample
+信息: 基本的日志记录
+```
+
+### 7.5.2 高级日志
+
+**在一个专业的应用程序中,不要将所有的日志都记录到全局日志记录器中,而是可以定义日志记录器**
+
+> 日志记录器并不是只有全局的,是可以自定义日志记录器的
+
+可以调用`getLogger`方法来创建或获取记录器
+
+> 这里是创建或获取记录器(如果已经使用给定的名称创建了日志记录器,则返回该日志记录器.否则将创建一个新的日志记录器)
+
+```java
+private final static Logger LOGGER = Logger.getLogger("cn.haohaoli.book.core.base.chapter7.log");
+```
+
+> 未被任何变量引用的体质记录器可能会被垃圾回收.为了防止这种发生,要想上面的例子中一样,用一个静态变量储存日志变量的一个引用
+
+与包名类似,日志记录器名称也具有层次结构.但是事实上.与包名相比,日志记录器的层次性更强.
+
+对包来说,一个包的名字与其父包的名字之间没有语义关系,但是日志记录器的父与子将共享某些属性.
+
+ - 例如,如果对`cn.haohaoli.book.core.base.chapter7.log`日志记录器设置了日志级别,他的子记录器也会继承这个级别
+
+通常,有以下7个日志记录器级别(在`java.util.logging.Level`中有定义):
+
+- SEVERE(最高)
+- WARNING
+- INFO
+- CONFIG
+- FINE
+- FINER
+- FINEST(最低)
+
+在默认情况下,只记录前三个级别(`SEVERE, WARNING, INFO`).但是也可以设置其他级别
+
+```java
+LOGGER.setLevel(Level.FINE);
+```
+
+现在,`FINE`和更高级别的记录都可以记录下来
+
+> 另外还可以设置为`Level.ALL`来开启所有记录的日志,或者使用`Level.OFF`关闭所有级别的记录
+
+对于所有的级别有下面几种记录方法
+
+```java
+LOGGER.warning("warning");
+LOGGER.fine("fine");
+
+// 也可以log方法指定级别
+LOGGER.log(Level.FINE, "fine");
+```
+
+> **默认的日志配置只记录了INFO或者更高级别的所有记录**
+> 
+> **因此应该使用`CONFIG`,`FINE`,`FINER`和`FINEST`级别那些有助于诊断,但一般没有什么用的调试信息**
+>
+> **应该使用低级别的等级来记录调试信息,高等级可以用来记录一些显式的信息,包括异常信息、警告信息等**
+
+**注意:默认的日志处理器不会处理低于`INFO`级别的信息,如果要记录需要修改日志处理器配置**
+
+#### 7.5.2.1 执行流和异常日志记录
+
+##### 执行流记录
+
+`entering`和`exiting`用来跟踪执行流的方法,例如
+
+```java
+public static String enteringAndExitingLogExample (String str) {
+    LOGGER.entering(LogTest.class.getName(), "enteringAndExitingLogExample", str);
+    String concat = str.concat(" - ").concat(str);
+    LOGGER.exiting(LogTest.class.getName(), "enteringAndExitingLogExample", concat);
+    return concat;
+}
+```
+
+**调用方法后将输出以等级为`FINER`级别和以字符串`ENTRY`和`RETURN`开始的日志记录**
+
+##### 异常记录
+
+记录日志的常见用途是记录那些不可预料的异常,可以使用下面两个方法
+
+```java
+void throwing(String className, String methodName, Throwable t);
+void log(Level l, String message, Throwable t);
+```
+
+实例
+
+```java
+public static void exceptionLogExample (String className) {
+    try {
+        Class.forName(className);
+    } catch (ClassNotFoundException e) {
+        // 记录异常有以下两种方式
+        LOGGER.throwing(LogTest.class.getName(), "exceptionLogExample", e);
+        // LOGGER.log(Level.WARNING, "错误", e);
+    }
+}
+```
+
+**调用`throwing`可以记录一条`FINER`级别和以字符串`THROW`开始的日志记录**
+
+### 7.5.3 日志管理器配置
+
 
 ## 7.6 - 调试技巧
