@@ -4,6 +4,7 @@ import java.util.Random;
 
 /**
  * 代码块
+ *
  * @author LiWenHao
  * @date 2019-01-23 20:07
  */
@@ -18,11 +19,21 @@ public class CodeBlockTest {
      *      2 ) 按照在类声明中出现的次序， 依次执行所有域初始化语句和初始化块。
      *      3 ) 如果构造器第一行调用了第二个构造器， 则执行第二个构造器主体
      *      4 ) 执行这个构造器的主体.
-     *  在类第一次加载的时候，将会进行静态域的初始化。与实例域一样， 除非将它们显式地设置成其他值， 否则默认的初始值是 0、 false 或 null
-     *  所有的静态初始化语句以及静态初始化块都将依照类定义的顺序执行。
+     *  在类第一次加载的时候，将会进行静态域的初始化。与实例域一样， 除非将它们显式地设置成其他值,否则默认的初始值是 0、 false 或 null
+     *  所有的静态初始化语句以及静态初始化块都将依照类定义的顺序执行
+     *  注意: 并不是静态域先加载,而后在加载静态代码块.会根据定的顺序执行(非静态也同理)
      */
+    static {
+        System.out.println("static 代码块0");
+    }
+
+    {
+        System.out.println("代码块0");
+    }
 
     private static Integer id;
+    private static String  name = defaultName();
+    private        int     age  = defaultAge();
 
     {
         int i = new Random().nextInt(1000);
@@ -56,6 +67,16 @@ public class CodeBlockTest {
         return id;
     }
 
+    public static String defaultName() {
+        System.out.println("static 域初始化方法");
+        return String.valueOf(id + "_" + id);
+    }
+
+    public static int defaultAge() {
+        System.out.println("域初始化方法");
+        return 18;
+    }
+
     public static void main(String[] args) {
 
         //首先加载 static 代码块
@@ -65,8 +86,12 @@ public class CodeBlockTest {
 
         /**
          * 结果
+         *  static 代码块0
+         *  static 域初始化方法
          *  static 代码块1
          *  static 代码块2
+         *  代码块0
+         *  域初始化方法
          *  代码块1
          *  代码块2
          *  构造器执行
