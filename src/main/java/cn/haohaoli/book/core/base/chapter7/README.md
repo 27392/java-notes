@@ -1031,6 +1031,10 @@ LOGGER.setFilter((record)-> record.startsWith("ENTRY") || record.startsWith("RET
 
 ### 7.5.6 格式化器
 
- 
+`ConsoleHandler`类和`FileHandler`类可以生成文本和`XML`格式的日志记录.但是也可以自定义格式
+
+自定义格式需要拓展`Formatter`类并覆盖`format`方法
+
+最后,调用`setFormatter`方法将格式化器安装到处理器,具体代码在`SimpleFormatter`类中
 
 ## 7.6 - 调试技巧
