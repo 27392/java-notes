@@ -886,13 +886,13 @@ System.setProperty("java.util.logging.config.file", "配置路径");
 
 想要修改默认的日志记录级别,就要编辑配置文件,并修改以下命令行
 
-```text
+```properties
 .level=INFO
 ```
 
 也可以通过添加以下内容来指定自己的日志记录级别
 
-```text
+```properties
 cn.haohaoli.book.core.base.level=FINE
 ```
 
@@ -902,13 +902,111 @@ cn.haohaoli.book.core.base.level=FINE
 
 如果想要在控制台上看到`FINE`级别的消息,就需要进行下列设置
 
-```text
+```properties
 java.util.logging.ConsoleHandler.level=FINE
 ```
 
 ### 7.5.4 本地化
 
+书中说的不是清楚,以后开发中遇到再补充
+
 ### 7.5.5 处理器
+
+#### 控制台处理器
+
+**在默认的情况下,日志记录器将记录发送到`ConsoleHandler`中并由它输出到`System.err`流中**
+
+**特别的是,日志记录器(就是`logger`)还会将记录发送到父处理器中,而最终的处理器(命名为`""`),有一个`ConsoleHandler`**
+
+**与日志记录器一样,处理器也有日志记录级别.对于一个要被记录的日志记录,它的日志记录级别必须高于日志记录器和处理的阈值**
+
+日志管理器配置文件设置的默认控制台处理器的日志记录级别为
+
+```properties
+java.util.logging.ConsoleHandler.level=INFO
+```
+
+想要记录`FINE`级别的日志,就必须修改配置文件中的默认日志记录级别和处理器级别.这个在上面说过了
+
+另外,还可以绕过配置文件,安装自己的处理器
+
+```java
+Logger LOGGER = Logger.getLogger("cn.haohaoli.book.core.base.chapter7.log.LogHandlerTest");
+LOGGER.setLevel(Level.FINE);
+LOGGER.setUseParentHandlers(false);     //是否使用父处理器
+Handler consoleHandler = new ConsoleHandler();
+consoleHandler.setLevel(Level.FINE);
+LOGGER.addHandler(consoleHandler);
+LOGGER.fine("fine");
+```
+
+在默认情况下,日志记录器(就是`logger`)将记录发送到自己的处理器和父处理器
+
+我们自己的日志记录器是原始日志记录器(命名为`""`)的子类,而原始日志记录器将会把所有等于或等于`INFO`级别的记录发送到控制台
+
+意思就是这样一来,我们现在就有两个`ConsoleHandler`处理器了,父类一个,然后我们自己有定义了一个
+
+这样就会出现一条记录我们就会看到两遍,所以我们一个将`useParentHandlers`属性设置为`false`
+
+#### 文件处理器和套接字处理器
+
+想要日志记录发送到其他的地方,就要添加其他的处理器.
+
+日志API为此提供了两个很有用的处理器,一个是`FileHandler`另一个是`SocketHandler`
+
+`SocketHandler`将记录发送到特定的主机和端口,而更有用的是`FileHandler`它可以将记录收集到文件中
+
+```java
+Logger LOGGER       = Logger.getLogger("cn.haohaoli.book.core.base.chapter7.log.LogHandlerTest");
+Handler fileHandler = new FileHandler();
+LOGGER.addHandler(fileHandler);
+```
+
+这些记录被记录到用户主目录下,记录被格式化为`XML`
+
+```xml
+<record>
+  <date>2019-12-17T11:40:11</date>
+  <millis>1576554011719</millis>
+  <sequence>0</sequence>
+  <logger>cn.haohaoli.book.core.base.chapter7.log.LogHandlerTest</logger>
+  <level>FINE</level>
+  <class>cn.haohaoli.book.core.base.chapter7.log.LogHandlerTest</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>fine</message>
+</record>
+```
+可以通过设置日志管理器配置文件中的不同参数,或者利用其它构造器来修改文件处理器的默认行为
+
+|               配置属性                |                   描述               |                 默认值           |
+|                 ----                  |                   ----              |                 ----            |
+|java.util.logging.FileHandler.level    |               处理器级别             |             Level.ALL           |
+|java.util.logging.FileHandler.append   | 控制处理器应该追加到一个已经存在的文件尾部；还是应该为每个运行的程序打开一个新文件|false|
+|java.util.logging.FileHandler.limit    | 在打开另一个文件之前允许写入一个文件的近似最大字节数( 0 表示无限制)|在 FileHandler 类中为 0 (表示无限制;在默认的日志管理器配置文件中为 50000|
+|java.util.logging.FileHandler.pattern  | 日志文件名的模式,具体可以参考下面的表   |            %h/java%u.log         |
+|java.util.logging.FileHandler.count    | 在循环序列中的日志记录数              |             1 (不循环）           |
+|java.util.logging.FileHandler.filter   | 使用的过滤器类                       |           没有使用过滤器          |
+|java.util.logging.FileHandler.encoding | 使用的字符编码                       |           平台的编码              |
+|java.util.logging.FileHandler.formatter| 记录格式器                          | java.util.logging.XMLFormatter   |
+
+日志记录文件模式变量
+
+|    变量   |                   描述                                      |  
+|   ----   |                   ----                                       |
+|    %h    |  系统属性 `user.home` 的值                                    |
+|    %t    |  系统临时目录                                                 |
+|    %u    |  用于解决冲突的唯一编号                                        |
+|    %g    |  为循环日志记录生成的数值.(当使用循环功能且模式不包括%g, 使用后缀%g)|
+|    %%    |  % 宇符                                                       |
+
+**如果有多个应用程序(或者用一个应用程序的多个副本)使用同一个日志文件,就应该开启`append`标识**
+
+**另外,应该在文件名模式中使用`%u`,以便每个应用程序创建日志的唯一副本**
+
+#### 自定义处理器
+
+> 可以通过拓展`Handler`或者`StreamHandler`类自定义处理器
 
 ### 7.5.6 过滤器
 
