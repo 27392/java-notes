@@ -1010,6 +1010,25 @@ LOGGER.addHandler(fileHandler);
 
 ### 7.5.6 过滤器
 
+**在默认情况下,过滤器根据日志记录的级别进行过滤.**
+
+**每个日志记录器和处理器都可以有一个可选的过滤器来完成附加的过滤**
+
+当然也可以通过实现`Filter`接口来自定义过滤器
+
+该接口中只有一个方法`isLoggable`,在这个方法中,可以利用自己喜欢的标准,对日志记录进行分析,返回`true`表示这些记录应该包含在日志中
+
+例如:只想对`entering`方法或者`exiting`感兴趣
+
+```java
+// lambda 写法
+LOGGER.setFilter((record)-> record.startsWith("ENTRY") || record.startsWith("RETURN"));
+```
+
+> 想要将一个过滤器安装到一个日志记录器或者处理器中,只需要调用`setFilter`方法
+>
+>注意,同样一个时刻最多只能有一个过滤器
+
 ### 7.5.6 格式化器
 
  
