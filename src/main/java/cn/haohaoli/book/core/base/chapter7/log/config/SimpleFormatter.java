@@ -1,5 +1,6 @@
 package cn.haohaoli.book.core.base.chapter7.log.config;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -40,7 +41,7 @@ public class SimpleFormatter extends Formatter {
 
         @Override
         public String toString() {
-            return String.format("%s [%s] %s %s [%s] - %s\n", date, theadId, level, className, methodName, message);
+            return String.format("%s [%s] %s\t%s [%s] - %s\n", date, theadId, level, className, methodName, message);
         }
     }
 }

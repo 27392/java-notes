@@ -23,5 +23,7 @@ public class LogManagerConfigTest {
      */
     public static void main(String[] args) {
         LOGGER.fine("hello");
+        LOGGER.info("xxxxxxx");
+        LOGGER.warning("xxxxxxxxxxxxxxxxxx");
     }
 }

@@ -1029,7 +1029,7 @@ LOGGER.setFilter((record)-> record.startsWith("ENTRY") || record.startsWith("RET
 >
 >注意,同样一个时刻最多只能有一个过滤器
 
-### 7.5.6 格式化器
+### 7.5.7 格式化器
 
 `ConsoleHandler`类和`FileHandler`类可以生成文本和`XML`格式的日志记录.但是也可以自定义格式
 
@@ -1037,4 +1037,38 @@ LOGGER.setFilter((record)-> record.startsWith("ENTRY") || record.startsWith("RET
 
 最后,调用`setFormatter`方法将格式化器安装到处理器,具体代码在`SimpleFormatter`类中
 
+### 7.5.8 日志记录说明
+
+1. 为一个简单的应用程序,选择一个日志记录器,并把日志记录器命名为与主应用程序包一样的名字,例如,`cn.haohaoli.book.core.base.chapter7.log`这是一种好的编程习惯
+
+    另外,可以通过下列方法得到日志记录器
+    
+   ```java
+   Logger logger = Logger.getLogger("cn.haohaoli.book.core.base.chapter7.log");
+   ```
+   
+   为了方便起见,可能希望利用一些日志操作所有应该将下面的静态域添加到类中
+   
+   ```java
+   private final static Logger LOGGER = Logger.getLogger(LogManagerConfigTest.class.getName());
+   ```
+   
+2. 默认的日志配置将级别等于或高于`INFO`级别的所有消息记录到控制台.用户可以覆盖默认的配置文件
+
+   但是正如前面所述,改变配置需要做相当多的工作,因此最好在应该程序中安装一个更加适宜的默认配置
+   
+   具体代码在`LoadLogConfig`类中,在需要的地方可以静态加载(当然这不是唯一的方式)
+   
+   ```java
+   static {
+       // 加载配置
+       LoadLogConfig.loadConfig();
+   }
+   private final static Logger LOGGER = Logger.getLogger("LogManagerConfigTest.class.getName()");
+   ```
+
+3. 现在,可以记录自己想要的内容了.但是要牢记:所有的`INFO`、`WARNING`和`SERVER`的消息都将显示在控制台
+
+   因此,最好只将对用户有意义的消息设置为这几个级别.将开发人员想要的日志记录,设定为`FINE`是一个很好的选择
+    
 ## 7.6 - 调试技巧
