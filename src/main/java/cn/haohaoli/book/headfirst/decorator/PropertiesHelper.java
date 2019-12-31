@@ -18,7 +18,7 @@ public class PropertiesHelper {
     static {
         properties = new Properties();
         try {
-            properties.load(ClassLoader.getSystemResourceAsStream("menu.properties"));
+            properties.load(ClassLoader.getSystemResourceAsStream("config/menu.properties"));
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("PropertiesHelper 加载失败！");
@@ -32,7 +32,7 @@ public class PropertiesHelper {
 
     public static double getPropertyForDouble (String name) {
         Objects.requireNonNull(name);
-        return Double.valueOf(getProperty(name));
+        return Double.parseDouble(getProperty(name));
     }
 
 }

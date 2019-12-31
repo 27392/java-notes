@@ -24,7 +24,7 @@ public class LoadLogConfig {
      */
     public static void loadExternalConfig() {
         if (notLoaded) {
-            URL logConfig = LogManagerConfigTest.class.getClassLoader().getResource("log/logging.properties");
+            URL logConfig = LogManagerConfigTest.class.getClassLoader().getResource("config/logging.properties");
             Objects.requireNonNull(logConfig, "日志配置不存在");
             URI uri;
             try {
