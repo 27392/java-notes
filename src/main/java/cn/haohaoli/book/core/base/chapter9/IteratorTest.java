@@ -18,7 +18,7 @@ public class IteratorTest {
 
         // 遍历操作
         Iterator<Integer> iterator = collection.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
         for (Integer integer : collection) {
@@ -29,7 +29,7 @@ public class IteratorTest {
 
         // 删除操作
         Iterator<Integer> secondIterator = collection.iterator();
-        while (secondIterator.hasNext()){
+        while (secondIterator.hasNext()) {
             secondIterator.next();
             secondIterator.remove();    // 如果在调用remove之前没有调用next则会抛出异常,且不能多次删除
         }

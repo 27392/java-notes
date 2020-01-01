@@ -125,11 +125,33 @@ while (iterator.hasNext()){
 >
 > 用同样的方法,反复调用`next`方法就可以读取集合中所有的元素
 
+### 9.1.4 泛型实用方法
+
+### 9.1.5 集合框架中的接口
+
 ## 9.2 具体的集合
+
+|   集合类型     |描 述|
+|    ----       | ----|
+|ArrayList      | 一种可以动态增长和缩减的索引序列|
+|LinkedList     | 一种可以在任何位置进行高效地插人和删除操作的有序序列|
+|ArrayDeque     | 一种用循环数组实现的双端队列    |
+|HashSet        | 一种没有重复元素的无序集合     |
+|TreeSet        | 一种有序集                     |
+|EnumSet        | 一种包含枚举类型值的集           |
+|LinkedHashSet  | 一种可以记住元素插人次序的集    |
+|PriorityQueue  | 一种允许高效删除最小元素的集合   |
+|HashMap        | 一种存储键 / 值关联的数据结构  |
+|TreeMap        | 一种键值有序排列的映射表          |
+|EnumMap        | 一种键值属于枚举类型的映射表      |
+|LinkedHashMap  | 一种可以记住键 / 值项添加次序的映射表|
+|WeakHashMap    | 一种其值无用武之地后可以被垃圾回收器回收的映射表|
+|IdentityHashMap| 一种用`==`而不是用`equals`比较键值的映射表|
+
+以下是他们的UML类图
 
 ![](https://github.com/27392/java-notes/blob/master/src/main/resources/uml/collection.png)
 
 ![](https://github.com/27392/java-notes/blob/master/src/main/resources/uml/map.png)
-
 
 
