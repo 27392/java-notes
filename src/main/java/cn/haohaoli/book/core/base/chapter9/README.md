@@ -1,33 +1,91 @@
 # Java 核心技术 卷I - 第九章
 
-## 9.1 Java集合框架
+## Java集合框架
 
-### 9.1.1 将集合的接口与实现分离
+![](https://github.com/27392/java-notes/blob/master/src/main/resources/uml/collection.png)
 
-### 9.1.2 Collection接口
+![](https://github.com/27392/java-notes/blob/master/src/main/resources/uml/map.png)
+
+### 主要接口
+
+在上面可以看到两个接口`Collection`和`Map`
+
+#### Collection
+
+`Collection`接口它包含了集合的基本操作和属性
+
+主要有三个分支
+
+   - `List`(**有序集合**)
+   - `Set`(**不包含重复元素的集合**)
+   - `Queue`(**队列**)
+
+#### Map
+
+而`Map`接口则是映射(映射用来存放键/值对)
+
+#### 抽象类 (Abstract...)
+
+- AbstractCollection
+    
+    实现了`Collection`接口的部分功能
+    
+- AbstractList
+    
+    实现了`List`接口的部分功能
+    
+- AbstractSequentialList
+    
+    个人理解是链表的超类,存在这个类是为了和数组集合区分开,因为数组集合支持随机访问`RandomAccess`
+    
+- AbstractQueue
+    
+    实现了`Queue`接口的部分功能
+    
+- AbstractSet
+    
+    实现了`Set`接口的部分功能
+    
+- AbstractMap
+    
+    实现了`Map`接口的部分功能
+
+> 正如之前在第五章所说的抽象类一样,我们可以将一些通用的方法及与放在超类中
+>
+> 在`AbstractList`中实现了`List`中部分方法,这样直接继承`AbstractList`拓展起来更方便
+
+#### Iterable(标识迭代器接口)
+
+迭代器是用来遍历集合的工具,它也是一种设计模式
+
+通过`Iterable`接口可以获取`Iterator`对象通过他来对象集合进行遍历
+
+而`Collection`继承了`Iterator`接口,也就是说所有实现`Collection`的类都可以使用`Iterator`遍历器去遍历
+
+#### 主要实现(归类)
+
+|   集合类型     |描 述|
+|    ----       | ----|
+|ArrayList      | 一种可以动态增长和缩减的索引序列|
+|LinkedList     | 一种可以在任何位置进行高效地插人和删除操作的有序序列|
+|ArrayDeque     | 一种用循环数组实现的双端队列    |
+|HashSet        | 一种没有重复元素的无序集合     |
+|TreeSet        | 一种有序集                     |
+|EnumSet        | 一种包含枚举类型值的集           |
+|LinkedHashSet  | 一种可以记住元素插人次序的集    |
+|PriorityQueue  | 一种允许高效删除最小元素的集合   |
+|HashMap        | 一种存储键 / 值关联的数据结构  |
+|TreeMap        | 一种键值有序排列的映射表          |
+|EnumMap        | 一种键值属于枚举类型的映射表      |
+|LinkedHashMap  | 一种可以记住键 / 值项添加次序的映射表|
+|WeakHashMap    | 一种其值无用武之地后可以被垃圾回收器回收的映射表|
+|IdentityHashMap| 一种用`==`而不是用`equals`比较键值的映射表|
+
+### Collection接口
 
 > **在Java类库中,集合类的根接口是`Collection`接口**
 
-这个接口有两个基本方法
-
-```java
-boolean add(E e);
-Iterator<E> iterator();
-```
-
-当然除了这两个方法外,该接口还有其他方法.具体用法在`CollectionTest`类中
-
-`add`方法用于向集合中添加元素,如果添加元素确实改变了集合就返回`true`,如果集合没有发生变化就返回`false`
-
-例如,如果实体向集合中添加一个对象,而这个对象已经在集合中存在,这个添加请求就没有实效,因为集合中不允许有重复的元素
-
-> 例如后面说的`Set`
-
-而`iterator`方法用于返回一个实现了`Iterator`接口的对象
-
-可以使用这个迭代器对象依次访问集合中的元素
-
-### 9.1.3 迭代器
+### 迭代器
 
 `Iterator`接口包含四个方法
 
@@ -125,33 +183,21 @@ while (iterator.hasNext()){
 >
 > 用同样的方法,反复调用`next`方法就可以读取集合中所有的元素
 
-### 9.1.4 泛型实用方法
+## 具体的实现
 
-### 9.1.5 集合框架中的接口
+### List
 
-## 9.2 具体的集合
+### Set
 
-|   集合类型     |描 述|
-|    ----       | ----|
-|ArrayList      | 一种可以动态增长和缩减的索引序列|
-|LinkedList     | 一种可以在任何位置进行高效地插人和删除操作的有序序列|
-|ArrayDeque     | 一种用循环数组实现的双端队列    |
-|HashSet        | 一种没有重复元素的无序集合     |
-|TreeSet        | 一种有序集                     |
-|EnumSet        | 一种包含枚举类型值的集           |
-|LinkedHashSet  | 一种可以记住元素插人次序的集    |
-|PriorityQueue  | 一种允许高效删除最小元素的集合   |
-|HashMap        | 一种存储键 / 值关联的数据结构  |
-|TreeMap        | 一种键值有序排列的映射表          |
-|EnumMap        | 一种键值属于枚举类型的映射表      |
-|LinkedHashMap  | 一种可以记住键 / 值项添加次序的映射表|
-|WeakHashMap    | 一种其值无用武之地后可以被垃圾回收器回收的映射表|
-|IdentityHashMap| 一种用`==`而不是用`equals`比较键值的映射表|
+### Queue
 
-以下是他们的UML类图
+### Map
 
-![](https://github.com/27392/java-notes/blob/master/src/main/resources/uml/collection.png)
+## 视图 
 
-![](https://github.com/27392/java-notes/blob/master/src/main/resources/uml/map.png)
+## 算法
+
+
+
 
 

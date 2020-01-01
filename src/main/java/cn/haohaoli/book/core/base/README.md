@@ -39,9 +39,8 @@
     - [x] 通配符类型
     - [x] 反射与泛型
 + [第9章 - 集合](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter9)
-    - [ ] Java集合框架
+    - [x] Java集合框架
     - [ ] 具体的集合
-    - [ ] 映射
     - [ ] 视图与包装器
     - [ ] 算法
     - [ ] 遗留的集合
