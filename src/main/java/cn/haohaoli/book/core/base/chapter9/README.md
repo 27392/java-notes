@@ -185,6 +185,28 @@ while (iterator.hasNext()){
 >
 > 用同样的方法,反复调用`next`方法就可以读取集合中所有的元素
 
+#### ListIterator接口
+
+> `ListIterator`接口继承了`Iterator`接口,提供了专门操作`List`的方法,也就是说`ListIterator`是为`List`所特有的
+
+`ListIterator`接口在`Iterator`接口的基础上增加如下方法
+
+```java
+boolean hasPrevious();
+
+E previous();
+
+int nextIndex();
+
+int previousIndex();
+
+void set(E e);
+
+void add(E e);
+```
+
+`ListIterator`接口增加了添加元素,设置元素,反向遍历,获取当前位置等功能
+
 ## 具体的实现
 
 ### List
