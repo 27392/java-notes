@@ -1,8 +1,6 @@
 package cn.haohaoli.book.core.base.chapter9;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * 迭代器
@@ -17,13 +15,19 @@ public class IteratorTest {
         collection.add(3);
 
         // 遍历操作
+        System.out.println("iterator");
         Iterator<Integer> iterator = collection.iterator();
         while (iterator.hasNext()) {
-            System.out.println(iterator.next());
+            Integer next = iterator.next();
+            System.out.println(next);
         }
+
+        System.out.println("forEach");
         for (Integer integer : collection) {
             System.out.println(integer);
         }
+
+        System.out.println("forEachRemaining");
         // jdk8
         collection.iterator().forEachRemaining(System.out::println);
 
@@ -32,6 +36,48 @@ public class IteratorTest {
         while (secondIterator.hasNext()) {
             secondIterator.next();
             secondIterator.remove();    // 如果在调用remove之前没有调用next则会抛出异常,且不能多次删除
+        }
+
+        // ListIterator 操作
+        System.out.println("============ListIterator============");
+        listIterator();
+    }
+
+    /**
+     * ListIterator 是专门操作 List的,是List接口添加的方法
+     */
+    private static void listIterator () {
+
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        ListIterator<Integer> iterator = list.listIterator();
+
+        System.out.println("hasNext");
+
+        // 正向遍历
+        while (iterator.hasNext()){
+            Integer next = iterator.next();
+            System.out.println(next);
+        }
+
+        System.out.println("hasPrevious");
+
+        // 反向遍历
+        while (iterator.hasPrevious()){
+            Integer previous = iterator.previous();
+            System.out.println(previous);
+        }
+
+        System.out.println("listIterator");
+        // 指定索引
+        ListIterator<Integer> indexIterator = list.listIterator(2);
+
+        while (indexIterator.hasPrevious()){
+            Integer previous = indexIterator.previous();
+            System.out.println(previous);
         }
     }
 }
