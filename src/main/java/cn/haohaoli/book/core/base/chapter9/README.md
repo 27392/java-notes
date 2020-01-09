@@ -192,20 +192,44 @@ while (iterator.hasNext()){
 `ListIterator`接口在`Iterator`接口的基础上增加如下方法
 
 ```java
-boolean hasPrevious();
+public interface ListIterator<E> extends Iterator<E> {
 
-E previous();
-
-int nextIndex();
-
-int previousIndex();
-
-void set(E e);
-
-void add(E e);
+    // 之前是否有元素
+    boolean hasPrevious();
+    
+    // 获取之前的元素
+    E previous();
+    
+    // 获取下一个索引
+    int nextIndex();
+    
+    // 获取上一个索引
+    int previousIndex();
+    
+    // 替换元素
+    void set(E e);
+    
+    // 添加元素
+    void add(E e);
+}
 ```
 
 `ListIterator`接口增加了添加元素,设置元素,反向遍历,获取当前位置等功能
+
+而在`List`接口中提供了两种获取`ListIterator`的方法
+
+```java
+public interface List<E> extends Collection<E> {
+
+    // 直接获取
+    ListIterator<E> listIterator();
+    
+    // 通过索引获取
+    ListIterator<E> listIterator(int index);
+    
+    ...
+}
+```
 
 ## 具体的实现
 
@@ -221,12 +245,14 @@ void add(E e);
     
     `ArrayList`其底层维护一个数组.在操作删除或者添加操作时,具有自动调节数组容量的功能
     
-    `Vector`与`ArrayList`同理,他们的区别是
+    `Vector`与`ArrayList`同理,它们的区别是
     
     |      | 是否线程安全 | 扩容大小 |
     |  ----   |   ----      |  ----   |
     |ArrayList|  线程不安全  | `1.5`倍 |
     |Vector   |  线程安全    | `2`倍   |
+    
+    在Java老版本中,使用`Vector`实现动态数组.不过`ArrayList`更有效,所以一般还是使用`ArrayList`
     
     > 数组在内存中是顺序存储,因此可以很好地实现逻辑上的顺序表
     >    

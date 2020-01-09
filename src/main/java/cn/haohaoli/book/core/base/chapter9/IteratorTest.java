@@ -40,13 +40,13 @@ public class IteratorTest {
 
         // ListIterator 操作
         System.out.println("============ListIterator============");
-        listIterator();
+        listIteratorOperation();
     }
 
     /**
      * ListIterator 是专门操作 List的,是List接口添加的方法
      */
-    private static void listIterator () {
+    private static void listIteratorOperation() {
 
         List<Integer> list = new ArrayList<>();
         list.add(1);
@@ -77,7 +77,14 @@ public class IteratorTest {
 
         while (indexIterator.hasPrevious()){
             Integer previous = indexIterator.previous();
+            if (previous.equals(1)) {
+                indexIterator.add(99);
+            }
+            if (previous.equals(2)) {
+                indexIterator.set(22);
+            }
             System.out.println(previous);
         }
+        System.out.println(list);
     }
 }
