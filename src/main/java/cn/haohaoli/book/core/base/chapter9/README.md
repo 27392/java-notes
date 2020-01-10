@@ -93,9 +93,17 @@
 
 ```java
 public interface Iterator<E> {
+
+    // 如果存在可访问的元素,返回true
     boolean hasNext();
+    
+    // 返回将要访问的下一个对象.如果已经到达了集合的尾部,将抛出一个 NoSuchElementException
     E next();
+    
+    // 删除上次访问的对象.这个方法必须紧跟在访问一个元素之后执行.如果上次访问之后,集合已经发生了变化,这个方法将抛出一个 IllegalStateException
     default void remove();
+    
+    // jdk8 遍历
     default void forEachRemaining(Consumer<? super E> action);
 }
 ```
@@ -194,22 +202,22 @@ while (iterator.hasNext()){
 ```java
 public interface ListIterator<E> extends Iterator<E> {
 
-    // 之前是否有元素
+    // 当反向迭代列表时,还有可供访问的元素,返回true
     boolean hasPrevious();
     
     // 获取之前的元素
     E previous();
     
-    // 获取下一个索引
+    // 返回下一次调用 next 方法时将返回的元素索引
     int nextIndex();
     
-    // 获取上一个索引
+    // 返回下一次调用 previous 方法时将返回的元素索引
     int previousIndex();
     
-    // 替换元素
+    // 用新元素取代 next 或 previous 上次访问的元素.如果在 next 或 previous 上次调用之后列表结构被修改了,将抛出一个 IllegalStateException
     void set(E e);
     
-    // 添加元素
+    // 在当前位置前添加一个元素
     void add(E e);
 }
 ```
@@ -221,10 +229,10 @@ public interface ListIterator<E> extends Iterator<E> {
 ```java
 public interface List<E> extends Collection<E> {
 
-    // 直接获取
+    // 返回一个列表迭代器,以便用来访问列表中的元素
     ListIterator<E> listIterator();
     
-    // 通过索引获取
+    // 返回一个列表迭代器,以便用来访问列表中的元素,这个元素是第一次调用 next 返回的给定索引的元素
     ListIterator<E> listIterator(int index);
     
     ...
@@ -252,7 +260,7 @@ public interface List<E> extends Collection<E> {
     |ArrayList|  线程不安全  | `1.5`倍 |
     |Vector   |  线程安全    | `2`倍   |
     
-    在Java老版本中,使用`Vector`实现动态数组.不过`ArrayList`更有效,所以一般还是使用`ArrayList`
+    **在Java老版本中,使用`Vector`实现动态数组.不过`ArrayList`更有效,所以一般还是使用`ArrayList`**
     
     > 数组在内存中是顺序存储,因此可以很好地实现逻辑上的顺序表
     >    
