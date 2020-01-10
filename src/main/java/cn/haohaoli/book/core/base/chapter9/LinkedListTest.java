@@ -3,6 +3,7 @@ package cn.haohaoli.book.core.base.chapter9;
 import java.util.*;
 
 /**
+ * 链表操作
  * @author LiWenHao
  * @date 2019-05-26 16:19
  */
@@ -10,49 +11,51 @@ public class LinkedListTest {
 
     public static void main(String[] args) {
 
-        List<String> a = new LinkedList<>();
-        a.add("Amy");
-        a.add("Carl");
-        a.add("Erica");
+        LinkedList<String> listA = new LinkedList<>();
 
-        System.out.println("a : " + a);
+        // LinkedList add 方法默认是添加到列表的尾部 等价于 addLast
+        listA.add("Carl");
 
-        List<String> b = new LinkedList<>();
-        b.add("Bob");
-        b.add("Doug");
-        b.add("Frances");
-        b.add("Gloria");
-        System.out.println("b : " + b);
+        // 将元素添加到列表的尾部
+        listA.addLast("Erica");
 
-        ListIterator<String> aIter = a.listIterator();
+        // 将元素添加到列表的头部
+        listA.addFirst("Amy");
 
-        Iterator<String> bIter = b.iterator();
+        System.out.println("listA  : " + listA);
 
-        //合并
-        while (bIter.hasNext()){
-            if (aIter.hasNext()) {
-                aIter.next();
-            }
-            aIter.add(bIter.next());
+        System.out.println("getFirst :  " + listA.getFirst());
+        System.out.println("getLast  :  " + listA.getLast());
+
+        LinkedList<String> listB = new LinkedList<>();
+        listB.add("Bob");
+        listB.add("Doug");
+        listB.add("Frances");
+        listB.add("Gloria");
+        System.out.println("listB  : " + listB);
+
+        //====================
+
+        ListIterator<String> listIteratorB = listB.listIterator();
+        ListIterator<String> listIteratorA = listA.listIterator();
+
+        // 合并两个 List 例子
+        while (listIteratorB.hasNext() && listIteratorA.hasNext()){
+            listIteratorA.next();
+            listIteratorA.add(listIteratorB.next());
         }
-        System.out.println("合并之后 a : " + a);
+        System.out.println("listA  : " + listA);
 
-        bIter = b.iterator();
-        //删除偶数的单词
-        while (bIter.hasNext()){
-            bIter.next();
-            if(bIter.hasNext()){
-                bIter.next();
-                bIter.remove();
+        // 删除下标是偶数的元素
+        listIteratorA = listA.listIterator();
+        while (listIteratorA.hasNext()){
+            listIteratorA.next();
+            if (listIteratorA.hasNext()) {
+                listIteratorA.next();
+                listIteratorA.remove();
             }
         }
-        System.out.println("删除偶数的单词之后 b : " + b);
 
-        /**
-         * {@link java.util.AbstractList#removeAll(Collection)}
-         */
-        a.removeAll(b);
-        System.out.println("a");
-
+        System.out.println("listA  : " + listA);
     }
 }
