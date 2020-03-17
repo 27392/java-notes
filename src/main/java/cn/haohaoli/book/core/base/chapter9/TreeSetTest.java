@@ -2,10 +2,7 @@ package cn.haohaoli.book.core.base.chapter9;
 
 import lombok.*;
 
-import java.util.Comparator;
-import java.util.NavigableSet;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author LiWenHao
@@ -14,14 +11,14 @@ import java.util.TreeSet;
 public class TreeSetTest {
 
     public static void main(String[] args) {
-        SortedSet<Item> parts = new TreeSet<>();
+        Set<Item> parts = new TreeSet<>();
         parts.add(Item.of("Toaster", 1234));
         parts.add(Item.of("Modem", 9912));
         parts.add(Item.of("Widget", 4562));
         System.out.println(parts);
 
-        NavigableSet<Item> sortByDescription = new TreeSet<>(Comparator.comparing(Item::getDescription));
-
+        // 当`Comparable`,`Comparator`同时存在时,使用给定的`Comparator`规则
+        Set<Item> sortByDescription = new TreeSet<>(Comparator.comparing(Item::getDescription));
         sortByDescription.addAll(parts);
         System.out.println(sortByDescription);
     }

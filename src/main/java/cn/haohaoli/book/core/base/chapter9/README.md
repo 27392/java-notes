@@ -243,7 +243,7 @@ public interface List<E> extends Collection<E> {
 
 ### List
 
-**`List`是有序集合(也称为序列)**.`List`接口在`Collection`接口的基础上添加了大量的方法
+**`List`: 有序集合(也称为序列)**.`List`接口在`Collection`接口的基础上添加了大量的方法
 
 使得可以精确地控制每个元素在列表中的插入位置. 用户可以通过其整数索引(在列表中的位置)访问元素,并搜索列表中的元素
 
@@ -294,6 +294,52 @@ public interface List<E> extends Collection<E> {
 **相反地,链表的优势在于能够灵活的进行插入和删除操作,如果需要在尾部频繁插入、删除元素,用链表更合适**
 
 ### Set
+
+**`Set`: 储存无序的、不可重复的数据**.`Set`接口并没有添加新的方法,所有的方法都继承自`Collection`接口
+
+1. **无序性**:
+    
+    不等于随机性,储存的数据在底层数组中并非按照数组索引添加,而是根据数据的**(散列码)哈希值**决定的
+    
+    > 其实底层使用的时`HashMap`,`HashMap`底层是数组.关于这部分知识可以查看后面的`HashMap`
+    
+2. **不可重复性**:
+
+    保证添加的元素按照`equals()`判断时,不能返回`true`,即.相同的元素只能添加一个
+    
+---
+
+`Set`接口下主要有三个主要的实现类
+
+- `HashSet`
+
+   一种没有重复元素的无序集合
+
+- `LinkedHashSet`
+
+   它是`HashSet`的子类,并且它是有序的**可以记住添加元素时的顺序**
+   
+   > 它并没有添加额外的方法,只是在构造时,使用`LinkedHashMap`.关于这部分知识可以查看后面的`LinkedHashMap`
+    
+- `TreeSet`
+
+   它与散列集十分类似,不过,它比散列集有所改进.
+   
+   **树集是一个有序集合可以以任意顺序将元素插入到集合中.在对集合进行遍历时,每个值将自动地按照排序后的顺序呈现**
+   
+   **它与散列集不同,它并不是使用`equals()`来判断两个元素是否相同,而是使用[`Comparable`](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter6#611-%E6%8E%A5%E5%8F%A3%E6%A6%82%E5%BF%B5)、[`Comparator`](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter6#622-comparator%E6%8E%A5%E5%8F%A3)来判断是否相同**
+   
+   **所以要使用它,必须能够比较元素.这些元素必须实现`Comparable`接口或者构造集时必须提供一个`Comparator`**
+   
+   > 需要注意一点: **当`Comparable`,`Comparator`同时存在时,使用给定的`Comparator`规则**
+    
+#### 总结
+
+`HashSet`在使用它之前需要重写`equals`和`hashCode`方法,否则他还是会储存重复的元素,一般情况下还是用它
+
+`LinkedHashSet`它则可以记住添加元素的顺序.如果需要想添加时没有重复的元素而且记住添加时元素的顺序,那么可以使用它
+
+`TreeSet`在使用它之前则需要有一个排序的规则`Comparable`、`Comparator`都可以.它会帮你在添加的时候自动排序
 
 ### Queue
 
