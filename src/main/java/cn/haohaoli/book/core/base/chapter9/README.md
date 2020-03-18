@@ -293,7 +293,7 @@ public interface List<E> extends Collection<E> {
 
 **相反地,链表的优势在于能够灵活的进行插入和删除操作,如果需要在尾部频繁插入、删除元素,用链表更合适**
 
-### Set
+### Set (集)
 
 **`Set`: 储存无序的、不可重复的数据**.`Set`接口并没有添加新的方法,所有的方法都继承自`Collection`接口
 
@@ -313,11 +313,11 @@ public interface List<E> extends Collection<E> {
 
 - `HashSet`
 
-   一种没有重复元素的无序集合
+   为快速查找而设计的`Set`.存入`HashSet`的元素必须定义`hashCode()`
 
 - `LinkedHashSet`
 
-   它是`HashSet`的子类,并且它是有序的**可以记住添加元素时的顺序**
+   它是`HashSet`的子类,具有`HashSet`的查询速度,同时内部使用链表维护元素的顺序(插入的顺序).元素也必须定义`hashCode()`
    
    > 它并没有添加额外的方法,只是在构造时,使用`LinkedHashMap`.关于这部分知识可以查看后面的`LinkedHashMap`
     
@@ -341,9 +341,57 @@ public interface List<E> extends Collection<E> {
 
 `TreeSet`在使用它之前则需要有一个排序的规则`Comparable`、`Comparator`都可以.它会帮你在添加的时候自动排序
 
-### Queue
+### Queue (队列)
+
+**队列是一种线性数据结构,队列中的元素只能先入先出(First In First Out,简称`FIFO`)**
+
+队列可以让人们有效地在尾部添加一个元素,在头部删除一个元素
+
+下面是在`Queue`的接口的方法:
+
+```java
+public interface Queue<E> extends Collection<E> {
+    
+    /**
+     * 如果可以在不违反容量限制的情况下立即将指定的元素插入到此队列中，
+     * 如果成功则返回`true`,如果当前没有可用空间则抛出`IllegalStateException`
+     */
+    boolean add(E e);
+
+    /**
+     * 如果可以在不违反容量限制的情况下立即将指定的元素插入到此队列中
+     * 当使用容量受限的队列时,此方法通常比`add`更可取,因为`add`可能通过抛出异常而无法仅插入元素
+     * 如果元素被添加到此队列返回`true`否则返回`false`
+     */
+    boolean offer(E e);
+    
+    /**
+     * 检索并删除此队列的头.这个方法与`poll`的不同之处在于,它只在这个队列为空时抛出一个异常。
+     * 如果这个队列是空的,则抛出`NoSuchElementException`
+     */
+    E remove();
+    
+    /**
+     * 检索并删除此队列的头,如果此队列为空,则或返回null
+     */
+    E poll();
+
+    /**
+     * 检索但不删除此队列的头.此方法与`peek`唯一的区别在于,如果此队列为空,它将抛出一个异常。
+     * 如果这个队列是空的,则抛出`NoSuchElementException`
+     */
+    E element();
+
+     /**
+      * 检索此队列的头,但不删除它,如果此队列为空,则或返回null
+      */
+    E peek();
+}
+```
 
 ### Map
+
+
 
 ## 视图 
 
