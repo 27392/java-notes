@@ -293,7 +293,6 @@ public interface List<E> extends Collection<E> {
 
 **相反地,链表的优势在于能够灵活的进行插入和删除操作,如果需要在尾部频繁插入、删除元素,用链表更合适**
 
-
 ### 散列表
 
 [散列表](https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8)(`Hash table`,也叫哈希表),**是根据键(`Key`)而直接访问在内存储存位置的数据结构**
@@ -390,7 +389,7 @@ public interface List<E> extends Collection<E> {
     
 ---
 
-`Set`接口下主要有三个主要的实现类
+`Set`接口下主要有四个主要的实现类
 
 - `HashSet`
 
@@ -413,7 +412,13 @@ public interface List<E> extends Collection<E> {
    **所以要使用它,必须能够比较元素.这些元素必须实现`Comparable`接口或者构造集时必须提供一个`Comparator`**
    
    > 需要注意一点: **当`Comparable`,`Comparator`同时存在时,使用给定的`Comparator`规则**
+
+- `EnumSet`
+    
+   它是一个枚举类型元素集的高效实现
    
+   > 使用的不多,这里不做介绍.需要了解的话[参考](https://www.cnblogs.com/swiftma/p/6044718.html)
+
 #### 总结
 
 `HashSet`在使用它之前需要重写`equals`和`hashCode`方法,否则他还是会储存重复的元素,一般情况下还是用它
@@ -470,7 +475,9 @@ public interface Queue<E> extends Collection<E> {
 }
 ```
 
-### Map
+> 队列最要在并发容器中使用这里不多做介绍
+
+
 
 ## 视图 
 
