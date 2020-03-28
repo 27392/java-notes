@@ -35,7 +35,7 @@ public class EnumSetTest {
         System.out.println("copyOf : " + EnumSet.copyOf(colors));
     }
 
-    private enum Color{
+    enum Color{
 
         BLUE,
         GREEN,

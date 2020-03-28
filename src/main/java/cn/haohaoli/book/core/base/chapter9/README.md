@@ -391,9 +391,11 @@ public interface List<E> extends Collection<E> {
 
 `Set`接口下主要有四个主要的实现类
 
-- `HashSet`
+- `HashSet`(常用)
 
    为快速查找而设计的`Set`**它是实现了散列表的集**.存入`HashSet`的元素必须定义`hashCode()`
+   
+   > 内部使用`HashMap`
 
 - `LinkedHashSet`
 
@@ -412,10 +414,12 @@ public interface List<E> extends Collection<E> {
    **所以要使用它,必须能够比较元素.这些元素必须实现`Comparable`接口或者构造集时必须提供一个`Comparator`**
    
    > 需要注意一点: **当`Comparable`,`Comparator`同时存在时,使用给定的`Comparator`规则**
+   >
+   > 同样`TreeSet`内部也同样使用`TreeMap`
 
 - `EnumSet`
     
-   它是一个枚举类型元素集的高效实现
+   **它是一个枚举类型元素集的高效实现**
    
    > 使用的不多,这里不做介绍.需要了解的话[参考](https://www.cnblogs.com/swiftma/p/6044718.html)
 
@@ -477,7 +481,59 @@ public interface Queue<E> extends Collection<E> {
 
 > 队列最要在并发容器中使用这里不多做介绍
 
+### Map(映射)
 
+`Map`: **存储键、键值对组合的集合,提供了`key`到`Value`的映射**.`Map`并没有继承`Collection`而是与他一样都是根接口
+
+在`Map`中它保证了`key`与`value`之间的一一对应关系.也就是说一个`key`对应一个`value`,所以它不能存在相同的`key`值,当然`value`值可以相同
+
+- `HashMap` (常用)
+    
+    **`HashMap`是基于哈希表的实现,也就是说它既有`Map`的键值对特点,也有哈希表的特点**
+    
+    `HashSet`底层是`HashMap`,所以`HashSet`底层只要使用它就可以完成所需要的功能
+    
+    > **`HashMap`是线程不安全的.`key`可以为`null`,`value`也可以为`null`**
+
+- `Hashtable`
+    
+    `Hashtable`是JDK1.0提供的一个类,现在不推荐使用
+    
+    > **`Hashtable`是线程安全的.`key`不可以为`null`,`value`也不可以为`null`**
+
+- `TreeMap`
+    
+    同样它与`TreeSet`一样,不过`TreeSet`内部使用的是`TreeMap`.它是对`key`进行排序
+    
+    **同理要使用它,必须能够比较元素.这些元素必须实现`Comparable`接口或者构造集时必须提供一个`Comparator`**
+
+- `LinkedHashMap`
+
+    **`LinkedHashSet`和`LinkedHashMap`类一样,它们都可以记住插入元素的顺序**
+   
+    **同样的`LinkedHashMap`也是`HashMap`的子类**
+   
+    它在`Node`类内部增加两个字段`before, after`来记住上一个元素和下一个元素,所以`LinkedHashSet`内部使用来它达到记住元素顺序的目的
+   
+- `WeakHashMap`
+
+    **`WeakHashMap`使用`WeakReference`类型来保存键.如果垃圾回收器发现某个特定对象已经没人他人引用了,就将其回收**
+
+    [相关资料](http://www.justdojava.com/2019/10/11/java-collection-8/)
+
+- `EnumMap`
+    
+    **它是一个键类型为枚举类型的映射,它可以直接且高效地用一个值数组实现**
+    
+    > 在使用时,需要在构造器中指定键类型
+    >
+    > 使用的也很少,需要了解的话[参考](https://www.cnblogs.com/swiftma/p/6044672.html)
+
+- `IdentityHashMap`
+    
+    **它与`HashMap`不同它使用`==`来判断对象是否相同**
+    
+    [相关资料](http://www.justdojava.com/2019/10/11/java-collection-7/)
 
 ## 视图 
 
