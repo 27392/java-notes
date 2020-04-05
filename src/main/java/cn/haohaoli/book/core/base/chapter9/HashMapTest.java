@@ -52,6 +52,15 @@ public class HashMapTest {
 //        replace(initMap());
 //        replaceAll(initMap());
         forEach(initMap());
+
+        System.out.println("=======视图=======");
+
+        // 键集合
+        initMap().keySet().forEach(System.out::println);
+        // 值集合
+        initMap().values().forEach(System.out::println);
+        // 键/值集合(条目集)
+        initMap().entrySet().forEach(System.out::println);
     }
 
 
