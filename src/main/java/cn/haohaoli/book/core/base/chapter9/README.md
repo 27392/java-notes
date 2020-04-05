@@ -535,7 +535,385 @@ public interface Queue<E> extends Collection<E> {
     
     [相关资料](http://www.justdojava.com/2019/10/11/java-collection-7/)
 
-## 视图 
+## 视图与包装器
+
+**视图是一个轻量级的对象,它实现了`Collection`或者`Map`接口,但从传统意义上来说并不是真正的集合**
+
+**视图根本不包含其自己的数据.它的所有操作都是根据对另一个对象的操作实现**
+
+例如: `Map`类中的`keySet()`方法就是一个这样的实例
+
+看起来给人的感觉就是这个方法创建了一个`Set`,并将`Map`中的所有键都添加进去,然后返回.但是,实际情况并不是如此
+
+取而代之的是,`keySet()`返回一个实现`Set`接口的类型对象.这个类的方法对原`Map`进行操作
+
+<details>
+    <summary>具体调用代码</summary>
+   
+```java
+public Set<K> keySet() {
+    Set<K> ks = keySet;
+    if (ks == null) {
+        ks = new KeySet();
+        keySet = ks;
+    }
+    return ks;
+}
+```
+
+返回`KeySet`对象,这个对象继承了`AbstractSet`接口,同时`iterator()`方法返回一个`KeyIterator`类
+
+```java
+final class KeySet extends AbstractSet<K> {
+    public final int size()                 { return size; }
+    public final void clear()               { HashMap.this.clear(); }
+    public final Iterator<K> iterator()     { return new KeyIterator(); }
+    public final boolean contains(Object o) { return containsKey(o); }
+    public final boolean remove(Object key) {
+        return removeNode(hash(key), key, null, false, true) != null;
+    }
+    public final Spliterator<K> spliterator() {
+        return new KeySpliterator<>(HashMap.this, 0, -1, 0, 0);
+    }
+    public final void forEach(Consumer<? super K> action) {
+        Node<K,V>[] tab;
+        if (action == null)
+            throw new NullPointerException();
+        if (size > 0 && (tab = table) != null) {
+            int mc = modCount;
+            for (int i = 0; i < tab.length; ++i) {
+                for (Node<K,V> e = tab[i]; e != null; e = e.next)
+                    action.accept(e.key);
+            }
+            if (modCount != mc)
+                throw new ConcurrentModificationException();
+        }
+    }
+}
+```
+
+可以看到这里是直接调用拿`Map`中`Node`对象的`key`遍历
+
+```java
+final class KeyIterator extends HashIterator
+    implements Iterator<K> {
+    public final K next() { return nextNode().key; }
+}
+```
+
+</details>
+
+[StackOverflow上关于视图的问题](https://stackoverflow.com/questions/18902484/what-is-a-view-of-a-collection)
+
+[CSDN相关文章](https://blog.csdn.net/sinat_19968265/article/details/80469185)
+
+### 轻量级集合包装器
+
+`Arrays`类的静态方法`asList`将返回一个包装了普通Java数组的`List`包装器
+
+这个方法可以将数组传递给一个期望得到列表或集合参数的方法
+
+```java
+String[]     strArray = new String[]{"a", "b", "c"};
+List<String> list     = Arrays.asList(strArray);
+```
+
+**返回的对象不是`ArrayList`(虽然它也叫`ArrayList`)**
+
+**它是一个视图对象,带有访问底层数组的`get`和`set`方法**
+
+> 特别注意: **改变数组大小的所有方法(例如,迭代器相关的`add`和`remove`方法)都会抛出一个`UnsupportedOperationException`异常**
+
+另外该方法还可以接受可变长参数
+
+```java
+List<String> list     = Arrays.asList("a", "b", "c");
+```
+
+<details>
+    <summary>asList方法具体代码</summary>
+    
+```java
+public static <T> List<T> asList(T... a) {
+    return new ArrayList<>(a);
+}
+```
+
+这里的`ArrayList`并不是`java.util.ArrayList`.它只是`Arrays`类中的一个内部类
+
+```java
+private static class ArrayList<E> extends AbstractList<E>
+        implements RandomAccess, java.io.Serializable
+    {
+        private static final long serialVersionUID = -2764017481108945198L;
+        private final E[] a;
+
+        ArrayList(E[] array) {
+            a = Objects.requireNonNull(array);
+        }
+
+        @Override
+        public int size() {
+            return a.length;
+        }
+
+        @Override
+        public Object[] toArray() {
+            return a.clone();
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T[] toArray(T[] a) {
+            int size = size();
+            if (a.length < size)
+                return Arrays.copyOf(this.a, size,
+                                     (Class<? extends T[]>) a.getClass());
+            System.arraycopy(this.a, 0, a, 0, size);
+            if (a.length > size)
+                a[size] = null;
+            return a;
+        }
+
+        @Override
+        public E get(int index) {
+            return a[index];
+        }
+
+        @Override
+        public E set(int index, E element) {
+            E oldValue = a[index];
+            a[index] = element;
+            return oldValue;
+        }
+
+        @Override
+        public int indexOf(Object o) {
+            E[] a = this.a;
+            if (o == null) {
+                for (int i = 0; i < a.length; i++)
+                    if (a[i] == null)
+                        return i;
+            } else {
+                for (int i = 0; i < a.length; i++)
+                    if (o.equals(a[i]))
+                        return i;
+            }
+            return -1;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return indexOf(o) != -1;
+        }
+
+        @Override
+        public Spliterator<E> spliterator() {
+            return Spliterators.spliterator(a, Spliterator.ORDERED);
+        }
+
+        @Override
+        public void forEach(Consumer<? super E> action) {
+            Objects.requireNonNull(action);
+            for (E e : a) {
+                action.accept(e);
+            }
+        }
+
+        @Override
+        public void replaceAll(UnaryOperator<E> operator) {
+            Objects.requireNonNull(operator);
+            E[] a = this.a;
+            for (int i = 0; i < a.length; i++) {
+                a[i] = operator.apply(a[i]);
+            }
+        }
+
+        @Override
+        public void sort(Comparator<? super E> c) {
+            Arrays.sort(a, c);
+        }
+    }
+```
+
+</details>
+
+---
+
+`Collections.nCopies(n, anObject)`方法将返回一个实现了`List`接口的不可修改的对象,并给人一种包含N个元素的,每个元素都像是一个`anObject`的错觉
+
+例如,创建一个包含100个字符串的`List`,每个元素都设置为`"DEFAULT"`
+
+```java
+Collections.nCopies(100, "DEFAULT");
+```
+
+> 其实内部只有一个元素,而`size`是`100`,所以存储的代价很小
+
+
+<details>
+    <summary>具体代码</summary>
+    
+```java
+ public static <T> List<T> nCopies(int n, T o) {
+    if (n < 0)
+        throw new IllegalArgumentException("List length = " + n);
+    return new CopiesList<>(n, o);
+}
+```
+
+```java
+private static class CopiesList<E>
+        extends AbstractList<E>
+        implements RandomAccess, Serializable
+    {
+        private static final long serialVersionUID = 2739099268398711800L;
+
+        final int n;
+        final E element;
+
+        CopiesList(int n, E e) {
+            assert n >= 0;
+            this.n = n;
+            element = e;
+        }
+
+        public int size() {
+            return n;
+        }
+
+        public boolean contains(Object obj) {
+            return n != 0 && eq(obj, element);
+        }
+
+        public int indexOf(Object o) {
+            return contains(o) ? 0 : -1;
+        }
+
+        public int lastIndexOf(Object o) {
+            return contains(o) ? n - 1 : -1;
+        }
+
+        public E get(int index) {
+            if (index < 0 || index >= n)
+                throw new IndexOutOfBoundsException("Index: "+index+
+                                                    ", Size: "+n);
+            return element;
+        }
+
+        public Object[] toArray() {
+            final Object[] a = new Object[n];
+            if (element != null)
+                Arrays.fill(a, 0, n, element);
+            return a;
+        }
+
+        @SuppressWarnings("unchecked")
+        public <T> T[] toArray(T[] a) {
+            final int n = this.n;
+            if (a.length < n) {
+                a = (T[])java.lang.reflect.Array
+                    .newInstance(a.getClass().getComponentType(), n);
+                if (element != null)
+                    Arrays.fill(a, 0, n, element);
+            } else {
+                Arrays.fill(a, 0, n, element);
+                if (a.length > n)
+                    a[n] = null;
+            }
+            return a;
+        }
+
+        public List<E> subList(int fromIndex, int toIndex) {
+            if (fromIndex < 0)
+                throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+            if (toIndex > n)
+                throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+            if (fromIndex > toIndex)
+                throw new IllegalArgumentException("fromIndex(" + fromIndex +
+                                                   ") > toIndex(" + toIndex + ")");
+            return new CopiesList<>(toIndex - fromIndex, element);
+        }
+
+        // 省略 equals hashcode
+
+        // Override default methods in Collection
+        @Override
+        public Stream<E> stream() {
+            return IntStream.range(0, n).mapToObj(i -> element);
+        }
+
+        @Override
+        public Stream<E> parallelStream() {
+            return IntStream.range(0, n).parallel().mapToObj(i -> element);
+        }
+
+        @Override
+        public Spliterator<E> spliterator() {
+            return stream().spliterator();
+        }
+
+        private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+            ois.defaultReadObject();
+            SharedSecrets.getJavaOISAccess().checkArray(ois, Object[].class, n);
+        }
+    }
+```
+
+</details>
+
+然而在`Collections`类中还有类似的几个方法
+
+`Collection.singleton(anObject)`
+
+> **这个方法返回一个实现了`Set`接口视图对象,并且是一个不可修改的单元素`Set`,这样的花就不需要付出建立数据结构的开销**
+
+同样的还有`singletonList`,`singletonMap`方法都是一样的
+
+<details>
+ <summary>singleton方法具体代码</summary>
+
+```java
+private static class SingletonSet<E>
+        extends AbstractSet<E>
+        implements Serializable
+    {
+        private static final long serialVersionUID = 3193687207550431679L;
+
+        private final E element;
+
+        SingletonSet(E e) {element = e;}
+
+        public Iterator<E> iterator() {
+            return singletonIterator(element);
+        }
+
+        public int size() {return 1;}
+
+        public boolean contains(Object o) {return eq(o, element);}
+
+        // Override default methods for Collection
+        @Override
+        public void forEach(Consumer<? super E> action) {
+            action.accept(element);
+        }
+        @Override
+        public Spliterator<E> spliterator() {
+            return singletonSpliterator(element);
+        }
+        @Override
+        public boolean removeIf(Predicate<? super E> filter) {
+            throw new UnsupportedOperationException();
+        }
+    }
+```
+</details>
+
+`Collection.emptyMap(anObject)`
+
+> 这个方法返回一个实现了`Map`接口视图对象,它的内部没有元素
+
+同样的还有`emptySet`,`emptyList`方法都是一样的
 
 ## 算法
 
