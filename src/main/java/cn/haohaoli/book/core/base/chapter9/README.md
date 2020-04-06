@@ -752,7 +752,7 @@ Collections.nCopies(100, "DEFAULT");
 
 
 <details>
-    <summary>具体代码</summary>
+    <summary>查看具体代码</summary>
     
 ```java
  public static <T> List<T> nCopies(int n, T o) {
@@ -915,7 +915,92 @@ private static class SingletonSet<E>
 
 同样的还有`emptySet`,`emptyList`方法都是一样的
 
+### 子范围视图
+
+视图不仅仅全部都是操作所有的数据,它还可以操作部分数据
+
+例如,我们想获取第1~第3个元素.就可以使用`subList`方法来获得一个列表的子范围视图
+
+```java
+List<String> stringList = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
+List<String> subList    = stringList.subList(1, 4);
+```
+
+> **第一个索引包含在内,第二个索引则不包含在内.这与`String`类的`substring`操作中的参数情况相同**
+
+**可以将任何操作应用于子范围,并且能够自动地反映整个列表的情况.**例如:
+
+```java
+List<String> stringList = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
+List<String> subList    = stringList.subList(1, 4);
+subList.clear();                // 清除视图同时其实删除原对象内的元素
+System.out.println(stringList);
+```
+
+将子范围视图清空后(`subList.clear()`),相对应的元素自动从`stringList`中删除,并且`subList`为空
+
+> `subList`方法在`List`接口中,而`Set`、`Map`接口中并没有这个功能.
+>
+> 不过对于有序集和映射,可以使用排序顺序而不是元素位置建立子范围
+
+`SoredSet`接口声明了三个方法
+
+```java
+SortedSet<E> subSet(E from, E to)
+SortedSet<E> headSet(E to)
+SortedSet<E> tailSet(E from)
+```
+这些方法将返回大于等于`from`且小于`to`的所有元素子集.有序映射也有类似的方法
+
+```java
+SortedMap<K, V> subMap(K from, K to)
+SortedMap<K, V> headMap(K to)
+SortedMap<K, V> tailMap(K from)
+```
+
+> 在JDK1.6引入了``和`NavigableMap`接口赋予子范围操作更多的控制能力.可以指定是否包含边界
+
+<details>
+    <summary>NavigableSet、NavigableMap接口详情</summary>
+    
+`NavigableSet`接口   
+  
+```java
+NavigableSet<E> subSet (E from, boolean fromlnclusive, E to, boolean tolnclusive)
+NavigableSet<E> headSet(E to, boolean tolnclusive)
+Navigab1eSet<E> tailSet(E from, boolean fromlnclusive)
+```
+
+`NavigableMap`接口
+
+```java
+NavigableMap<K,V> subMap (K from, boolean fromlnclusive, K to, boolean tolnclusive)
+NavigableMap<K,V> headMap(K to, boolean tolnclusive)
+Navigab1eMap<K,V> tailMap(K from, boolean fromlnclusive)
+```
+  
+> `NavigableSet`实现了`SortedSet`接口,`NavigableMap`接口也是一样实现了`SortedMap`接口
+
+</details> 
+
+### 不可修改视图
+
+### 同步视图
+
+### 检查视图
+
 ## 算法
+
+### 排序与混排
+
+### 二分查找
+
+### 简单算法
+
+### 批操作
+
+### 集合与数组的转换
+
 
 
 
