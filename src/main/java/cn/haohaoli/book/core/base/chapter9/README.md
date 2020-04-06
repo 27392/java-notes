@@ -1348,7 +1348,7 @@ static class UnmodifiableList<E> extends UnmodifiableCollection<E>
 
 </details>
 
-> 不可修改视图并不是集合本身不可修改.仍然可以通过集合原始的引用(在这里值`list`)对集合进行修改.同时,原来引用集合的元素发生变化,那么试图对象的元素也会随之变化
+> 不可修改视图并不是集合本身不可修改.仍然可以通过集合原始的引用(在这里值`list`)对集合进行修改.同时,原来引用集合的元素发生变化,那么视图对象的元素也会随之变化
 
 [参考](https://www.jianshu.com/p/462a56f7e349)
 
@@ -1530,6 +1530,64 @@ private static class SynchronizedMap<K,V>
 + synchronizedNavigableMap
 
 ### 检查视图
+
+**"受査"视图用来对泛型类型发生问题时提供调试支持**
+
+```java
+LinkedList<String> list = new LinkedList<>();
+List rawList = list;
+rawList.add(LocalDate.now());
+list.getFirst();    // 抛出异常 java.lang.ClassCastException
+```
+
+这个错误的`add`,在运行时检测不到.相反,只要调用`get`方法,将结果转化为`String`时,就会抛出`ClassCastException`异常
+
+而受检视图可以探测到这类问题
+
+```java
+List<String> stringList = Collections.checkedList(new LinkedList<>(), String.class);
+rawList = stringList;
+rawList.add(LocalDate.now());   //在添加时即可探测类型问题,而不是等到获取时
+```
+
+视图的`add`方法将检测插人的对象是否属于给定的类.如果不属于给定的类,就立即抛出一个 `ClassCastException`.这样做的好处是错误可以在正确的位置得以报高
+
+<details>
+<summary>查看解析</summary>
+
+视图对象`CheckedList`再添加时调用`typeCheck`方法来对类型做检查
+
+```java
+public void add(int index, E element) {
+    list.add(index, typeCheck(element));
+}
+```
+
+具体类型检查代码如下:
+
+```java
+E typeCheck(Object o) {
+    if (o != null && !type.isInstance(o))
+        throw new ClassCastException(badElementMsg(o));
+    return (E) o;
+}
+```
+
+</details>
+
+有9个方法可以得到受查视图
+
++ checkedCollection
++ checkedQueue
++ checkedSet
++ checkedSortedSet
++ checkedNavigableSet
++ checkedList
++ checkedMap
++ checkedSortedMap
++ checkedNavigableMap
+
+> 受查视图受限于虚拟机可以运行的运行时检查.例如,对于`ArrayList<Pair<String>`,由于虚拟机有一个单独的"原始"Pair类,所以,无法阻止插入`Pair<Date>`
 
 ## 算法
 

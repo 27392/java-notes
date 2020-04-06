@@ -32,6 +32,9 @@ public class ViewTest {
 
         // 同步视图
         sync();
+
+        // 受查视图
+        check();
     }
 
     /**
@@ -45,7 +48,6 @@ public class ViewTest {
         List<String> subList    = stringList.subList(1, 4);
         subList.clear();                // 清除视图同时其实删除原对象内的元素, 视图中没有元素.
         System.out.println(stringList);
-
 
         SortedSet<String> treeSet = new TreeSet<>(list);
 
@@ -104,5 +106,27 @@ public class ViewTest {
      */
     public static void sync() {
         Map<String, String> synchronizedMap = Collections.synchronizedMap(new HashMap<>());
+    }
+
+    /**
+     * checkedCollection
+     * checkedQueue
+     * checkedSet
+     * checkedSortedSet
+     * checkedNavigableSet
+     * checkedList
+     * checkedMap
+     * checkedSortedMap
+     * checkedNavigableMap
+     */
+    public static void check() {
+        LinkedList<String> list = new LinkedList<>();
+        List rawList = list;
+        rawList.add(LocalDate.now());
+        // System.out.println(list.getFirst());    // 抛出异常 java.lang.ClassCastException
+
+        List<String> stringList = Collections.checkedList(new LinkedList<>(), String.class);
+        rawList = stringList;
+        rawList.add(LocalDate.now());  //在添加时即可探测类型问题,而不是等到获取时
     }
 }
