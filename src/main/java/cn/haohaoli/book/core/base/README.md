@@ -41,7 +41,6 @@
 + [第9章 - 集合](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/core/base/chapter9)
     - [x] Java集合框架
     - [x] 具体的集合
-    - [ ] 视图与包装器
+    - [x] 视图与包装器
     - [ ] 算法
-    - [ ] 遗留的集合
     

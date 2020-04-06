@@ -1589,6 +1589,14 @@ E typeCheck(Object o) {
 
 > 受查视图受限于虚拟机可以运行的运行时检查.例如,对于`ArrayList<Pair<String>`,由于虚拟机有一个单独的"原始"Pair类,所以,无法阻止插入`Pair<Date>`
 
+### 不可变视图、同步视图、检查视图注意点
+
+> `unmodifiableCollection`、`synchronizedCollection`、`checkedCollection`这几个方法返回都是视图,但是它们的`equals`方法不调用底层集合的`equals`的方法
+>
+> 相反,它继承了`Object`类的`equals`方法,这个方法只是检测两个对象是否是同一个对象(也就是直接对比引用的地址,使用`==`)
+> 
+> 然而`unmodifiableSet`和`unmodifiableList`却使用底层集合的`equals`方法和`hashCode`
+
 ## 算法
 
 ### 排序与混排
@@ -1599,7 +1607,26 @@ E typeCheck(Object o) {
 
 ### 批操作
 
+很多操作会"成批"复制或删除元素
+
+```java
+// 将从list1中删除list2中出现的所有元素 - 叉集
+List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+List<Integer> list2 = new ArrayList<>(Arrays.asList(3, 4, 5));
+list1.removeAll(list2);
+System.out.println(list1);
+```
+
+```java
+// 将从list1中保留list2中出现的所有元素 - 交集
+list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+list2 = new ArrayList<>(Arrays.asList(3, 4, 5, 6));
+list1.retainAll(list2);
+System.out.println(list1);
+```
+
 ### 集合与数组的转换
+
 
 
 

@@ -3,6 +3,7 @@ package cn.haohaoli.book.core.base.chapter9;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author LiWenHao
@@ -10,61 +11,59 @@ import java.util.Collection;
 public class CollectionTest {
 
     public static void main(String[] args) {
-
         Collection<Integer> collection = new ArrayList<>();
 
-        System.out.println("size        : " + collection.size());
-        System.out.println("isEmpty     : " + collection.isEmpty());
-
-        // 添加元素
+        System.out.println("========修改操作=========");
         System.out.println("add         : " + collection.add(1));
+        System.out.println("add         : " + collection.add(2));
+        System.out.println("add         : " + collection.add(3));
+        System.out.println("remove      : " + collection.remove(1));
 
-        // 返回此集合中的元素数
+        System.out.println("========查询操作=========");
         System.out.println("size        : " + collection.size());
-
-        // 此集合是否为空
         System.out.println("isEmpty     : " + collection.isEmpty());
-
-        // 此集合是否包含指定的元素
         System.out.println("contains    : " + collection.contains(1));
-        System.out.println("contains    : " + collection.contains(2));
-        System.out.println("toString    : " + collection);
+        System.out.println("contains    : " + collection.contains(1));
 
-        Collection<Integer> newCollection = new ArrayList<>();
-        newCollection.add(2);
-        newCollection.add(3);
+        System.out.println("========批量操作=========");
+        batch();
+    }
+
+    /**
+     * 批量操作
+     */
+    private static void batch () {
+
+        // 将从list1中删除list2中出现的所有元素 - 叉集
+        List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        List<Integer> list2 = new ArrayList<>(Arrays.asList(3, 4, 5));
+        list1.removeAll(list2);
+        System.out.println(list1);
+
+        // 将从list1中保留list2中出现的所有元素 - 交集
+        list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        list2 = new ArrayList<>(Arrays.asList(3, 4, 5, 6));
+        list1.retainAll(list2);
+        System.out.println(list1);
 
         // 将指定集合中的所有元素添加到此集合
-        System.out.println("addAll      : " + collection.addAll(newCollection));
-        System.out.println("toString    : " + collection);
+        list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        list2 = new ArrayList<>(Arrays.asList(3, 4, 5, 6));
+        list1.addAll(list2);
+        System.out.println(list1);
 
         // 此集合是否包含指定集合中的所有元素
-        System.out.println("containsAll : " + collection.containsAll(newCollection));
-
-        System.out.println("remove      : " + collection.remove(1));
-        System.out.println("toString    : " + collection);
-
-        // 删除指定集合中包含的所有此集合的元素
-        System.out.println("removeAll   : " + collection.removeAll(newCollection));
-        System.out.println("toString    : " + collection);
-
-        collection.add(1);
-        collection.addAll(newCollection);
-
-        // 仅保留此集合中包含在指定集合中的元素
-        System.out.println("retainAll    : " + collection.retainAll(newCollection));
-        System.out.println("toString     : " + collection);
-
-        System.out.println("toArray      : " + Arrays.toString(collection.toArray()));
+        boolean result = list1.containsAll(list2);
+        System.out.println(result);
 
         // 从此集合中删除所有元素
-        collection.clear();
-        System.out.println("clear after  : " + collection);
-
-        collection.add(99);
+        list1.clear();
+        System.out.println("list1 clear after : " + list1);
 
         // jdk8
-        boolean b = collection.removeIf((e) -> e.equals(99));
-        System.out.println("removeIf     : " + b);
+        Collection<Integer> collection = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        boolean bol = collection.removeIf((e) -> e.equals(3));
+
+        System.out.println("removeIf    : " + bol);
     }
 }
