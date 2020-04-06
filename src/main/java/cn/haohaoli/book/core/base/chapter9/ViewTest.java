@@ -27,10 +27,10 @@ public class ViewTest {
         // 范围视图
         subRange();
 
-        // 不可改变
+        // 不可改变视图
         unmodifiable();
 
-        // 同步
+        // 同步视图
         sync();
     }
 
@@ -82,9 +82,14 @@ public class ViewTest {
      * unmodifiableNavigableMap
      */
     public static void unmodifiable() {
-        ArrayList<String> list             = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
+        List<String> list             = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
         List<String>      unmodifiableList = Collections.unmodifiableList(list);
         // unmodifiableList.add("f");  // 错误
+
+        // 修改原集合,视图对象也会发生变动
+        System.out.println(unmodifiableList);
+        list.add("f");
+        System.out.println(unmodifiableList);
     }
 
     /**

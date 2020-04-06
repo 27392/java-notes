@@ -928,7 +928,7 @@ List<String> subList    = stringList.subList(1, 4);
 
 > **第一个索引包含在内,第二个索引则不包含在内.这与`String`类的`substring`操作中的参数情况相同**
 
-**可以将任何操作应用于子范围,并且能够自动地反映整个列表的情况.**例如:
+**可以将任何操作应用于子范围,并且能够自动地反映整个列表的情况**例如:
 
 ```java
 List<String> stringList = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
@@ -939,7 +939,247 @@ System.out.println(stringList);
 
 将子范围视图清空后(`subList.clear()`),相对应的元素自动从`stringList`中删除,并且`subList`为空
 
-> `subList`方法在`List`接口中,而`Set`、`Map`接口中并没有这个功能.
+<details>
+<summary>ArrayList中subList源码</summary>
+
+```java
+private class SubList extends AbstractList<E> implements RandomAccess {
+    private final AbstractList<E> parent;
+    private final int parentOffset;
+    private final int offset;
+    int size;
+
+    SubList(AbstractList<E> parent,
+            int offset, int fromIndex, int toIndex) {
+        this.parent = parent;
+        this.parentOffset = fromIndex;
+        this.offset = offset + fromIndex;
+        this.size = toIndex - fromIndex;
+        this.modCount = ArrayList.this.modCount;
+    }
+
+    public E set(int index, E e) {
+        rangeCheck(index);
+        checkForComodification();
+        E oldValue = ArrayList.this.elementData(offset + index);
+        ArrayList.this.elementData[offset + index] = e;
+        return oldValue;
+    }
+
+    public E get(int index) {
+        rangeCheck(index);
+        checkForComodification();
+        return ArrayList.this.elementData(offset + index);
+    }
+
+    public int size() {
+        checkForComodification();
+        return this.size;
+    }
+
+    public void add(int index, E e) {
+        rangeCheckForAdd(index);
+        checkForComodification();
+        parent.add(parentOffset + index, e);
+        this.modCount = parent.modCount;
+        this.size++;
+    }
+
+    public E remove(int index) {
+        rangeCheck(index);
+        checkForComodification();
+        E result = parent.remove(parentOffset + index);
+        this.modCount = parent.modCount;
+        this.size--;
+        return result;
+    }
+
+    protected void removeRange(int fromIndex, int toIndex) {
+        checkForComodification();
+        parent.removeRange(parentOffset + fromIndex,
+                           parentOffset + toIndex);
+        this.modCount = parent.modCount;
+        this.size -= toIndex - fromIndex;
+    }
+
+    public boolean addAll(Collection<? extends E> c) {
+        return addAll(this.size, c);
+    }
+
+    public boolean addAll(int index, Collection<? extends E> c) {
+        rangeCheckForAdd(index);
+        int cSize = c.size();
+        if (cSize==0)
+            return false;
+
+        checkForComodification();
+        parent.addAll(parentOffset + index, c);
+        this.modCount = parent.modCount;
+        this.size += cSize;
+        return true;
+    }
+
+    public Iterator<E> iterator() {
+        return listIterator();
+    }
+
+    public ListIterator<E> listIterator(final int index) {
+        checkForComodification();
+        rangeCheckForAdd(index);
+        final int offset = this.offset;
+
+        return new ListIterator<E>() {
+            int cursor = index;
+            int lastRet = -1;
+            int expectedModCount = ArrayList.this.modCount;
+
+            public boolean hasNext() {
+                return cursor != SubList.this.size;
+            }
+
+            @SuppressWarnings("unchecked")
+            public E next() {
+                checkForComodification();
+                int i = cursor;
+                if (i >= SubList.this.size)
+                    throw new NoSuchElementException();
+                Object[] elementData = ArrayList.this.elementData;
+                if (offset + i >= elementData.length)
+                    throw new ConcurrentModificationException();
+                cursor = i + 1;
+                return (E) elementData[offset + (lastRet = i)];
+            }
+
+            public boolean hasPrevious() {
+                return cursor != 0;
+            }
+
+            @SuppressWarnings("unchecked")
+            public E previous() {
+                checkForComodification();
+                int i = cursor - 1;
+                if (i < 0)
+                    throw new NoSuchElementException();
+                Object[] elementData = ArrayList.this.elementData;
+                if (offset + i >= elementData.length)
+                    throw new ConcurrentModificationException();
+                cursor = i;
+                return (E) elementData[offset + (lastRet = i)];
+            }
+
+            @SuppressWarnings("unchecked")
+            public void forEachRemaining(Consumer<? super E> consumer) {
+                Objects.requireNonNull(consumer);
+                final int size = SubList.this.size;
+                int i = cursor;
+                if (i >= size) {
+                    return;
+                }
+                final Object[] elementData = ArrayList.this.elementData;
+                if (offset + i >= elementData.length) {
+                    throw new ConcurrentModificationException();
+                }
+                while (i != size && modCount == expectedModCount) {
+                    consumer.accept((E) elementData[offset + (i++)]);
+                }
+                // update once at end of iteration to reduce heap write traffic
+                lastRet = cursor = i;
+                checkForComodification();
+            }
+
+            public int nextIndex() {
+                return cursor;
+            }
+
+            public int previousIndex() {
+                return cursor - 1;
+            }
+
+            public void remove() {
+                if (lastRet < 0)
+                    throw new IllegalStateException();
+                checkForComodification();
+
+                try {
+                    SubList.this.remove(lastRet);
+                    cursor = lastRet;
+                    lastRet = -1;
+                    expectedModCount = ArrayList.this.modCount;
+                } catch (IndexOutOfBoundsException ex) {
+                    throw new ConcurrentModificationException();
+                }
+            }
+
+            public void set(E e) {
+                if (lastRet < 0)
+                    throw new IllegalStateException();
+                checkForComodification();
+
+                try {
+                    ArrayList.this.set(offset + lastRet, e);
+                } catch (IndexOutOfBoundsException ex) {
+                    throw new ConcurrentModificationException();
+                }
+            }
+
+            public void add(E e) {
+                checkForComodification();
+
+                try {
+                    int i = cursor;
+                    SubList.this.add(i, e);
+                    cursor = i + 1;
+                    lastRet = -1;
+                    expectedModCount = ArrayList.this.modCount;
+                } catch (IndexOutOfBoundsException ex) {
+                    throw new ConcurrentModificationException();
+                }
+            }
+
+            final void checkForComodification() {
+                if (expectedModCount != ArrayList.this.modCount)
+                    throw new ConcurrentModificationException();
+            }
+        };
+    }
+
+    public List<E> subList(int fromIndex, int toIndex) {
+        subListRangeCheck(fromIndex, toIndex, size);
+        return new SubList(this, offset, fromIndex, toIndex);
+    }
+
+    private void rangeCheck(int index) {
+        if (index < 0 || index >= this.size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private void rangeCheckForAdd(int index) {
+        if (index < 0 || index > this.size)
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index: "+index+", Size: "+this.size;
+    }
+
+    private void checkForComodification() {
+        if (ArrayList.this.modCount != this.modCount)
+            throw new ConcurrentModificationException();
+    }
+
+    public Spliterator<E> spliterator() {
+        checkForComodification();
+        return new ArrayListSpliterator<E>(ArrayList.this, offset,
+                                           offset + this.size, this.modCount);
+    }
+}
+```
+
+可以看到它是通过偏移来实现,所有的操作还是使用`parent`父列表
+
+</details>
+
+> `subList`方法在`List`接口中,而`Set`、`Map`接口中并没有这个功能
 >
 > 不过对于有序集和映射,可以使用排序顺序而不是元素位置建立子范围
 
@@ -958,7 +1198,7 @@ SortedMap<K, V> headMap(K to)
 SortedMap<K, V> tailMap(K from)
 ```
 
-> 在JDK1.6引入了``和`NavigableMap`接口赋予子范围操作更多的控制能力.可以指定是否包含边界
+> 在JDK1.6引入了`NavigableSet`和`NavigableMap`接口赋予子范围操作更多的控制能力.可以指定是否包含边界
 
 <details>
     <summary>NavigableSet、NavigableMap接口详情</summary>
@@ -978,12 +1218,47 @@ NavigableMap<K,V> subMap (K from, boolean fromlnclusive, K to, boolean tolnclusi
 NavigableMap<K,V> headMap(K to, boolean tolnclusive)
 Navigab1eMap<K,V> tailMap(K from, boolean fromlnclusive)
 ```
-  
+
 > `NavigableSet`实现了`SortedSet`接口,`NavigableMap`接口也是一样实现了`SortedMap`接口
 
-</details> 
+</details>
+
+[参考](https://twodam.net/view-in-java-collection-framework)
 
 ### 不可修改视图
+
+`Collections`还有几个方法用来产生集合的不可修改视图
+
+这些视图对现有集合增加了一个运行时的检查.如果发现试图对集合进行修改,就抛出异常,同时这个集合将保持未修改的状态
+
+> 主要用途是: 可以查看某个集合内容,但是又能避免这个集合被修改,相当于只读
+
+可以使用过下面8种方法获得不可修改视图
+
++ unmodifiableCollection
++ unmodifiableSet
++ unmodifiableSortedSet
++ unmodifiableNavigableSet
++ unmodifiableList
++ unmodifiableMap
++ unmodifiableSortedMap
++ unmodifiableNavigableMap
+
+每个方法都定义与一个接口.例如`Collections.unmodifiableList`定义的是`List`接口.可以与`ArrayList`、`LinkedList`或者任何实现了`List`接口的其他类一起协同工作
+
+例如:
+
+```java
+List<String> list             = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
+List<String> unmodifiableList = Collections.unmodifiableList(list);
+// unmodifiableList.add("f");  // 错误
+```
+
+`Collections.unmodifiableList`方法将返回一个实现`List`接口的类对象(视图对象)
+
+可以从`unmodifiableList`这个视图对象中获取元素,但是不能修改.因为所有的修改类型的方法以及被重新定义为一个抛出`UnsupportedOperationException`的异常,而不是将调用传递到底层集合(在这里指`list`)
+
+> 不可修改视图并不是集合本身不可修改.仍然可以通过集合原始的引用(在这里值`list`)对集合进行修改.同时,原来引用集合的元素发生变化,那么试图对象的元素也会随之变化
 
 ### 同步视图
 
