@@ -83,8 +83,8 @@ public class ViewTest {
      */
     public static void unmodifiable() {
         List<String> list             = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
-        List<String>      unmodifiableList = Collections.unmodifiableList(list);
-        // unmodifiableList.add("f");  // 错误
+        List<String> unmodifiableList = Collections.unmodifiableList(list);
+        // unmodifiableList.add("f");  // 错误,抛出UnsupportedOperationException异常
 
         // 修改原集合,视图对象也会发生变动
         System.out.println(unmodifiableList);
@@ -103,7 +103,6 @@ public class ViewTest {
      * synchronizedNavigableMap
      */
     public static void sync() {
-        ArrayList<String> list             = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
-        List<String>      synchronizedList = Collections.synchronizedList(list);
+        Map<String, String> synchronizedMap = Collections.synchronizedMap(new HashMap<>());
     }
 }

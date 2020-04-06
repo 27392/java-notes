@@ -1251,16 +1251,283 @@ Navigab1eMap<K,V> tailMap(K from, boolean fromlnclusive)
 ```java
 List<String> list             = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
 List<String> unmodifiableList = Collections.unmodifiableList(list);
-// unmodifiableList.add("f");  // 错误
+// unmodifiableList.add("f");  // 错误,抛出UnsupportedOperationException异常
 ```
 
 `Collections.unmodifiableList`方法将返回一个实现`List`接口的类对象(视图对象)
 
-可以从`unmodifiableList`这个视图对象中获取元素,但是不能修改.因为所有的修改类型的方法以及被重新定义为一个抛出`UnsupportedOperationException`的异常,而不是将调用传递到底层集合(在这里指`list`)
+可以从`unmodifiableList`这个视图对象中获取元素,但是不能修改.
+
+**因为所有的修改类型的方法以及被重新定义为一个抛出`UnsupportedOperationException`的异常,而不是将调用传递到底层集合(在这里指`list`)**
+
+<details>
+<summary>查看UnmodifiableList源码</summary>
+
+```java
+static class UnmodifiableList<E> extends UnmodifiableCollection<E>
+                                  implements List<E> {
+        private static final long serialVersionUID = -283967356065247728L;
+
+        final List<? extends E> list;
+
+        UnmodifiableList(List<? extends E> list) {
+            super(list);
+            this.list = list;
+        }
+
+        public boolean equals(Object o) {return o == this || list.equals(o);}
+        public int hashCode()           {return list.hashCode();}
+
+        public E get(int index) {return list.get(index);}
+        public E set(int index, E element) {
+            throw new UnsupportedOperationException();
+        }
+        public void add(int index, E element) {
+            throw new UnsupportedOperationException();
+        }
+        public E remove(int index) {
+            throw new UnsupportedOperationException();
+        }
+        public int indexOf(Object o)            {return list.indexOf(o);}
+        public int lastIndexOf(Object o)        {return list.lastIndexOf(o);}
+        public boolean addAll(int index, Collection<? extends E> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void replaceAll(UnaryOperator<E> operator) {
+            throw new UnsupportedOperationException();
+        }
+        @Override
+        public void sort(Comparator<? super E> c) {
+            throw new UnsupportedOperationException();
+        }
+
+        public ListIterator<E> listIterator()   {return listIterator(0);}
+
+        public ListIterator<E> listIterator(final int index) {
+            return new ListIterator<E>() {
+                private final ListIterator<? extends E> i
+                    = list.listIterator(index);
+
+                public boolean hasNext()     {return i.hasNext();}
+                public E next()              {return i.next();}
+                public boolean hasPrevious() {return i.hasPrevious();}
+                public E previous()          {return i.previous();}
+                public int nextIndex()       {return i.nextIndex();}
+                public int previousIndex()   {return i.previousIndex();}
+
+                public void remove() {
+                    throw new UnsupportedOperationException();
+                }
+                public void set(E e) {
+                    throw new UnsupportedOperationException();
+                }
+                public void add(E e) {
+                    throw new UnsupportedOperationException();
+                }
+
+                @Override
+                public void forEachRemaining(Consumer<? super E> action) {
+                    i.forEachRemaining(action);
+                }
+            };
+        }
+
+        public List<E> subList(int fromIndex, int toIndex) {
+            return new UnmodifiableList<>(list.subList(fromIndex, toIndex));
+        }
+
+        private Object readResolve() {
+            return (list instanceof RandomAccess
+                    ? new UnmodifiableRandomAccessList<>(list)
+                    : this);
+        }
+    }
+```
+
+</details>
 
 > 不可修改视图并不是集合本身不可修改.仍然可以通过集合原始的引用(在这里值`list`)对集合进行修改.同时,原来引用集合的元素发生变化,那么试图对象的元素也会随之变化
 
+[参考](https://www.jianshu.com/p/462a56f7e349)
+
 ### 同步视图
+
+如果由多个线程访问集合,就必须确保集合不会被意外的破坏
+
+例如:如果一个线程试图将元素添加到`HashMap`中,同时另外一个线程正在对`HashMap`进行扩容,那么结果将是灾难性的
+
+我们可以使用视图机制来确保常规集合的线程安全,而不是实现线程安全的集合类
+
+例如,`Collections`类的静态`synchronizedMap`方法可以将任何一个映射表转换成具有同步访问方法的`Map`
+
+```java
+Map<String, String> synchronizedMap = Collections.synchronizedMap(new HashMap<>());
+```
+
+现在,就可以由多线程访问`map`对象了.像`get`和`put`这类方法都是同步操作的,即在另一个线程调用另一个方法之前,刚才的方法调用必须彻底完成
+
+<details>
+<summary>查看SynchronizedMap源码</summary>
+
+```java
+private static class SynchronizedMap<K,V>
+        implements Map<K,V>, Serializable {
+        private static final long serialVersionUID = 1978198479659022715L;
+
+        private final Map<K,V> m;     // Backing Map
+        final Object      mutex;        // Object on which to synchronize
+
+        SynchronizedMap(Map<K,V> m) {
+            this.m = Objects.requireNonNull(m);
+            mutex = this;
+        }
+
+        SynchronizedMap(Map<K,V> m, Object mutex) {
+            this.m = m;
+            this.mutex = mutex;
+        }
+
+        public int size() {
+            synchronized (mutex) {return m.size();}
+        }
+        public boolean isEmpty() {
+            synchronized (mutex) {return m.isEmpty();}
+        }
+        public boolean containsKey(Object key) {
+            synchronized (mutex) {return m.containsKey(key);}
+        }
+        public boolean containsValue(Object value) {
+            synchronized (mutex) {return m.containsValue(value);}
+        }
+        public V get(Object key) {
+            synchronized (mutex) {return m.get(key);}
+        }
+
+        public V put(K key, V value) {
+            synchronized (mutex) {return m.put(key, value);}
+        }
+        public V remove(Object key) {
+            synchronized (mutex) {return m.remove(key);}
+        }
+        public void putAll(Map<? extends K, ? extends V> map) {
+            synchronized (mutex) {m.putAll(map);}
+        }
+        public void clear() {
+            synchronized (mutex) {m.clear();}
+        }
+
+        private transient Set<K> keySet;
+        private transient Set<Map.Entry<K,V>> entrySet;
+        private transient Collection<V> values;
+
+        public Set<K> keySet() {
+            synchronized (mutex) {
+                if (keySet==null)
+                    keySet = new SynchronizedSet<>(m.keySet(), mutex);
+                return keySet;
+            }
+        }
+
+        public Set<Map.Entry<K,V>> entrySet() {
+            synchronized (mutex) {
+                if (entrySet==null)
+                    entrySet = new SynchronizedSet<>(m.entrySet(), mutex);
+                return entrySet;
+            }
+        }
+
+        public Collection<V> values() {
+            synchronized (mutex) {
+                if (values==null)
+                    values = new SynchronizedCollection<>(m.values(), mutex);
+                return values;
+            }
+        }
+
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            synchronized (mutex) {return m.equals(o);}
+        }
+        public int hashCode() {
+            synchronized (mutex) {return m.hashCode();}
+        }
+        public String toString() {
+            synchronized (mutex) {return m.toString();}
+        }
+
+        // Override default methods in Map
+        @Override
+        public V getOrDefault(Object k, V defaultValue) {
+            synchronized (mutex) {return m.getOrDefault(k, defaultValue);}
+        }
+        @Override
+        public void forEach(BiConsumer<? super K, ? super V> action) {
+            synchronized (mutex) {m.forEach(action);}
+        }
+        @Override
+        public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+            synchronized (mutex) {m.replaceAll(function);}
+        }
+        @Override
+        public V putIfAbsent(K key, V value) {
+            synchronized (mutex) {return m.putIfAbsent(key, value);}
+        }
+        @Override
+        public boolean remove(Object key, Object value) {
+            synchronized (mutex) {return m.remove(key, value);}
+        }
+        @Override
+        public boolean replace(K key, V oldValue, V newValue) {
+            synchronized (mutex) {return m.replace(key, oldValue, newValue);}
+        }
+        @Override
+        public V replace(K key, V value) {
+            synchronized (mutex) {return m.replace(key, value);}
+        }
+        @Override
+        public V computeIfAbsent(K key,
+                Function<? super K, ? extends V> mappingFunction) {
+            synchronized (mutex) {return m.computeIfAbsent(key, mappingFunction);}
+        }
+        @Override
+        public V computeIfPresent(K key,
+                BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+            synchronized (mutex) {return m.computeIfPresent(key, remappingFunction);}
+        }
+        @Override
+        public V compute(K key,
+                BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+            synchronized (mutex) {return m.compute(key, remappingFunction);}
+        }
+        @Override
+        public V merge(K key, V value,
+                BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+            synchronized (mutex) {return m.merge(key, value, remappingFunction);}
+        }
+
+        private void writeObject(ObjectOutputStream s) throws IOException {
+            synchronized (mutex) {s.defaultWriteObject();}
+        }
+    }
+```
+
+> 底层的方法都加上了`synchronized`.实际方法还是调用底层对象`m`
+
+</details>
+
+同样获得同步视图也是8种方法
+
++ synchronizedCollection
++ synchronizedSet
++ synchronizedSortedSet
++ synchronizedNavigableSet
++ synchronizedList
++ synchronizedMap
++ synchronizedSortedMap
++ synchronizedNavigableMap
 
 ### 检查视图
 
