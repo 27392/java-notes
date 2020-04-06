@@ -1,9 +1,6 @@
 package cn.haohaoli.book.core.base.chapter9;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author LiWenHao
@@ -11,6 +8,7 @@ import java.util.List;
 public class CollectionTest {
 
     public static void main(String[] args) {
+
         Collection<Integer> collection = new ArrayList<>();
 
         System.out.println("========修改操作=========");
@@ -27,12 +25,22 @@ public class CollectionTest {
 
         System.out.println("========批量操作=========");
         batch();
+
+        System.out.println("========数组转集合操作=========");
+        HashSet<String> strings = new HashSet<>(Arrays.asList("1", "2", "3"));
+
+        System.out.println("========集合转数组操作=========");
+        Object[]  objects   = collection.toArray();                   // 结果是一个对象数组,不能改变它的类型
+//        Integer[]   integers  = (Integer[]) collection.toArray();     // 对象数组,不能做强制类型转换
+        Integer[] integers  = collection.toArray(new Integer[0]);
+        System.out.println(Arrays.toString(integers));
+
     }
 
     /**
      * 批量操作
      */
-    private static void batch () {
+    private static void batch() {
 
         // 将从list1中删除list2中出现的所有元素 - 叉集
         List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
@@ -62,7 +70,7 @@ public class CollectionTest {
 
         // jdk8
         Collection<Integer> collection = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        boolean bol = collection.removeIf((e) -> e.equals(3));
+        boolean             bol        = collection.removeIf((e) -> e.equals(3));
 
         System.out.println("removeIf    : " + bol);
     }

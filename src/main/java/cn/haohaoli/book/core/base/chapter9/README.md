@@ -1627,6 +1627,49 @@ System.out.println(list1);
 
 ### 集合与数组的转换
 
+由于Java平台的大部分内容都是在集合框架创建之前设计的,所以,有时候需要在传统数组和比较现代的集合之间进行转换
+
+如果需要将一个数组转换为集合,`Arrays.asList`包装器可以达到这个目的
+
+```java
+HashSet<String> hashSet = new HashSet<>(Arrays.asList("1","2","3"));
+```
+
+而从集合得到数组会困难一些,当然可以使用`toArray`方法
+
+```java
+HashSet<String> hashSet = new HashSet<>(Arrays.asList("1","2","3"));
+Object[]  objects       = hashSet.toArray();                // 结果是一个对象数组,不能改变它的类型
+// String[]  objects       = (String[])hashSet.toArray();   // 错误,不能做强制类型转换
+```
+
+`toArray`方法返回的数组是一个`Object[]`数组,不能改变它的类型.
+
+实际上,*必须使用`toArray`方法的一个重载方法,提供一个所需类型而且长度为0的数组**,这样一来,返回的数组就会创建为相同的数组类型
+
+```java
+HashSet<String> hashSet = new HashSet<>(Arrays.asList("1","2","3"));
+String[]  stringArray   = hashSet.toArray(new String[0]);
+System.out.println(Arrays.toString(stringArray));
+```
+
+**如果愿意,还可以构造一个指定大小的数组**
+
+> 为什么不直接用一个`Class`对象(例如`String.class`)传递到`toArray`方法. 
+>
+> 原因是这个方法有"双重职责",不仅要填充一个已有的数组(如果它足够长),还要创建一个新数组
+>
+> 简单点说就是如果传入的数组长度够用(可以传入指定大小的数组)就不用创建,否则就需要创建新的数组
+
+
+
+
+
+
+
+
+
+
 
 
 
