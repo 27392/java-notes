@@ -1,5 +1,8 @@
 package cn.haohaoli.book.core.base.chapter9;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -10,8 +13,12 @@ public class CollectionsTest {
 
     public static void main(String[] args) {
 
-        // 二分查找
+        System.out.println("========二分查找=========");
         binarySearch();
+        System.out.println("========sort=========");
+        sort();
+        System.out.println("========shuffle=========");
+        shuffle();
 
         /*
         Collections.
@@ -125,14 +132,51 @@ public class CollectionsTest {
 
     }
 
+    private static void sort() {
+        List<Employee> linkedList = new LinkedList<>();
+        linkedList.add((Employee.of("li", 10000d, LocalDate.of(1996, 2, 1))));
+        linkedList.add((Employee.of("zhang", 9500d, LocalDate.of(1995, 1, 1))));
+        linkedList.add((Employee.of("chen", 10000d, LocalDate.of(1996, 6, 4))));
+        linkedList.add((Employee.of("wang", 5000d, LocalDate.of(1996, 6, 6))));
+
+        // 根据Comparable来排序
+        Collections.sort(linkedList);
+        System.out.println(linkedList);
+
+        // 根据工资自然排序
+        linkedList.sort(Comparator.comparingDouble(Employee::getSalary));
+        System.out.println(linkedList);
+
+        // 倒序排序
+        linkedList.sort(Comparator.reverseOrder());
+        System.out.println(linkedList);
+
+        // 根据生日倒序排序
+        linkedList.sort(Comparator.comparing(Employee::getBirthday).reversed());
+        System.out.println(linkedList);
+    }
+
+    private static void shuffle() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(3, 4, 52, 5234, 12, 6, 12233, 6666, 33, 2223));
+
+        Collections.shuffle(list);
+        System.out.println(list);
+
+        Collections.shuffle(list);
+        System.out.println(list);
+
+        Collections.shuffle(list);
+        System.out.println(list);
+    }
+
     /**
      * 二分查找
-     *  注意: 二分查找集合必须是`List`接口的子类,并且是排好序(自然排序). 如果使用倒序的话数据会有问题,具体看下面实例
+     * 注意: 二分查找集合必须是`List`接口的子类,并且是排好序(自然排序). 如果使用倒序的话数据会有问题,具体看下面实例
      */
     private static void binarySearch() {
         List<Integer> arrayList = new ArrayList<>(Arrays.asList(4, 5677, 888, 33123, 44, 32, 45, 1, 4666));
 
-        System.out.println("=============naturalOrder=============");
+        System.out.println("naturalOrder");
         arrayList.sort(Comparator.naturalOrder());
         System.out.println("naturalOrder : " + arrayList);
         int i = Collections.binarySearch(arrayList, 55);
@@ -146,7 +190,7 @@ public class CollectionsTest {
             System.out.println("insert after : " + list);
         }
 
-        System.out.println("=============reverseOrder=============");
+        System.out.println("reverseOrder");
         arrayList.sort(Comparator.reverseOrder());
         System.out.println("reverseOrder : " + arrayList);
         i = Collections.binarySearch(arrayList, 55);
@@ -158,6 +202,29 @@ public class CollectionsTest {
             ArrayList<Integer> list = new ArrayList<>(arrayList);
             list.add(-i - 1, 55);
             System.out.println("insert after : " + list);
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor(staticName = "of")
+    private static class Employee implements Comparable<Employee> {
+
+        private String    name;
+        private Double    salary;
+        private LocalDate birthday;
+
+        @Override
+        public int compareTo(Employee o) {
+            return name.compareTo(o.name);
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", "[", "]")
+                    .add(name)
+                    .add(salary.toString())
+                    .add(birthday.toString())
+                    .toString();
         }
     }
 }

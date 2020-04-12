@@ -1603,6 +1603,51 @@ E typeCheck(Object o) {
 
 ### 排序与混排
 
+- 排序
+
+ **`Collections`类中的`sort`方法可以对实现了`List`接口的集合进行排序**
+
+ ```java
+ List<Employee> linkedList = new LinkedList<>();
+ linkedList.add((Employee.of("li", 10000d, LocalDate.of(1996, 2, 1))));
+ linkedList.add((Employee.of("zhang", 9500d, LocalDate.of(1995, 1, 1))));
+ linkedList.add((Employee.of("chen", 10000d, LocalDate.of(1996, 6, 4))));
+ linkedList.add((Employee.of("wang", 5000d, LocalDate.of(1996, 6, 6))));
+
+ // 根据Comparable来排序
+ Collections.sort(linkedList);
+ ```
+
+ > 使用`Collections.sort`方法必须要元素实现了`Comparable`接口才可以,否则的话则需要使用重载方法,传入`Comparator`对象
+ 
+ 如果想采用其他方式排序(或者元素没有实现`Comparable`接口),可以使用`List`接口的`sort`方法并传入一个`Comparator`对象
+ 
+ ```java
+ // 根据工资自然排序
+ linkedList.sort(Comparator.comparingDouble(Employee::getSalary));
+ ```
+
+ 如果想按照降序排序,可以使用一种比较方便的静态方法`Collections.reverseOrder()`
+ 
+ ```java
+ // 倒序排序
+ linkedList.sort(Comparator.reverseOrder());
+ ```
+
+ 或者使用`Comparator`类的`reversed`方法
+  
+ ```java
+ // 根据生日倒序排序
+ linkedList.sort(Comparator.comparing(Employee::getBirthday).reversed());
+ ```
+
+- 混排
+
+ **`Collections`类中的`shuffle`方法,它能随机的混排列表中的元素顺序**
+ 
+ > **如果提供的列表没有实现`Randomaccess`接口,`shuffle`方法将元素复制到数组中,然后打乱数组元素的顺序,最后再将打乱顺序后的元素复制回列表**
+
+
 ### 二分查找
 
 要想在数组中查找一个对象,通常要一次访问数组中的每个元素,知道找到匹配的元素为止
@@ -1663,7 +1708,6 @@ if(i < 0) {
 **因此,如果为`binarySearch`算法提供一个链表,那么它将自动的变为线性查找**
 
 ### 简单算法
-
 
 ### 批操作
 
