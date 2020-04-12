@@ -68,7 +68,7 @@ public class CollectionTest {
         list1.clear();
         System.out.println("list1 clear after : " + list1);
 
-        // jdk8
+        // jdk8 删除所有匹配的元素
         Collection<Integer> collection = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         boolean             bol        = collection.removeIf((e) -> e.equals(3));
 
