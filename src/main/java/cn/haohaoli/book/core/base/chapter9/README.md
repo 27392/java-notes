@@ -1599,54 +1599,51 @@ E typeCheck(Object o) {
 
 ## 算法
 
-泛型集合接口有一个很大的优点,即算法只需要实现一次,例如
-
 ### 排序与混排
 
 - 排序
 
- **`Collections`类中的`sort`方法可以对实现了`List`接口的集合进行排序**
-
- ```java
- List<Employee> linkedList = new LinkedList<>();
- linkedList.add((Employee.of("li", 10000d, LocalDate.of(1996, 2, 1))));
- linkedList.add((Employee.of("zhang", 9500d, LocalDate.of(1995, 1, 1))));
- linkedList.add((Employee.of("chen", 10000d, LocalDate.of(1996, 6, 4))));
- linkedList.add((Employee.of("wang", 5000d, LocalDate.of(1996, 6, 6))));
-
- // 根据Comparable来排序
- Collections.sort(linkedList);
- ```
-
- > 使用`Collections.sort`方法必须要元素实现了`Comparable`接口才可以,否则的话则需要使用重载方法,传入`Comparator`对象
- 
- 如果想采用其他方式排序(或者元素没有实现`Comparable`接口),可以使用`List`接口的`sort`方法并传入一个`Comparator`对象
- 
- ```java
- // 根据工资自然排序
- linkedList.sort(Comparator.comparingDouble(Employee::getSalary));
- ```
-
- 如果想按照降序排序,可以使用一种比较方便的静态方法`Collections.reverseOrder()`
- 
- ```java
- // 倒序排序
- linkedList.sort(Comparator.reverseOrder());
- ```
-
- 或者使用`Comparator`类的`reversed`方法
-  
- ```java
- // 根据生日倒序排序
- linkedList.sort(Comparator.comparing(Employee::getBirthday).reversed());
- ```
+    **`Collections`类中的`sort`方法可以对实现了`List`接口的集合进行排序**
+    
+    ```java
+    List<Employee> linkedList = new LinkedList<>();
+    linkedList.add((Employee.of("li", 10000d, LocalDate.of(1996, 2, 1))));
+    linkedList.add((Employee.of("zhang", 9500d, LocalDate.of(1995, 1, 1))));
+    linkedList.add((Employee.of("chen", 10000d, LocalDate.of(1996, 6, 4))));
+    linkedList.add((Employee.of("wang", 5000d, LocalDate.of(1996, 6, 6))));
+    
+    // 根据Comparable来排序
+    Collections.sort(linkedList);
+    ```
+    
+    > 使用`Collections.sort`方法必须要元素实现了`Comparable`接口才可以,否则的话则需要使用重载方法,传入`Comparator`对象
+    
+    如果想采用其他方式排序(或者元素没有实现`Comparable`接口),可以使用`List`接口的`sort`方法并传入一个`Comparator`对象
+    
+    ```java
+    // 根据工资自然排序
+    linkedList.sort(Comparator.comparingDouble(Employee::getSalary));
+    ```
+    
+    如果想按照降序排序,可以使用一种比较方便的静态方法`Collections.reverseOrder()`
+    
+    ```java
+    // 倒序排序
+    linkedList.sort(Comparator.reverseOrder());
+    ```
+    
+    或者使用`Comparator`类的`reversed`方法
+      
+    ```java
+    // 根据生日倒序排序
+    linkedList.sort(Comparator.comparing(Employee::getBirthday).reversed());
+    ```
 
 - 混排
 
- **`Collections`类中的`shuffle`方法,它能随机的混排列表中的元素顺序**
- 
- > **如果提供的列表没有实现`Randomaccess`接口,`shuffle`方法将元素复制到数组中,然后打乱数组元素的顺序,最后再将打乱顺序后的元素复制回列表**
-
+    **`Collections`类中的`shuffle`方法,它能随机的混排列表中的元素顺序**
+     
+    > **如果提供的列表没有实现`Randomaccess`接口,`shuffle`方法将元素复制到数组中,然后打乱数组元素的顺序,最后再将打乱顺序后的元素复制回列表**
 
 ### 二分查找
 
@@ -1662,7 +1659,7 @@ E typeCheck(Object o) {
 
 - 二分查找
  
- 可以在10次比较后定位所匹配的元素(或者可以确定在数组中不存在这样的元素)
+    可以在10次比较后定位所匹配的元素(或者可以确定在数组中不存在这样的元素)
 
 - 线性查找
 
@@ -1709,6 +1706,44 @@ if(i < 0) {
 
 ### 简单算法
 
+`Collections`中有许多简单且很有用的算法例如:
+
+- fill
+
+    将列表中所有位置设置为相同的值
+    
+- copy
+
+    原列表中的所有元素复制到目辱列表的相应位置上
+
+- addAll
+
+    将所有的值添加到集合中(追加元素)
+
+- reverse
+
+    逆置列表中元素的顺序
+
+- swap
+
+    交换给定偏移量的两个元素
+
+- disjoint
+
+    判断两个集合是否有不相同的元素
+
+- frequency
+
+    获取列表中指定元素相同的个数
+
+- indexOfSubList、lastIndexOfSubList
+
+    返回子集在列表中出现的索引第一次、最后一次出现的位置
+
+- rotate
+
+    旋转列表中的元素
+    
 ### 批操作
 
 很多操作会"成批"复制或删除元素
