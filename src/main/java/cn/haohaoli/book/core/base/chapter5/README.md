@@ -1320,6 +1320,60 @@ Random        random = clazz.newInstance();
 
 ### Constructor类
 
+该类是构造函数对象,通过它我们可以获取构造函数信息
+
+#### 获得Constructor对象
+
+```java
+public Constructor<?>[] getConstructors()
+public Constructor<?>[] getDeclaredConstructors()
+
+public Constructor<T> getConstructor(Class<?>... parameterTypes)
+public Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes)
+```
+
+`getConstructors`获得该类对象所有公共构造函数
+
+`getDeclaredConstructors`获得该类类声明的所有构造函数.它们是公共的、受保护的、默认(包)访问和私有构造函数
+
+`getConstructor`可以获得指定参数的公共构造函数
+
+`getDeclaredConstructor`可以获得指定参数的构造器.它们是公共的、受保护的、默认(包)访问和私有构造函数
+
+> 例如:我们想获取包含私有的构造器列表可以调用`getDeclaredConstructors`.获取私有构造器则调用`getDeclaredConstructor`来获取
+>
+> 反之,只需要调用`getConstructors`与`getConstructor`即可
+
+```java
+Clss<Example> clazz = Example.class
+
+// 获得参数是`Integer.class, String.class`的公有构造函数
+Constructor<?> constructor = clazz.getConstructor(Integer.class, String.class); 
+
+// 假设Example类的无参构造是私有,则可以使用以下方式获得私有无参的构造函数
+Constructor<?> declaredConstructor = clazz.getDeclaredConstructor();
+```
+
+#### 通过Constructor反射创建对象
+
+使用`Class`对象我们可以直接调用`newInstance`来创建对象
+
+然而我们使用`Constructor`类同样可以来创建对象,同样的也是调用`newInstance`方法
+
+```java
+Clss<Example> clazz = Example.class
+
+// 获得参数是`Integer.class, String.class`的公有构造函数
+Constructor<?> constructor = clazz.getConstructor(Integer.class, String.class);
+Object         o           = constructor.newInstance(1, "赵四");
+
+// 获得私有无参的构造函数
+Constructor<?> declaredConstructor = clazz.getDeclaredConstructor();
+declaredConstructor.setAccessible(true);    // 私有需要设置禁止Java语言访问检查
+Object o1 = declaredConstructor.newInstance();
+```
+
+> 如果构造器是私有则需要修改访问检查,调用`setAccessible(true)`设置禁止语言访问检查
 
 ## 5.8 - 继承的设计技巧
 
