@@ -1247,7 +1247,7 @@ Size[] values = Size.values();
 
 + `java.lang.reflect.Method`
 
-+ `java.lang.reflect.Parameter`
++ `java.lang.reflect.Modifier`
 
 ### Class类
 
@@ -1297,7 +1297,7 @@ Random        random = clazz.newInstance();
 
 #### 常用方法
 
-- isInstance(判断一个对象是否是调用这个方法的类或接口的实例,或是其子类的实例(等价于`instanceof`))
+- `isInstance`(判断一个对象是否是调用这个方法的类或接口的实例,或是其子类的实例(等价于`instanceof`))
 
     ```java
     public static void isInstance(Object o) {
@@ -1316,6 +1316,28 @@ Random        random = clazz.newInstance();
     }
     isAssignableFrom(CharSequence.class, String.class); // true
     isAssignableFrom(String.class, CharSequence.class); // false
+    ```
+
+- `getSuperclass`(获取父类)
+    ```java
+    public static void getSuperclass(Class<?> clazz) {
+        System.out.println("superclass: " + clazz.getSuperclass());
+    }
+    System.out.println("superclass: " + clazz.getSuperclass()); // class java.lang.Object
+    ```
+
+- `getInterfaces`(获取接口)
+    ```java
+    public static void getInterfaces(Class<?> clazz) {
+        Class<?>[] interfaces = clazz.getInterfaces();
+        for (Class<?> anInterface : interfaces) {
+            System.out.println(anInterface.getSimpleName());
+        }
+    }
+    getInterfaces(String.class);
+    // Serializable
+    // Comparable
+    // CharSequence
     ```
 
 ### Constructor类
@@ -1463,6 +1485,30 @@ System.out.println(invoke2);
 ```
 
 > 如果没有参数就传`null`,对于静态方法,第一个参数可以被忽略,即将它设置为`null`
+
+### Modifier类
+
+修饰符类;主要用于判断修饰符,在`Class`、`Constructor`、`Field`、`Method`类中调用`getModifiers`即可获得修饰符
+
+```java
+public static boolean isPublic(int mod)
+public static boolean isPrivate(int mod)
+public static boolean isProtected(int mod)
+public static boolean isStatic(int mod)
+public static boolean isFinal(int mod)
+public static boolean isSynchronized(int mod)
+public static boolean isVolatile(int mod)
+public static boolean isTransient(int mod)
+public static boolean isNative(int mod)
+public static boolean isInterface(int mod)
+public static boolean isAbstract(int mod)
+public static boolean isStrict(int mod)
+public static String toString(int mod)
+```
+
+### 数组与反射
+
+应用场景太少,需要时在做记录
 
 ## 5.8 - 继承的设计技巧
 

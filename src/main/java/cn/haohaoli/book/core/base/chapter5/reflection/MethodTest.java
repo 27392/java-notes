@@ -12,18 +12,22 @@ public class MethodTest {
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         System.out.println("===========getMethods===========");
-        getMethods();
+        getMethods(Example.class);
 
         System.out.println("===========invoke===========");
         invoke();
     }
 
-    private static void getMethods() {
+    /**
+     * 获取方法
+     * @param clazz
+     */
+    private static void getMethods(Class<?> clazz) {
 
         // 获取该类对象的所有公共方法,包括类或接口声明的方法以及从超类和超接口继承的方法
-        Method[] methods = Example.class.getMethods();
+        Method[] methods = clazz.getMethods();
         // 获取该类对象所表示的类或接口的所有声明方法,包括public、protected、default (package)访问和private方法(但不包括继承的方法)
-        Method[] declaredMethods = Example.class.getDeclaredMethods();
+        Method[] declaredMethods = clazz.getDeclaredMethods();
 
         System.out.println("getMethods(): ");
         printInfo(methods);

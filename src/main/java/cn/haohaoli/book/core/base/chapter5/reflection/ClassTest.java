@@ -4,6 +4,7 @@ import java.util.Random;
 
 /**
  * 参考资料: https://segmentfault.com/a/1190000015416840
+ *
  * @author LiWenHao
  */
 public class ClassTest {
@@ -23,6 +24,11 @@ public class ClassTest {
         isAssignableFrom(CharSequence.class, String.class);
         isAssignableFrom(String.class, CharSequence.class);
 
+        System.out.println("===========getSuperclass===========");
+        getSuperclass(String.class);
+
+        System.out.println("===========getInterfaces===========");
+        getInterfaces(String.class);
     }
 
     /**
@@ -75,6 +81,7 @@ public class ClassTest {
 
     /**
      * 判断一个类是否是与参数传入的类或接口是否相同,或者是其父类
+     *
      * @param parentClass
      * @param childClass
      */
@@ -82,4 +89,22 @@ public class ClassTest {
         System.out.println(parentClass.isAssignableFrom(childClass));
     }
 
+    /**
+     * 获得父类
+     * @param clazz
+     */
+    public static void getSuperclass(Class<?> clazz) {
+        System.out.println("superclass: " + clazz.getSuperclass());
+    }
+
+    /**
+     * 获得接口
+     * @param clazz
+     */
+    public static void getInterfaces(Class<?> clazz) {
+        Class<?>[] interfaces = clazz.getInterfaces();
+        for (Class<?> anInterface : interfaces) {
+            System.out.println(anInterface.getSimpleName());
+        }
+    }
 }
