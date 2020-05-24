@@ -1389,9 +1389,9 @@ public Field getField(String name)
 public Field getDeclaredField(String name)
 ```
 
-`getFields`获得该类对象所有可访问公共字段
+`getFields`获得该类对象所有可访问公共字段**(包含继承字段)**
 
-`getDeclaredField`获得该类的所有字段.这包括公共字段、受保护字段、默认(包)访问和私有字段,但不包括继承字段
+`getDeclaredField`获得该类的所有字段.这包括公共字段、受保护字段、默认(包)访问和私有字段**(不包括继承字段)**
 
 `getField`获得该对象的类或接口的指定公共成员字段,name参数是指定所需字段的简单名称的字符串
 
@@ -1419,6 +1419,50 @@ System.out.println("set sex after : " + sex.get(example));
 使用`get(Object obj)`方法返回指定对象上由该字段表示的字段的值.如果该是基本类型,则会自动将其包装在对象中
 
 使用`set(Object obj, Object value)`方法将指定对象参数上的此字段设置为指定的新值.如果是基本类型,则新值将自动取消包装
+
+> 使用`final`修饰的字段也可以进行修改
+
+### Method类
+
+该类是用来获取类成员变量信息的
+
+#### 获取Method对象
+
+```java
+public Method[] getMethods()
+public Method[] getDeclaredMethods()
+
+public Method getMethod(String name, Class<?>... parameterTypes)
+public Method getDeclaredMethod(String name, Class<?>... parameterTypes)
+```
+
+`getMethods`获取该类对象的所有公共方法,包括类或接口声明的方法以及从**超类和超接口继承的方法**
+
+`getDeclaredMethods` 获取该类对象所表示的类或接口的所有声明方法,包括public、protected、default (package)访问和private方法(**不包括继承的方法**)
+
+`getMethod`获取该类对象所表示的类或接口的指定公共成员方法.name参数是指定所需方法的简单名称的字符串.`parameter`是一个类对象数组，**它以声明的顺序标识方法的形式参数类型**.**如果`parameterTypes`为null,则将其视为空数组**
+
+`getDeclaredMethod`获取该类对象所表示的类或接口的指定声明方法.`name`参数是一个指定所需方法的简单名称的字符串,而parameterTypes参数是一个类对象数组,**它以声明的顺序标识方法的形式参数类型**
+
+#### 调用方法
+
+在获取到方法后,我们可以使用`invoke()`来调用这个方法
+
+```java
+Example example = Example.class.newInstance();
+
+Method method2 = Example.class.getDeclaredMethod("method2", String.class, String.class);
+method2.setAccessible(true);
+Object invoke1 = method2.invoke(example, "x", "y");
+System.out.println("return: " + invoke1);
+
+// 调用静态方法
+Method method3 = Example.class.getDeclaredMethod("method3", String.class);
+Object invoke2 = method3.invoke(null, "static");    // 第一个参数可以省略
+System.out.println(invoke2);
+```
+
+> 如果没有参数就传`null`,对于静态方法,第一个参数可以被忽略,即将它设置为`null`
 
 ## 5.8 - 继承的设计技巧
 
