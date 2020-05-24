@@ -1375,6 +1375,51 @@ Object o1 = declaredConstructor.newInstance();
 
 > 如果构造器是私有则需要修改访问检查,调用`setAccessible(true)`设置禁止语言访问检查
 
+### Field类
+
+该类是用来获取类成员变量信息的
+
+#### 获取Field对象
+
+```java
+public Field[] getFields()
+public Field[] getDeclaredFields()
+
+public Field getField(String name)
+public Field getDeclaredField(String name)
+```
+
+`getFields`获得该类对象所有可访问公共字段
+
+`getDeclaredField`获得该类的所有字段.这包括公共字段、受保护字段、默认(包)访问和私有字段,但不包括继承字段
+
+`getField`获得该对象的类或接口的指定公共成员字段,name参数是指定所需字段的简单名称的字符串
+
+`getDeclaredField`获得对象的类或接口的指定声明字段,name参数是指定所需字段的简单名称的字符串
+
+> 这四个方法与`Constructor`类中的一致,不多做赘述
+
+#### 获取字段的值,与修改字段的值
+
+当获取到`Field`对象后,可以使用它来获取对象中字段的值,与修改字段的值.如下:
+
+```java
+Example example = Example.class.getConstructor(Integer.class, Integer.class, Integer.class).newInstance(1, 1, 18);
+
+// 获取字段的值
+Field sex   = Example.class.getDeclaredField("sex");
+sex.setAccessible(true);
+System.out.println("sex: " + sex.get(example));
+
+// 设置字段的值
+sex.set(example, 2);
+System.out.println("set sex after : " + sex.get(example));
+```
+
+使用`get(Object obj)`方法返回指定对象上由该字段表示的字段的值.如果该是基本类型,则会自动将其包装在对象中
+
+使用`set(Object obj, Object value)`方法将指定对象参数上的此字段设置为指定的新值.如果是基本类型,则新值将自动取消包装
+
 ## 5.8 - 继承的设计技巧
 
 1. 
