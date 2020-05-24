@@ -493,9 +493,9 @@ String s = (String)staff[1];
 
 现在,在增加一个getDescription方法,它可以返回对一个人的简短描述. 例如:
     
-     年薪50,000.00美元的员工
+    年薪50,000.00美元的员工
      
-     计算机科学专业的学生
+    计算机科学专业的学生
 
 在Employee类和Student类中实现这个方法很容易. 但是要提供什么功能呢?除了姓名之外,Person类一无所知. 
 
@@ -1259,11 +1259,67 @@ Size[] values = Size.values();
 
 > 所以要想检查一个类的信息,你首先需要获取类的`Class`对象
 
+#### 获取Class对象
+
 获取`Class`对象的方式有三种:
 
 1. 使用`Object`类中的`getClass()`方法将会返回一个`Class`实例
 2. 调用`Class`类的静态方法`forName`传入类名
 3. 直接获取某一类型的Class
+
+```java
+// 1.通过对象获得Class对象
+Random                  generator = new Random();
+Class<? extends Random> aClass    = generator.getClass();
+System.out.println(aClass.getName());
+
+// 2.直接获取某一类型的Class
+Class<Random> clazz = Random.class;
+System.out.println(clazz.getName());
+
+// 3.通过类的全路径名获取
+Class<?> nameClazz = Class.forName("java.util.Random");
+System.out.println(nameClazz.getName());
+```
+
+> 虚拟机为每个类型管理一个Class对象.因此,可以利用`==`运算符实现两个类对象比较的操作
+
+#### 通过反射创建对象
+
+在获得Class对象之后,可以通过Class类的`newInstance`方法来创建对象
+
+```java
+Class<Random> clazz  = Random.class;
+Random        random = clazz.newInstance();
+```
+
+> `newInstance`方法会调用默认的构造器(没有参数的构造器)初始新创建的对象.如果这个类没有默认的构造器,就会抛出一个异常
+
+#### 常用方法
+
+- isInstance(判断一个对象是否是调用这个方法的类或接口的实例,或是其子类的实例(等价于`instanceof`))
+
+    ```java
+    public static void isInstance(Object o) {
+        System.out.println(Random.class.isInstance(o));
+        System.out.println(o instanceof Random);
+    }
+    isInstance(new Random());   // true
+    isInstance(new Object());   // false
+    ```
+
+- `isAssignableFrom`(判断一个类是否是与参数传入的类或接口是否相同,或者是其父类)
+
+    ```java
+    public static void isAssignableFrom(Class<?> parentClass, Class<?> childClass) {
+        System.out.println(parentClass.isAssignableFrom(childClass));
+    }
+    isAssignableFrom(CharSequence.class, String.class); // true
+    isAssignableFrom(String.class, CharSequence.class); // false
+    ```
+
+### Constructor类
+
 
 ## 5.8 - 继承的设计技巧
 
