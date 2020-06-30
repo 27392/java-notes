@@ -95,11 +95,11 @@ public class LocalTimeTest {
 
     /**
      * 通过字符串解析
-     * 注意:
-     * '23:59:9',会发生错误.'9' 必须写作 '09',时分秒都必须这样
+     * 注意:一旦传递的字符串参数无法被解析为合法的 LocalTime 对象,
+     * `parse`方法都会抛出一个继承自`RuntimeException`的`DateTimeParseException`异常
      */
     private static void parseFormString() {
-//        System.out.println(LocalTime.parse("23:59:9")); // 错误
+//        System.out.println(LocalTime.parse("23:59:9")); // 错误 DateTimeParseException
         System.out.println(LocalTime.parse("23:59:09"));
     }
 }

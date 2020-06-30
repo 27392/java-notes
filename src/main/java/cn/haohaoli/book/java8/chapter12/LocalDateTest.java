@@ -141,11 +141,11 @@ public class LocalDateTest {
 
     /**
      * 通过字符串解析
-     * 注意:
-     * '2020-12-1',会发生错误.'1' 必须写作 '01',月和日都必须如此
+     * 注意:一旦传递的字符串参数无法被解析为合法的 LocalDate 对象,
+     * `parse`方法都会抛出一个继承自`RuntimeException`的`DateTimeParseException`异常
      */
     private static void parseFormString() {
-//        System.out.println(LocalDate.parse("2020-12-1")); // 错误
+        System.out.println(LocalDate.parse("2020-12-1")); // 错误 DateTimeParseException
         System.out.println(LocalDate.parse("2020-12-01"));
     }
 
