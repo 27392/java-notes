@@ -11,8 +11,10 @@ public class ZonIdTest {
 
     public static void main(String[] args) {
 
+        // 打印可用的时区
         printAvailableZoneIds();
 
+        // 添加时区信息
         addTimeZoneInfo();
 
     }
