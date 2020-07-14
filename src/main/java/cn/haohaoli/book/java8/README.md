@@ -26,7 +26,7 @@
     - [ ] 
 + [第九章 - 默认方法]()
     - [ ] 
-+ [第十章 - 用 Optional 取代 null]()
++ [第十章 - 用 Optional 取代 null](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/java8/chapter10)
     - [ ]
 + [第十一章 - CompletableFuture 组合式异步编程]()
     - [ ]
