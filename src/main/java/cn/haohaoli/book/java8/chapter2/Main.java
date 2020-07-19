@@ -34,17 +34,18 @@ public class Main {
         System.out.println(filterApples(inventory, "red", 0, true));
         System.out.println(filterApples(inventory, "", 155, false));
 
-        // 第四次; 将不同的行为参数化,封装为一个个的`策略`,然后在运行时选择一个策略
+        // 第四次; 为了适应更多的变化将不同的行为参数化,封装为一个个的`策略`,然后在运行时选择一个策略
         System.out.println(filterApples(inventory, new AppleGreenColorPredicate()));
         System.out.println(filterApples(inventory, new AppleHeavyWeightPredicate()));
         System.out.println(filterApples(inventory, new AppleRedAndHeavyPredicate()));
 
         // 第五次; 使用匿名类优化策略(每当有新的行为时,都需要新的类,如果行为过多就会产生类爆炸💥)
         List<Apple> redApples = filterApples(inventory, new ApplePredicate() {
-            public boolean test(Apple a) {
-                return "red".equals(a.getColor());
-            }
-        });
+                    public boolean test(Apple a) {
+                        return "red".equals(a.getColor());
+                    }
+                }
+        );
         System.out.println(redApples);
 
         // 第六次; 使用lambda表达式去优化匿名类
@@ -160,7 +161,7 @@ public class Main {
      * @param <T>       元素类型
      * @return 筛选后的列表
      */
-    private static <T> List<T> filter(List<T> list, Predicate<T> predicate) {
+    private static <T> List<T> filter(List<? extends T> list, Predicate<T> predicate) {
         List<T> result = new ArrayList<>();
 
         for (T e : list) {
