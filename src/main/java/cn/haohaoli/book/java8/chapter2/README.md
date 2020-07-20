@@ -256,3 +256,9 @@ filter(Arrays.asList(1, 2, 3, 4, 5), (Integer i) -> i % 2 == 0)
 3. 传递代码,就是将新行为作为参数传递给方法.但在Java 8之前这实现起来很啰嗦.为接口声明许多只用一次的实体类而造成的啰嗦代码,在Java 8之前可以用匿名类来减少
 
 4. Java API包含很多可以用不同行为进行参数化的方法，包括排序、线程和GUI处理
+
+### 参考资料
+
+[java8之通过行为参数化传递代码](https://www.jianshu.com/p/3f7883a2fa73)
+
+[Java 8 --行为参数化(behavior parameterization)](https://yemengying.com/2016/02/20/Java-8-%E8%A1%8C%E4%B8%BA%E5%8F%82%E6%95%B0%E5%8C%96-behavior-parameterization/)
