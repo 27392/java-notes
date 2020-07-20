@@ -4,7 +4,7 @@
 
 + [第一章 - 为什么要关心 Java 8]()
     - [ ] 
-+ [第二章 - 通过行为参数化传递代码]()
++ [第二章 - 通过行为参数化传递代码](https://github.com/27392/java-notes/tree/master/src/main/java/cn/haohaoli/book/java8/chapter2)
     - [ ] 
 + [第三章 - Lambda 表达式]()
     - [ ] 
