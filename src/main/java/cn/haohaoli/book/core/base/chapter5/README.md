@@ -1255,6 +1255,8 @@ Size[] values = Size.values();
 
 ### Class类
 
+**Class类是用来表示运行时类型信息的对应类**
+
 在程序运行期间,Java运行时系统始终为所有的对象维护一个被称为运行时的类型标识
 
 这个信息跟踪着每个对象所属的类,虚拟机利用运行时类型信息选择相应的方法执行
@@ -1270,6 +1272,8 @@ Size[] values = Size.values();
 1. 使用`Object`类中的`getClass()`方法将会返回一个`Class`实例
 2. 调用`Class`类的静态方法`forName`传入类名
 3. 直接获取某一类型的Class
+
+> 不能手动的去创建Class对象,在Class类只有一个私有的构造函数,只有JVM才能创建Class类的实例
 
 ```java
 // 1.通过对象获得Class对象
