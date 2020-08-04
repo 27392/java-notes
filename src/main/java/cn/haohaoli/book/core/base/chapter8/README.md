@@ -398,7 +398,7 @@ public Object clone()
 
 > 注意点
 >
-> 1. **虚拟中没有泛型,只有普通的类和方法**
+> 1. **虚拟机中没有泛型,只有普通的类和方法**
 >
 > 2. **所有的类型参数都有它们的限定类型替换**
 >
@@ -773,7 +773,7 @@ void setFirst(? extends Employee);
 
 为什么要这样做呢? 带有超类型限定的通配符的行为与**子类限定通配符**(`? extends Employee`)恰恰相反
 
-它可以为方法提供参数,但不能使用返回值,例如`Pair<? super Manager>`,有以下方法
+它可以为方法提供参数,但不能使用返回值,例如`Pair<? super Manager>`,有以下方
 
 ```java
 ? super Manager getFirst()
@@ -871,11 +871,5 @@ public static void swap (Pair<?> p) {
 >
 > 数组列表可以保存两个`Pair<?>`,分别针对`?`的不同类型
 
-
-
-
-
-
-
-
 ## 8.9 - 反射与泛型
+
