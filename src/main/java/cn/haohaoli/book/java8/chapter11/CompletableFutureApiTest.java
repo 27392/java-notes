@@ -34,7 +34,7 @@ public class CompletableFutureApiTest {
         // 消费(无法获取上一步的处理结果,无返回值)
 //        thenRun();
 
-        // 组合
+        // 组合.类似`flatMap`
 //        thenCompose();
 
         // 组合(在组合[两个]处理完成后调用.可以获取上一步组合的处理结果,有返回值)
@@ -54,6 +54,12 @@ public class CompletableFutureApiTest {
 
         // 组合(在组合[两个]任意一个处理完成后调用.无法获取上一步先完成处理结果,无返回值)
 //        runAfterEither();
+
+        // 给定多个`CompletableFuture`(数组)全部完成时
+//        allOf();
+
+        // 给定多个`CompletableFuture`(数组)任意一个完成时
+//        anyOf();
 
         executorService.shutdown();
     }
@@ -452,6 +458,86 @@ public class CompletableFutureApiTest {
         }, executorService);
 
         completableFuture.join();
+    }
+
+    // 辅助方法~
+
+    /**
+     * 当所有给定的`CompletableFuture`(数组)全部完成时,返回一个新的`CompletableFuture`
+     *
+     * @see CompletableFuture#allOf(CompletableFuture[])
+     */
+    public static void allOf() {
+        long start = System.currentTimeMillis();
+
+        CompletableFuture<String> cf1 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("cf1 start " + (System.currentTimeMillis() - start));
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("cf1 end " + (System.currentTimeMillis() - start));
+            return "1";
+        }, executorService);
+        CompletableFuture<Integer> cf2 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("cf2 start " + (System.currentTimeMillis() - start));
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("cf2 end " + (System.currentTimeMillis() - start));
+            return 100;
+        }, executorService);
+
+        try {
+            CompletableFuture.allOf(cf1, cf2).get();
+            System.out.println("allOf cf1 result: " + cf1.get());
+            System.out.println("allOf cf2 result: " + cf2.get());
+            System.out.println("allOf time: " + (System.currentTimeMillis() - start));
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 当所有给定的`CompletableFuture`(数组)任意一个完成时,返回一个新的`CompletableFuture`
+     *
+     * @see CompletableFuture#anyOf(CompletableFuture[])
+     */
+    public static void anyOf() {
+        long start = System.currentTimeMillis();
+
+        CompletableFuture<Integer> cf1 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("cf1 start " + (System.currentTimeMillis() - start));
+            try {
+                TimeUnit.SECONDS.sleep(4);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("cf1 end " + (System.currentTimeMillis() - start));
+            return 200;
+        }, executorService);
+
+        CompletableFuture<Integer> cf2 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("cf2 start " + (System.currentTimeMillis() - start));
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("cf2 end " + (System.currentTimeMillis() - start));
+            return 300;
+        }, executorService);
+
+        try {
+            Object o = CompletableFuture.anyOf(cf1, cf2).get();
+            System.out.println("anyOf result: " + o);
+            System.out.println("anyOf time: " + (System.currentTimeMillis() - start));
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
 }
