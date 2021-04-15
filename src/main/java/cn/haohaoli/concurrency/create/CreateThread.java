@@ -3,7 +3,7 @@ package cn.haohaoli.concurrency.create;
 /**
  * @author lwh
  */
-public class CreateThreadDemo {
+public class CreateThread {
 
     /*
         使用多线程的正确方法只有2种
@@ -30,19 +30,19 @@ public class CreateThreadDemo {
     public static void main(String[] args) {
 
         // 继承Thread类
-        T thread1 = new T();
-        thread1.start();
+        ExtendThreadWay extendThreadWay = new ExtendThreadWay();
+        extendThreadWay.start();
 
         // 实现Runnable接口
-        Thread thread2 = new Thread(new R());
-        thread2.start();
+        Thread implementRunnableWay = new Thread(new ImplementRunnableWay());
+        implementRunnableWay.start();
 
     }
 
     /**
-     * 继承Thread类
+     * 继承Thread类方式
      */
-    public static class T extends Thread {
+    public static class ExtendThreadWay extends Thread {
 
         @Override
         public void run() {
@@ -51,9 +51,9 @@ public class CreateThreadDemo {
     }
 
     /**
-     * 实现Runnable接口
+     * 实现Runnable接口方式
      */
-    public static class R implements Runnable {
+    public static class ImplementRunnableWay implements Runnable {
 
         @Override
         public void run() {
