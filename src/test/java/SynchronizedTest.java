@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 /**
  * synchronized 关键字
+ *
  * @author lwh
  */
 class SynchronizedTest {
@@ -16,9 +17,11 @@ class SynchronizedTest {
     // synchronized 方法
     ///////////////////////////////////////////////////////////////////////////
 
-    @DisplayName("synchronized方法,同一时间只能被一个线程执行")
+    @DisplayName("synchronized方法")
     @Test
     void synchronizedMethod() {
+
+        // 被synchronized关键字修饰的方法,同一时间只能被一个线程执行
 
         Runnable r = new Runnable() {
 
@@ -107,8 +110,8 @@ class SynchronizedTest {
         start(t1, t2);
     }
 
-    @DisplayName("多个对象是多个锁.synchronized获取的是`对象锁`(在本例中)而不是将一段代码或者方法作为锁")
-    @Test()
+    @DisplayName("多个对象是多个锁")
+    @Test
     void multipleObjectsMultipleBlocks() {
         Supplier<Runnable> runnableSupplier = () -> new Runnable() {
 
@@ -190,10 +193,12 @@ class SynchronizedTest {
     @Test
     void reentrant() {
 
-        // 当一个线程获得对象锁后,再次请求此对象锁时是可以再次得到对象的锁的,
-        // 一个synchronized方法或块的内部调用本来的其他synchronized方法或块时,是永远可以得到锁的
+        // 当一个线程获得对象锁后,再次请求此对象锁时是可以再次得到对象的锁
+        // 同一个线程在一个synchronized方法或块的内部调用本来的其他synchronized方法或块时,是永远可以得到锁的
 
         // 锁重入的概念是: 自己可以再次获取自己的内部锁
+
+        // 锁重入的好处: 避免死锁
 
         class Task {
 
@@ -204,6 +209,8 @@ class SynchronizedTest {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                // 假设不支持重入的话,这里会产生死锁.因为访问`syncMethod2`需要拿到对象锁,而该锁以被自己(syncMethod1)持有.自己又不释放锁,又要去获取锁.
                 syncMethod2();
                 System.out.println(Thread.currentThread().getName() + " -> syncMethod1 exit");
             }
@@ -549,7 +556,120 @@ class SynchronizedTest {
         Thread t3 = new Thread(vector::size, "t3");
         Thread t4 = new Thread(vector::noSyncMethod, "t4");     // 非同步方法不会阻塞
 
-        start(t1, t2, t3,t4);
+        start(t1, t2, t3, t4);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // 静态同步方法
+    ///////////////////////////////////////////////////////////////////////////
+
+    @DisplayName("静态synchronized方法与普通synchronized方法一致,只是持有锁的类型不一样")
+    @Test
+    void staticSynchronizedMethod() {
+
+        // 如果将`synchronized`关键字加载静态方法上,那么就是对当前`.java`文件对应的Class类进行持锁
+        // 与普通的`synchronized`方法一样效果一样(同一时间只能被一个线程执行).区别在于静态同步方法是`对当前Class类加锁`,而普通同步方法则是`对对象加锁`
+
+        // java类可能有很多个对象,但只有一个Class对象
+        // 所谓的`Class锁`,不过也是对象锁,只是锁的是Class对象而已,
+        // 很好理解这个问题,静态方法是不需要依赖实例的,无需实例也可以调用.肯定就不能用实例对象作为锁,但是每个类都只有一个Class对象
+
+        Thread t1 = new Thread(StaticTask::staticSyncMethod1, "t1");
+        Thread t2 = new Thread(StaticTask::staticSyncMethod2, "t2");
+
+        start(t1, t2);
+    }
+
+    @DisplayName("静态synchronized方法与普通synchronized方法,不是同一把锁")
+    @Test
+    void locksDifferent() {
+
+        StaticTask task = new StaticTask();
+
+        // t1 持有的是class锁, t2 持有的对象锁. 两个线程持有的锁不一致,结果是异步执行
+        Thread t1 = new Thread(() -> task.staticSyncMethod1(), "t1");
+        Thread t2 = new Thread(() -> task.syncMethod(), "t2");
+
+        start(t1, t2);
+    }
+
+    @Test
+    @DisplayName("Class锁可以对所有对象实例起作用")
+    void classLockScope() {
+
+        // 多个对象实例
+        StaticTask task1 = new StaticTask();
+        StaticTask task2 = new StaticTask();
+
+        // 多个线程调用不同实例的静态同步方法.同步执行
+        Thread t1 = new Thread(() -> task1.staticSyncMethod1(), "t1");
+        Thread t2 = new Thread(() -> task2.staticSyncMethod2(), "t2");
+
+        // 多个线程调用不同实例的`synchronized(.class)`.同步执行
+        Thread t3 = new Thread(() -> task2.staticSyncBlock1(), "t3");
+        Thread t4 = new Thread(() -> task2.staticSyncBlock2(), "t4");
+
+        start(t1, t2, t3, t4);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    static class StaticTask {
+
+        public synchronized static void staticSyncMethod1() {
+            System.out.println(Thread.currentThread().getName() + " -> staticSyncMethod1 enter");
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + " -> staticSyncMethod1 exit");
+        }
+
+        public synchronized static void staticSyncMethod2() {
+            System.out.println(Thread.currentThread().getName() + " -> staticSyncMethod2 enter");
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + " -> staticSyncMethod2 exit");
+        }
+
+        public synchronized void syncMethod() {
+            System.out.println(Thread.currentThread().getName() + " -> syncMethod enter");
+            try {
+                Thread.sleep(2_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + " -> syncMethod exit");
+        }
+
+        public void staticSyncBlock1() {
+            synchronized (StaticTask.class) {
+                System.out.println(Thread.currentThread().getName() + " -> staticSyncBlock1 enter");
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + " -> staticSyncBlock1 exit");
+            }
+        }
+
+        public static void staticSyncBlock2() {
+            synchronized (StaticTask.class) {
+                System.out.println(Thread.currentThread().getName() + " -> staticSyncBlock2 enter");
+                try {
+                    Thread.sleep(2_000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + " -> staticSyncBlock2 exit");
+            }
+        }
     }
 
     public static void start(Thread... threads) {
@@ -558,12 +678,12 @@ class SynchronizedTest {
             thread.start();
         }
 
-        for (Thread thread : threads) {
-            try {
+        try {
+            for (Thread thread : threads) {
                 thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
