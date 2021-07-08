@@ -45,6 +45,8 @@ import java.util.function.Supplier;
  *
  * 注意点:
  *   锁对象不能为空: 锁的信息都是保存的对象头中的.所有锁对象不能为空
+ *   避免死锁
+ *
  *
  * https://blog.csdn.net/b15735105314/article/details/100573333
  * https://blog.csdn.net/u013412772/article/details/80109727
@@ -652,6 +654,86 @@ class SynchronizedTest {
         Thread t4 = new Thread(() -> task2.staticSyncBlock2(), "t4");
 
         start(t1, t2, t3, t4);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+    @DisplayName("避免使用String作为锁对象")
+    @Test
+    void stringPoolLock() {
+
+        // jvm 具有String常量池缓存的功能
+        System.out.println("a" == "a");
+
+        class Task {
+
+            // 建议使用Object对象作为对象锁
+            private final Object lock = new Object();
+
+            void method1(String str) {
+                synchronized (str) {
+                    // synchronized (lock) {
+                    System.out.println(Thread.currentThread().getName() + " -> method1 enter");
+                    System.out.println(Thread.currentThread().getName() + " -> method1 exit");
+                }
+            }
+        }
+        Task task = new Task();
+
+        Thread t1 = new Thread(() -> task.method1("a"), "t1");
+        Thread t2 = new Thread(() -> task.method1("a"), "t2");
+
+        start(t1, t2);
+    }
+
+    @DisplayName("死锁案例")
+    @Test
+    void dealLock() {
+
+        class Task {
+
+            private final Object firstLock  = new Object();
+            private final Object secondLock = new Object();
+
+            void first() {
+                System.out.println(Thread.currentThread().getName() + " -> first enter");
+                synchronized (firstLock) {
+                    System.out.println(Thread.currentThread().getName() + " -> get firstLock");
+                    try {
+                        Thread.sleep(1_000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (secondLock) {
+                        System.out.println(Thread.currentThread().getName() + " -> get secondLock");
+                    }
+                }
+            }
+
+            void second() {
+                System.out.println(Thread.currentThread().getName() + " -> second enter");
+                synchronized (secondLock) {
+                    System.out.println(Thread.currentThread().getName() + " -> get secondLock");
+                    try {
+                        Thread.sleep(1_000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    synchronized (firstLock) {
+                        System.out.println(Thread.currentThread().getName() + " -> get firstLock");
+                    }
+                }
+            }
+        }
+        Task task = new Task();
+
+        // t1 持有`firstLock`,t2 持有`secondLock`,它们互相都想获取彼此的锁,此时t1和t2就会无限的等待下去.这种就是死锁.
+        Thread t1 = new Thread(() -> task.first(), "t1");
+        Thread t2 = new Thread(() -> task.second(), "t2");
+
+        start(t1, t2);
     }
 
     static class StaticTask {
