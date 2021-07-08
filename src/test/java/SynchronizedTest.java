@@ -1,3 +1,4 @@
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,6 @@ import java.util.function.Supplier;
  * 注意点:
  *   锁对象不能为空: 锁的信息都是保存的对象头中的.所有锁对象不能为空
  *   避免死锁
- *
  *
  * https://blog.csdn.net/b15735105314/article/details/100573333
  * https://blog.csdn.net/u013412772/article/details/80109727
@@ -690,7 +690,7 @@ class SynchronizedTest {
 
     @DisplayName("死锁案例")
     @Test
-    void dealLock() {
+    void deadLock() {
 
         class Task {
 
@@ -734,6 +734,105 @@ class SynchronizedTest {
         Thread t2 = new Thread(() -> task.second(), "t2");
 
         start(t1, t2);
+    }
+
+    @DisplayName("锁对象的改变(重新赋值)")
+    @Test
+    void changeLockObject() {
+
+        @AllArgsConstructor
+        class UserInfo {
+            private String  name;
+            private Integer age;
+        }
+
+        @AllArgsConstructor
+        class Task {
+
+            private UserInfo userInfo;
+
+            void method1() {
+                synchronized (userInfo) {
+                    System.out.println(Thread.currentThread().getName() + " -> method1 enter");
+                    try {
+                        Thread.sleep(2_000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + " -> method1 exit");
+                }
+            }
+        }
+        Task task = new Task(new UserInfo("小明", 18));
+
+        Thread t1 = new Thread(task::method1, "t1");
+        Thread t2 = new Thread(task::method1, "t2");
+
+        t1.start();
+        t2.start();
+
+        try {
+            Thread.sleep(1_000);
+            task.userInfo = new UserInfo("小红", 17);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // 对象的引用变了锁就变了,所以t1,t2是同步,而t3则是异步.他们的锁不同
+        Thread t3 = new Thread(task::method1, "t3");
+        t3.start();
+
+        join(t1, t2, t3);
+
+    }
+
+    @DisplayName("锁对象的改变(对属性重新赋值)")
+    @Test
+    void changeLockObjectAttr() {
+
+        @AllArgsConstructor
+        class UserInfo {
+            private String  name;
+            private Integer age;
+        }
+
+        @AllArgsConstructor
+        class Task {
+
+            private UserInfo userInfo;
+
+            void method1() {
+                synchronized (userInfo) {
+                    System.out.println(Thread.currentThread().getName() + " -> method1 enter");
+                    try {
+                        Thread.sleep(2_000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + " -> method1 exit");
+                }
+            }
+        }
+        Task task = new Task(new UserInfo("小明", 18));
+
+        Thread t1 = new Thread(task::method1, "t1");
+        Thread t2 = new Thread(task::method1, "t2");
+        t1.start();
+        t2.start();
+
+        try {
+            Thread.sleep(1_000);
+            task.userInfo.age = 1;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // 只要对象不变,即使改变对象的属性还是同步的
+        Thread t3 = new Thread(task::method1, "t3");
+        t3.start();
+
+        join(t1, t2, t3);
+
     }
 
     static class StaticTask {
@@ -798,7 +897,10 @@ class SynchronizedTest {
         for (Thread thread : threads) {
             thread.start();
         }
+        join(threads);
+    }
 
+    public static void join(Thread... threads) {
         try {
             for (Thread thread : threads) {
                 thread.join();
