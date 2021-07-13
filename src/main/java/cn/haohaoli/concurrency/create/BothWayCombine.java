@@ -23,7 +23,10 @@ public class BothWayCombine extends Thread {
                 System.out.println("runnable");
             }
         };
+
         Thread combine = new BothWayCombine(runnable);
+
+        // 调用start方法会运行新的线程
         combine.start();
     }
 }

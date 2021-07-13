@@ -15,6 +15,8 @@ public class ExtendThreadWay extends Thread {
     public static void main(String[] args) {
 
         ExtendThreadWay extendThreadWay = new ExtendThreadWay();
+
+        // 调用start方法会运行新的线程
         extendThreadWay.start();
     }
 }
