@@ -2,9 +2,9 @@
 
 ## 如何启动线程
 
-在`Thread`类中介绍到使用`start()`方法可以运行线程
+> 在`Thread`类中介绍到使用`start`方法可以运行线程
 
-例如:
+### 使用start方法
 
 ```java
 public class Test {
@@ -27,9 +27,9 @@ public class Test {
 
 运行实例会输出: `t1`,说明它是以新的线程运行,而不是使用主线程运行
 
-## 使用run方法行不行?
+### 使用run方法
 
-为什么要调用`start`方法? 我们的业务逻辑不都写在`run`方法里的嘛?,我直接调用`run`方法行不行?
+既然`start`方法可以,那`run`方法行不行? 比较我们的业务逻辑不都写在`run`方法里的嘛?
 
 下面我们来看,调用`run`方法是否会启动新的线程
 
@@ -52,9 +52,7 @@ public class Test {
 
 可以看到,与我们调用`start`方法不一样,输出的结果是`main`主线程.并没有启动新的线程!
 
-## run方法解析
-
-从源码可以看到,如果调用`run`方法,是直接调用`target`属性的也就是(Runnable)中的`run`方法.这就是个普通方法并没有看到有启动线程的处理,所以使用它并不会启动线程
+#### 为何不能启动
 
 ```java
 public class Thread implements Runnable {
@@ -71,6 +69,8 @@ public class Thread implements Runnable {
     }
 }
 ```
+
+从源码可以看到,如果调用`run`方法,是直接调用`target`属性的也就是(Runnable)中的`run`方法.这就是个普通方法并没有看到有启动线程的处理,所以使用它并不会启动线程
 
 ## start方法解析
 
