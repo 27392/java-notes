@@ -160,7 +160,7 @@ public class BothWayCombine extends Thread {
     
 7. 等等
 
-> 这么多种实现方式,在代码中千变万化,但是底层还是那两种方式(继承Thread类、实现了Thread类)
+> 这么多种实现方式,在代码中千变万化,但是底层还是那两种方式(继承Thread类、实现了Runnable接口)
 >
 > 我们不能认为一个类它能实现线程我们就认为它是一种新的方式!
 
