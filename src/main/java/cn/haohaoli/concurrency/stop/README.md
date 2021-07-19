@@ -238,7 +238,13 @@ public class WithSleepWay {
 
 **因此,如果要在循环中调用`sleep`方法,正确的做法是:捕获`InterruptedException`异常**
 
-## 其他可以响应中断的API
+## 异常处理的两种最佳实践
+
+**请勿压制中断异常**(`InterruptedException`),**如果选择在底层代码压制,那么高层代码在调用时将无法检测**;可以选择:
+
+1. **在`catch`子句中调用`Thread.currentThread().interrupt()`来重新设置中断状态.调用者可以使用`isInterrupted`方法检测**
+
+2. **更好的选择是,用`throws InterruptedException`标记你的方法,不采用`try`语句块捕获异常.调用者可以捕获这一异常**
 
 ## 总结
 
