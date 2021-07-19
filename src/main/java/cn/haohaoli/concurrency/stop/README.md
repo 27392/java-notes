@@ -246,6 +246,21 @@ public class WithSleepWay {
 
 2. **更好的选择是,用`throws InterruptedException`标记你的方法,不采用`try`语句块捕获异常.调用者可以捕获这一异常**
 
+## 其他可以响应中断的API
+
+|  类 | 方法 | 
+|---|---|
+| Object                | `wait()`/`wait(long)`/`wait(long,int)`    |    
+| Thread                | `sleep(long)`/`sleep(long,int)`           |
+| Thread                | `join()`/`join(long)`/`join(long,int)`    | 
+| BlockingQueue         | `task()`/`put(E)`                         | 
+| Lock                  | `lockInterruptibly()`                     | 
+| CountDownLatch        | `await()`                                 | 
+| CyclicBarrier         | `await()`                                 | 
+| Exchanger             | `exchange()`                              | 
+| InterruptibleChannel  | 相关方法                                   | 
+| Selector              | 相关方法                                   | 
+
 ## 总结
 
 `sleep`方法会清除中断状态
