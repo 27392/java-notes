@@ -13,20 +13,20 @@ import lombok.Setter;
 @Setter
 public abstract class Beverage {
 
-    //描述
+    // 描述
     private final String description;
 
     public Beverage(String description) {
         this.description = description;
     }
 
-    //调料
+    // 调料
     private boolean milk;
     private boolean soy;
     private boolean mocha;
     private boolean whip;
 
-    //计算调料的钱
+    // 计算调料的钱
     public double cost(){
         double totalAmount = 0;
         if (milk) {

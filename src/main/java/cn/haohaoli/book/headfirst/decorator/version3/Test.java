@@ -13,9 +13,10 @@ public class Test {
 
     public static void main(String[] args) {
 
-        Beverage beverage = new Decaf();
-        Milk milk = new Milk(new Milk(new Mocha(new Whip(new Soy(beverage)))));
-        final double cost = milk.cost();
+        Beverage decaf = new Decaf();
+        Beverage milk = new Milk(new Milk(new Mocha(new Whip(new Soy(decaf)))));
+
+        double cost = milk.cost();
         System.out.println("描述： " + milk.getDescription());
         System.out.println("金额： " + cost);
     }

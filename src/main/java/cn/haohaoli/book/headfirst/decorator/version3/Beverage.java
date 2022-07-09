@@ -3,6 +3,7 @@ package cn.haohaoli.book.headfirst.decorator.version3;
 import lombok.Getter;
 
 /**
+ * 饮料
  * @author LiWenHao
  * @date 2019-03-12 21:18
  */
