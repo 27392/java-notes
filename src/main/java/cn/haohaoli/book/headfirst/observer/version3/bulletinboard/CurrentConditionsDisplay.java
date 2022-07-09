@@ -1,7 +1,6 @@
 package cn.haohaoli.book.headfirst.observer.version3.bulletinboard;
 
-import cn.haohaoli.book.headfirst.observer.version2.DisplayElement;
-import cn.haohaoli.book.headfirst.observer.version2.Subject;
+import cn.haohaoli.book.headfirst.observer.version3.DisplayElement;
 import cn.haohaoli.book.headfirst.observer.version3.WeatherData;
 
 import java.util.Observable;
@@ -14,12 +13,9 @@ import java.util.Observer;
  */
 public class CurrentConditionsDisplay extends DisplayElement implements Observer {
 
-    //被观察者对象
-    private Observable observable;
-
     public CurrentConditionsDisplay(Observable observable) {
-        this.observable = observable;
-        this.observable.addObserver(this);  //自动注册
+        //被观察者对象
+        observable.addObserver(this);  //自动注册
     }
 
     public void display() {

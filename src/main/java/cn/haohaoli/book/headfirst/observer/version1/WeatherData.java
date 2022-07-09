@@ -44,6 +44,7 @@ public class WeatherData {
         this.temperature = temperature;
         this.humidity = humidity;
         this.pressure = pressure;
+        // 调用数据变更方法
         this.measurementsChanged();
     }
 }

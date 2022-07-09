@@ -1,6 +1,6 @@
 package cn.haohaoli.book.headfirst.observer.version3.bulletinboard;
 
-import cn.haohaoli.book.headfirst.observer.version2.DisplayElement;
+import cn.haohaoli.book.headfirst.observer.version3.DisplayElement;
 import cn.haohaoli.book.headfirst.observer.version3.WeatherData;
 
 import java.util.Observable;
@@ -13,18 +13,8 @@ import java.util.Observer;
  */
 public class ForecastDisplay extends DisplayElement implements Observer {
 
-    private Observable observable;
-
     public ForecastDisplay(Observable observable) {
-        this.observable = observable;
-        this.observable.addObserver(this);
-    }
-
-    public void update(float temperature, float humidity, float pressure){
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.pressure = pressure;
-        this.display();
+        observable.addObserver(this);
     }
 
     public void display() {

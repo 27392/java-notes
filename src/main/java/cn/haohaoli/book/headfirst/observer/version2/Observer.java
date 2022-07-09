@@ -7,5 +7,11 @@ package cn.haohaoli.book.headfirst.observer.version2;
  */
 public interface Observer {
 
+    /**
+     * 更新
+     * @param temperature 温度
+     * @param humidity 湿度
+     * @param pressure 气压
+     */
     void update(float temperature, float humidity, float pressure);
 }

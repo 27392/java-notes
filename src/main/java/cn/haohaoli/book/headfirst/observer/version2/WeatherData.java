@@ -14,14 +14,15 @@ import java.util.function.Consumer;
 @Getter
 public class WeatherData implements Subject {
 
-    //温度
+    // 温度
     private float temperature;
-    //湿度
+    // 湿度
     private float humidity;
-    //气压
+    // 气压
     private float pressure;
 
-    private List<Observer> observerList = new ArrayList<>();
+    // 观察者列表
+    private final List<Observer> observerList = new ArrayList<>();
 
     @Override
     public void registerObserver(Observer observer) {
@@ -31,11 +32,9 @@ public class WeatherData implements Subject {
     @Override
     public void removerObserver(Observer observer) {
         int i = observerList.indexOf(observer);
-        observerList.remove(null);
-        if (i > 0) {
+        if (i >= 0) {
             observerList.remove(i);
         }
-
     }
 
     @Override
