@@ -7,9 +7,9 @@ package cn.haohaoli.book.headfirst.adapter;
  */
 public interface Duck {
 
-    //叫
+    // 叫
     void quack();
 
-    //飞
+    // 飞
     void fly();
 }

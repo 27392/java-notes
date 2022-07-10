@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 @AllArgsConstructor
 public class TurkeyAdapter implements Duck {
 
-    private Turkey turkey;
+    private final Turkey turkey;
 
     @Override
     public void quack() {
@@ -20,6 +20,8 @@ public class TurkeyAdapter implements Duck {
 
     @Override
     public void fly() {
-        IntStream.rangeClosed(0, 5).forEach(i -> turkey.fly());
+        for (int i = 0; i < 5; i++) {
+            turkey.fly();
+        }
     }
 }

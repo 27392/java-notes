@@ -7,10 +7,10 @@ package cn.haohaoli.book.headfirst.adapter;
  */
 public interface Turkey {
 
-    //叫声
+    // 叫声
     void gobble();
 
-    //飞
+    // 飞
     void fly();
 
 }
