@@ -9,19 +9,19 @@ import cn.haohaoli.book.headfirst.factory.version6.pizza.Pizza;
  */
 public class CheesePizza extends Pizza {
 
-    private final PizzaIngredientFactory pizzaIngredientFactory;
+    private final PizzaIngredientFactory ingredientFactory;
 
-    public CheesePizza(PizzaIngredientFactory pizzaIngredientFactory) {
-        this.pizzaIngredientFactory = pizzaIngredientFactory;
+    public CheesePizza(PizzaIngredientFactory ingredientFactory) {
+        this.ingredientFactory = ingredientFactory;
     }
 
     @Override
     public void prepare() {
-        this.dough = pizzaIngredientFactory.createDough();
-        this.sauce = pizzaIngredientFactory.createSauce();
-        this.cheese = pizzaIngredientFactory.createCheese();
-        this.clams = pizzaIngredientFactory.createClams();
-        this.veggies = pizzaIngredientFactory.createVeggies();
-        this.pepperoni = pizzaIngredientFactory.createPepperoni();
+        this.dough = ingredientFactory.createDough();
+        this.sauce = ingredientFactory.createSauce();
+        this.cheese = ingredientFactory.createCheese();
+        this.clams = ingredientFactory.createClams();
+        this.veggies = ingredientFactory.createVeggies();
+        this.pepperoni = ingredientFactory.createPepperoni();
     }
 }

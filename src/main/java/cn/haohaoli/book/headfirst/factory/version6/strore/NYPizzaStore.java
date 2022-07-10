@@ -15,15 +15,15 @@ public class NYPizzaStore extends PizzaStore {
 
     @Override
     protected Pizza createPizza(String type) {
-        PizzaIngredientFactory pizzaIngredientFactory = new NYPizzaIngredientFactory();
+        PizzaIngredientFactory ingredientFactory = new NYPizzaIngredientFactory();
         Pizza pizza;
         switch (type){
             case "cheese":
-                pizza = new CheesePizza(pizzaIngredientFactory);
+                pizza = new CheesePizza(ingredientFactory);
                 pizza.setName("纽约风格奶酪披萨");
                 break;
             case "clam":
-                pizza = new ClamPizza(pizzaIngredientFactory);
+                pizza = new ClamPizza(ingredientFactory);
                 pizza.setName("纽约风格哈利披萨");
                 break;
             default:

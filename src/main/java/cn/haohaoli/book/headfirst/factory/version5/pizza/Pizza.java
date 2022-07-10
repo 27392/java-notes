@@ -4,43 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 披萨抽象类
  * @author LiWenHao
  * @date 2019-03-27 20:11
  */
 public abstract class Pizza {
 
-    //名称
+    // 名称
     protected String name;
-    //面团
+    // 面团
     protected String dough;
-    //酱汁
+    // 酱汁
     protected String sauce;
-    //配料
+    // 配料
     protected List<String> toppings = new ArrayList<>();
 
-    //准备
+    // 准备
     public void prepare(){
         System.out.println("准备" + name + "所使用的材料");
         System.out.println("搅拌" + dough);
         System.out.println("添加" + sauce);
-        System.out.println("添加配料：");
-        for (String topping : toppings) {
-            System.out.println("  " + topping);
-        }
-
+        System.out.println("添加配料：" + String.join(", ", toppings));
     }
 
-    //烘焙
+    // 烘焙
     public void bake(){
         System.out.println(name + "开始烘焙");
     }
 
-    //切片
+    // 切片
     public void cut(){
         System.out.println(name + "切片");
     }
 
-    //装盒
+    // 装盒
     public void box(){
         System.out.println(name + "装盒");
     }

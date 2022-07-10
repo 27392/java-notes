@@ -1,6 +1,10 @@
 package cn.haohaoli.book.headfirst.factory.version5;
 
 import cn.haohaoli.book.headfirst.factory.version5.pizza.Pizza;
+import cn.haohaoli.book.headfirst.factory.version5.store.PizzaStore;
+import cn.haohaoli.book.headfirst.factory.version5.store.impl.CaliforniaPizzaStore;
+import cn.haohaoli.book.headfirst.factory.version5.store.impl.ChicagoPizzaStore;
+import cn.haohaoli.book.headfirst.factory.version5.store.impl.NYPizzaStore;
 
 /**
  * @author LiWenHao
@@ -10,10 +14,13 @@ public class Test {
 
     public static void main(String[] args) {
         PizzaStore pizzaStore = new NYPizzaStore();
-        Pizza pizza = pizzaStore.orderPizza("cheese");
+        pizzaStore.orderPizza("cheese");
 
         PizzaStore pizzaStore1 = new CaliforniaPizzaStore();
-        Pizza pizza1 = pizzaStore1.orderPizza("veggie");
+        pizzaStore1.orderPizza("veggie");
+
+        PizzaStore pizzaStore2 = new ChicagoPizzaStore();
+        pizzaStore2.orderPizza("cheese");
 
     }
 }

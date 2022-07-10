@@ -9,6 +9,7 @@ public class PizzaStore {
 
     private SimplePizzaFactory pizzaFactory;
 
+    // 工厂类在构造的时候传入
     public PizzaStore(SimplePizzaFactory pizzaFactory) {
         this.pizzaFactory = pizzaFactory;
     }

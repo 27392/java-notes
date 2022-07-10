@@ -1,6 +1,7 @@
 package cn.haohaoli.book.headfirst.factory.version6.pizza;
 
 import cn.haohaoli.book.headfirst.factory.version6.ingredent.*;
+import lombok.ToString;
 
 import java.util.Arrays;
 
@@ -8,42 +9,43 @@ import java.util.Arrays;
  * @author LiWenHao
  * @date 2019-04-28 20:57
  */
+@ToString
 public abstract class Pizza {
 
     private String name;
 
-    //面团
+    // 面团
     protected Dough dough;
 
-    //酱汁
+    // 酱汁
     protected Sauce sauce;
 
-    //奶酪
+    // 奶酪
     protected Cheese cheese;
 
-    //蔬菜
+    // 蔬菜
     protected Veggies[] veggies;
 
-    //腊肠
+    // 腊肠
     protected Pepperoni pepperoni;
 
-    //蛤蜊
+    // 蛤蜊
     protected Clams clams;
 
-    //准备
+    // 准备
     public abstract void prepare();
 
-    //烘焙
+    // 烘焙
     public void bake(){
         System.out.println(name + "开始烘焙");
     }
 
-    //切片
+    // 切片
     public void cut(){
         System.out.println(name + "切片");
     }
 
-    //装盒
+    // 装盒
     public void box(){
         System.out.println(name + "装盒");
     }

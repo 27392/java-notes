@@ -1,9 +1,10 @@
-package cn.haohaoli.book.headfirst.factory.version5;
+package cn.haohaoli.book.headfirst.factory.version5.store.impl;
 
 import cn.haohaoli.book.headfirst.factory.version5.pizza.*;
 import cn.haohaoli.book.headfirst.factory.version5.pizza.impl.CaliforniaStyleCheesePizza;
 import cn.haohaoli.book.headfirst.factory.version5.pizza.impl.CaliforniaStyleGreekPizza;
 import cn.haohaoli.book.headfirst.factory.version5.pizza.impl.CaliforniaStyleVeggiePizza;
+import cn.haohaoli.book.headfirst.factory.version5.store.PizzaStore;
 
 /**
  * 加州披萨店

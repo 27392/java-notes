@@ -1,9 +1,10 @@
-package cn.haohaoli.book.headfirst.factory.version5;
+package cn.haohaoli.book.headfirst.factory.version5.store.impl;
 
 import cn.haohaoli.book.headfirst.factory.version5.pizza.*;
 import cn.haohaoli.book.headfirst.factory.version5.pizza.impl.NYStyleCheesePizza;
 import cn.haohaoli.book.headfirst.factory.version5.pizza.impl.NYStyleGreekPizza;
 import cn.haohaoli.book.headfirst.factory.version5.pizza.impl.NYStyleVeggiePizza;
+import cn.haohaoli.book.headfirst.factory.version5.store.PizzaStore;
 
 /**
  * 纽约披萨店

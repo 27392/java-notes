@@ -7,8 +7,8 @@ package cn.haohaoli.book.headfirst.factory.version1;
 public class Test {
 
     public static void main(String[] args) {
-
-        PizzaStore pizzaStore = new PizzaStore();
-        Pizza pizza = PizzaStore.orderPizza("cheese");
+        System.out.println(PizzaStore.orderPizza("cheese"));
+        System.out.println(PizzaStore.orderPizza("greek"));
+        System.out.println(PizzaStore.orderPizza("pepperoni"));
     }
 }
