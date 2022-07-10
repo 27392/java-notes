@@ -31,7 +31,7 @@ public abstract class CaffeineBeverage {
     }
 
     /**
-     * 酿造
+     * 冲泡
      */
     abstract void brew();
 

@@ -1,6 +1,7 @@
 package cn.haohaoli.book.headfirst.template.version2;
 
 /**
+ * 咖啡因饮料
  * @author LiWenHao
  * @date 2019-05-05 20:37
  */
@@ -8,7 +9,6 @@ public abstract class CaffeineBeverage {
 
     /**
      * 准备
-     * 声明为final 不希望子类覆盖整个方法
      */
     public abstract void prepareRecipe();
 

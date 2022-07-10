@@ -7,7 +7,12 @@ package cn.haohaoli.book.headfirst.template.version3;
 public class Test {
 
     public static void main(String[] args) {
-        Tea tea = new Tea();
+        CaffeineBeverage tea = new Tea();
         tea.prepareRecipe();
+
+        System.out.println();
+
+        CaffeineBeverage coffee = new Coffee();
+        coffee.prepareRecipe();
     }
 }
