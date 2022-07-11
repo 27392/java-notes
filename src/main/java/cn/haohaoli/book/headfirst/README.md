@@ -7,8 +7,8 @@
 - [单例模式](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/singleton/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.md)
 - 命令模式
 - [适配器模式](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/adapter/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F.md)
+- [外观模式](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/facade/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F.md)
 - [模板方法模式](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/template/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.md)
-- 外观模式
 - 代理模式
 - 状态模式
 
