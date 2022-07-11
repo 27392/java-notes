@@ -1,4 +1,4 @@
-package cn.haohaoli.book.headfirst.facade.version1;
+package cn.haohaoli.book.headfirst.facade.version2;
 
 import lombok.Getter;
 
@@ -12,6 +12,10 @@ import lombok.Getter;
 public class Lights {
 
     private int brightness;
+
+    public void on () {
+        System.out.println("打开灯光");
+    }
 
     public void dim(int brightness) {
         this.brightness = brightness;

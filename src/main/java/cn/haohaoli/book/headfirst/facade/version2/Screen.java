@@ -1,4 +1,4 @@
-package cn.haohaoli.book.headfirst.facade.version1;
+package cn.haohaoli.book.headfirst.facade.version2;
 
 /**
  * 屏幕

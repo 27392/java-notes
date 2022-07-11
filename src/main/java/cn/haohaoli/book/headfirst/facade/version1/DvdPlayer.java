@@ -8,10 +8,10 @@ package cn.haohaoli.book.headfirst.facade.version1;
 public class DvdPlayer {
 
     public void on() {
-
+        System.out.println("打开DVD");
     }
 
-    public void play(String move) {
-
+    public void play(String name) {
+        System.out.println("DVD开始播放: " + name);
     }
 }

@@ -1,4 +1,4 @@
-package cn.haohaoli.book.headfirst.facade.version1;
+package cn.haohaoli.book.headfirst.facade.version2;
 
 import lombok.Getter;
 
@@ -17,6 +17,10 @@ public class Amplifier {
 
     public void on() {
         System.out.println("打开功放");
+    }
+
+    public void off() {
+        System.out.println("关闭功放");
     }
 
     public void setStereoSound() {
