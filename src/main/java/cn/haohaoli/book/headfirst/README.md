@@ -13,3 +13,6 @@
 - [组合模式](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/composite/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F.md)
 - [状态模式](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/state/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F.md)
 - [代理模式](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/proxy/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F.md)
+
+---
+[综合案例(多个模式结合使用)](https://github.com/27392/java-notes/blob/master/src/main/java/cn/haohaoli/book/headfirst/demo/%E6%A1%88%E4%BE%8B.md)
