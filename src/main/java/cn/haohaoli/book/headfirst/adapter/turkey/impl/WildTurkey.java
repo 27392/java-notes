@@ -1,4 +1,6 @@
-package cn.haohaoli.book.headfirst.adapter;
+package cn.haohaoli.book.headfirst.adapter.turkey.impl;
+
+import cn.haohaoli.book.headfirst.adapter.turkey.Turkey;
 
 /**
  * 野生火鸡

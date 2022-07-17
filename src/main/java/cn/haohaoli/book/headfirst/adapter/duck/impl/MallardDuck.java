@@ -1,4 +1,6 @@
-package cn.haohaoli.book.headfirst.adapter;
+package cn.haohaoli.book.headfirst.adapter.duck.impl;
+
+import cn.haohaoli.book.headfirst.adapter.duck.Duck;
 
 /**
  * 野鸭

@@ -1,5 +1,10 @@
 package cn.haohaoli.book.headfirst.adapter;
 
+import cn.haohaoli.book.headfirst.adapter.duck.Duck;
+import cn.haohaoli.book.headfirst.adapter.duck.impl.MallardDuck;
+import cn.haohaoli.book.headfirst.adapter.turkey.Turkey;
+import cn.haohaoli.book.headfirst.adapter.turkey.impl.WildTurkey;
+
 /**
  * @author LiWenHao
  * @date 2019-05-27 22:07

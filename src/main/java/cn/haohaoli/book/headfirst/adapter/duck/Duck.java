@@ -1,4 +1,4 @@
-package cn.haohaoli.book.headfirst.adapter;
+package cn.haohaoli.book.headfirst.adapter.duck;
 
 /**
  * 鸭子接口

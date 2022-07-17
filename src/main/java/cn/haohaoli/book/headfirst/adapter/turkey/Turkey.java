@@ -1,7 +1,8 @@
-package cn.haohaoli.book.headfirst.adapter;
+package cn.haohaoli.book.headfirst.adapter.turkey;
 
 /**
  * 火鸡接口
+ *
  * @author LiWenHao
  * @date 2019-05-27 21:59
  */

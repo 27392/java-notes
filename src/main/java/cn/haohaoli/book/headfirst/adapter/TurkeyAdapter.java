@@ -1,10 +1,12 @@
 package cn.haohaoli.book.headfirst.adapter;
 
+import cn.haohaoli.book.headfirst.adapter.duck.Duck;
+import cn.haohaoli.book.headfirst.adapter.turkey.Turkey;
 import lombok.AllArgsConstructor;
 
-import java.util.stream.IntStream;
-
 /**
+ * 火鸡适配器
+ *
  * @author LiWenHao
  * @date 2019-05-27 22:05
  */
